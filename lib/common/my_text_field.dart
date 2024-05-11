@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 
 class MyTextField extends StatelessWidget {
   const MyTextField({
@@ -21,11 +20,11 @@ class MyTextField extends StatelessWidget {
       controller: controller,
       decoration: InputDecoration(
         border: const OutlineInputBorder(),
-        labelText: text,
         prefixIcon: prefixIcon,
+        hintText: text,
       ),
       keyboardType: keyboardType,
-      inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+      // inputFormatters: [FilteringTextInputFormatter.digitsOnly],
     );
   }
 }
