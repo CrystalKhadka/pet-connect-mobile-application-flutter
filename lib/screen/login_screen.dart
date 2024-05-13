@@ -1,42 +1,49 @@
-import 'package:final_assignment/common/my_button.dart';
-import 'package:final_assignment/common/my_text_field.dart';
-import 'package:final_assignment/screen/dashboard_screen.dart';
-import 'package:final_assignment/screen/register_screen.dart';
 import 'package:flutter/material.dart';
 
+import '../common/my_button.dart';
+import '../common/my_text_field.dart';
 import '../model/user_model.dart';
+import 'dashboard_screen.dart';
+import 'register_screen.dart';
 
-class LoginScreen extends StatelessWidget {
+class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    final emailController = TextEditingController();
-    final passwordController = TextEditingController();
-    final key = GlobalKey<FormState>();
-    UserModel? userModel;
+  State<LoginScreen> createState() => _LoginScreenState();
+}
 
+class _LoginScreenState extends State<LoginScreen> {
+  final emailController = TextEditingController();
+  final passwordController = TextEditingController();
+  bool termsAccepted = false;
+  bool obscurePassword = true;
+
+  final key = GlobalKey<FormState>();
+  UserModel? userModel;
+
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
-          'Pet Connect',
-        ),
+        title: const Text('Pet Connect'),
       ),
       body: SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.all(8.0),
+          padding: const EdgeInsets.all(16.0),
           child: Form(
             key: key,
-            // color: Colors.grey,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                const SizedBox(height: 20),
                 const Center(
                   child: Text(
                     'Pet Connect',
-                    style: TextStyle(fontSize: 40),
+                    style: TextStyle(fontSize: 40, fontWeight: FontWeight.bold),
                   ),
                 ),
+                const SizedBox(height: 20),
                 Center(
                   child: Image.asset(
                     'assets/images/icon.jpg',
@@ -45,126 +52,156 @@ class LoginScreen extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 20),
-                const Text('Welcome!'),
-                // const SizedBox(height: 20),
+                const Text(
+                  'Welcome!',
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                ),
+                const SizedBox(height: 20),
                 MyTextField(
                   controller: emailController,
                   prefixIcon: const Icon(Icons.email),
                   text: 'Email',
                   keyboardType: TextInputType.emailAddress,
+                  obscureText: false,
                 ),
                 const SizedBox(height: 20),
                 MyTextField(
                   controller: passwordController,
                   prefixIcon: const Icon(Icons.lock),
                   text: 'Password',
+                  obscureText: obscurePassword,
+                  suffixIcon: IconButton(
+                    icon: Icon(
+                      obscurePassword ? Icons.visibility : Icons.visibility_off,
+                    ),
+                    onPressed: () {
+                      setState(() {
+                        obscurePassword = !obscurePassword;
+                      });
+                    },
+                  ),
                 ),
-                const SizedBox(height: 10),
+                const SizedBox(height: 20),
+                Row(
+                  children: [
+                    Checkbox(
+                      value: termsAccepted,
+                      onChanged: (value) {
+                        setState(() {
+                          termsAccepted = value ?? false;
+                        });
+                      },
+                    ),
+                    const Text('I accept the terms and conditions'),
+                  ],
+                ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
-                    MyButton(
-                      onPressed: () {},
-                      child: const Text('Forgot your password?'),
+                    TextButton(
+                      onPressed: () {
+                        // TODO: Implement Forgot Password functionality
+                        
+                      },
+                      child: const Text(
+                        'Forgot your password?',
+                        style: TextStyle(color: Colors.blue),
+                      ),
                     ),
                   ],
                 ),
-                const SizedBox(
-                  height: 20,
+                const SizedBox(height: 20),
+                Center(
+                  child: Column(
+                    children: [
+                      MyButton(
+                        onPressed: () {
+                          _login();
+                        },
+                        bgColor: const Color.fromRGBO(23, 88, 110, 1),
+                        fgColor: Colors.white,
+                        child: const Text('Log in'),
+                      ),
+                      const SizedBox(height: 20),
+                      const Text(
+                        'Continue With',
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                      const SizedBox(height: 20),
+                      MyButton(
+                        onPressed: () {
+                          //TODO:  Implement Google Sign-in
+                        },
+                        fgColor: Colors.black,
+                        child: Column(
+                          children: [
+                            Image.asset(
+                              'assets/icons/google.png',
+                              height: 50,
+                            ),
+                            const Text('Google'),
+                          ],
+                        ),
+                      ),
+                      const SizedBox(height: 20),
+                      TextButton(
+                        onPressed: () {
+                          Navigator.push(context,
+                              MaterialPageRoute(builder: (context) {
+                            return const RegisterScreen();
+                          }));
+                        },
+                        child: const Text(
+                          "Don't have an account? Sign up",
+                          style: TextStyle(color: Colors.blue),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Column(
-                      children: [
-                        SizedBox(
-                          width: 200,
-                          child: MyButton(
-                            onPressed: () {
-                              if (key.currentState!.validate()) {
-                                userModel = UserModel(
-                                    email: emailController.text,
-                                    password: passwordController.text);
-                                if (userModel!.validate()) {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) {
-                                        return const DashboardScreen();
-                                      },
-                                    ),
-                                  );
-                                } else {
-                                  showDialog(
-                                    context: context,
-                                    builder: (ctx) => AlertDialog(
-                                      title: const Text("Error"),
-                                      content: const Text(
-                                          "You have entered wrong email or password"),
-                                      actions: <Widget>[
-                                        TextButton(
-                                          onPressed: () {
-                                            Navigator.of(ctx).pop();
-                                          },
-                                          child: Container(
-                                            color: Colors.green,
-                                            padding: const EdgeInsets.all(14),
-                                            child: const Text(
-                                              "Okay",
-                                              style: TextStyle(fontSize: 20),
-                                            ),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  );
-                                }
-                              }
-                            },
-                            bgColor: const Color.fromRGBO(23, 88, 110, 1),
-                            fgColor: Colors.white,
-                            child: const Text('Log in'),
-                          ),
-                        ),
-                        const SizedBox(
-                          height: 20,
-                        ),
-                        const Text('Continue With'),
-                        MyButton(
-                          onPressed: () {},
-                          fgColor: Colors.black,
-                          child: Column(
-                            children: [
-                              Image.asset(
-                                'assets/icons/google.png',
-                                height: 50,
-                              ),
-                              const Text('Google'),
-                            ],
-                          ),
-                        ),
-                        const SizedBox(
-                          height: 20,
-                        ),
-                        const Text("Don't have an account"),
-                        MyButton(
-                          onPressed: () {
-                            Navigator.push(context,
-                                MaterialPageRoute(builder: (context) {
-                              return const RegisterScreen();
-                            }));
-                          },
-                          child: const Text('Sign up'),
-                        )
-                      ],
-                    ),
-                  ],
-                )
               ],
             ),
           ),
         ),
       ),
     );
+  }
+
+  void _login() {
+    if (key.currentState!.validate() && termsAccepted) {
+      userModel = UserModel(
+        email: emailController.text,
+        password: passwordController.text,
+      );
+      if (userModel!.validate()) {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) {
+              return const DashboardScreen();
+            },
+          ),
+        );
+      } else {
+        showDialog(
+          context: context,
+          builder: (ctx) => AlertDialog(
+            title: const Text("Error"),
+            content: const Text("You have entered wrong email or password"),
+            actions: <Widget>[
+              TextButton(
+                onPressed: () {
+                  Navigator.of(ctx).pop();
+                },
+                child: const Text(
+                  "Okay",
+                  style: TextStyle(fontSize: 20),
+                ),
+              ),
+            ],
+          ),
+        );
+      }
+    }
   }
 }

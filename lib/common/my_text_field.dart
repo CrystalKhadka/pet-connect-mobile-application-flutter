@@ -7,12 +7,16 @@ class MyTextField extends StatelessWidget {
     required this.text,
     this.keyboardType,
     this.prefixIcon,
+    required this.obscureText,
+    this.suffixIcon,
   });
 
   final TextEditingController controller;
   final String text;
   final TextInputType? keyboardType;
   final Icon? prefixIcon;
+  final bool obscureText;
+  final IconButton? suffixIcon;
 
   @override
   Widget build(BuildContext context) {
@@ -21,8 +25,10 @@ class MyTextField extends StatelessWidget {
       decoration: InputDecoration(
         border: const OutlineInputBorder(),
         prefixIcon: prefixIcon,
+        suffixIcon: suffixIcon,
         hintText: text,
       ),
+      obscureText: obscureText,
       keyboardType: keyboardType,
       // inputFormatters: [FilteringTextInputFormatter.digitsOnly],
       validator: (value) {
