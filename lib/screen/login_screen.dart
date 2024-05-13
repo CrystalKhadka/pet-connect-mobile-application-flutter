@@ -39,7 +39,7 @@ class LoginScreen extends StatelessWidget {
                 ),
                 Center(
                   child: Image.asset(
-                    'assets/icons/icon.jpg',
+                    'assets/images/icon.jpg',
                     width: 180,
                     height: 180,
                   ),
@@ -132,6 +132,7 @@ class LoginScreen extends StatelessWidget {
                         const Text('Continue With'),
                         MyButton(
                           onPressed: () {},
+                          fgColor: Colors.black,
                           child: Column(
                             children: [
                               Image.asset(
