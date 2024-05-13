@@ -1,6 +1,10 @@
 import 'package:final_assignment/common/my_button.dart';
 import 'package:final_assignment/common/my_text_field.dart';
+import 'package:final_assignment/screen/dashboard_screen.dart';
+import 'package:final_assignment/screen/register_screen.dart';
 import 'package:flutter/material.dart';
+
+import '../model/user_model.dart';
 
 class LoginScreen extends StatelessWidget {
   const LoginScreen({super.key});
@@ -9,6 +13,8 @@ class LoginScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final emailController = TextEditingController();
     final passwordController = TextEditingController();
+    final key = GlobalKey<FormState>();
+    UserModel? userModel;
 
     return Scaffold(
       appBar: AppBar(
@@ -19,7 +25,8 @@ class LoginScreen extends StatelessWidget {
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(8.0),
-          child: Container(
+          child: Form(
+            key: key,
             // color: Colors.grey,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -74,9 +81,45 @@ class LoginScreen extends StatelessWidget {
                           width: 200,
                           child: MyButton(
                             onPressed: () {
-                              debugPrint(
-                                'email : ${emailController.text} and password: ${passwordController.text}',
-                              );
+                              if (key.currentState!.validate()) {
+                                userModel = UserModel(
+                                    email: emailController.text,
+                                    password: passwordController.text);
+                                if (userModel!.validate()) {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) {
+                                        return const DashboardScreen();
+                                      },
+                                    ),
+                                  );
+                                } else {
+                                  showDialog(
+                                    context: context,
+                                    builder: (ctx) => AlertDialog(
+                                      title: const Text("Error"),
+                                      content: const Text(
+                                          "You have entered wrong email or password"),
+                                      actions: <Widget>[
+                                        TextButton(
+                                          onPressed: () {
+                                            Navigator.of(ctx).pop();
+                                          },
+                                          child: Container(
+                                            color: Colors.green,
+                                            padding: const EdgeInsets.all(14),
+                                            child: const Text(
+                                              "Okay",
+                                              style: TextStyle(fontSize: 20),
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  );
+                                }
+                              }
                             },
                             bgColor: const Color.fromRGBO(23, 88, 110, 1),
                             fgColor: Colors.white,
@@ -104,7 +147,12 @@ class LoginScreen extends StatelessWidget {
                         ),
                         const Text("Don't have an account"),
                         MyButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            Navigator.push(context,
+                                MaterialPageRoute(builder: (context) {
+                              return const RegisterScreen();
+                            }));
+                          },
                           child: const Text('Sign up'),
                         )
                       ],

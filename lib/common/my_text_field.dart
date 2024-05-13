@@ -25,6 +25,12 @@ class MyTextField extends StatelessWidget {
       ),
       keyboardType: keyboardType,
       // inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+      validator: (value) {
+        if (value!.isEmpty) {
+          return 'Please enter your $text';
+        }
+        return null;
+      },
     );
   }
 }
