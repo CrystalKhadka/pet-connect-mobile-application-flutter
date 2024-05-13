@@ -25,7 +25,7 @@ class _SplashScreenState extends State<SplashScreen>
     );
     _animation = Tween<double>(begin: 0.0, end: 1.0).animate(_controller);
     _controller.forward();
-    Timer(const Duration(seconds: 2), () {
+    Timer(const Duration(seconds: 5), () {
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(builder: (context) => const LoginScreen()),

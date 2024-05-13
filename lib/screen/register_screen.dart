@@ -7,7 +7,7 @@ class RegisterScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Pet Connect'),
+        backgroundColor: const Color.fromRGBO(23, 88, 110, 0.8),
       ),
       body: Container(),
     );

@@ -26,7 +26,7 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Pet Connect'),
+        backgroundColor: const Color.fromRGBO(23, 88, 110, 0.8),
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -36,7 +36,7 @@ class _LoginScreenState extends State<LoginScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const SizedBox(height: 20),
+                const SizedBox(height: 10),
                 const Center(
                   child: Text(
                     'Pet Connect',
@@ -101,7 +101,6 @@ class _LoginScreenState extends State<LoginScreen> {
                     TextButton(
                       onPressed: () {
                         // TODO: Implement Forgot Password functionality
-                        
                       },
                       child: const Text(
                         'Forgot your password?',
