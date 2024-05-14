@@ -113,13 +113,16 @@ class _LoginScreenState extends State<LoginScreen> {
                 Center(
                   child: Column(
                     children: [
-                      MyButton(
-                        onPressed: () {
-                          _login();
-                        },
-                        bgColor: const Color.fromRGBO(23, 88, 110, 1),
-                        fgColor: Colors.white,
-                        child: const Text('Log in'),
+                      SizedBox(
+                        width: double.infinity,
+                        child: MyButton(
+                          onPressed: () {
+                            _login();
+                          },
+                          bgColor: const Color.fromRGBO(23, 88, 110, 1),
+                          fgColor: Colors.white,
+                          child: const Text('Log in'),
+                        ),
                       ),
                       const SizedBox(height: 20),
                       const Text(
@@ -143,16 +146,19 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                       ),
                       const SizedBox(height: 20),
-                      TextButton(
-                        onPressed: () {
-                          Navigator.push(context,
-                              MaterialPageRoute(builder: (context) {
-                            return const RegisterScreen();
-                          }));
-                        },
-                        child: const Text(
-                          "Don't have an account? Sign up",
-                          style: TextStyle(color: Colors.blue),
+                      SizedBox(
+                        width: double.infinity,
+                        child: TextButton(
+                          onPressed: () {
+                            Navigator.push(context,
+                                MaterialPageRoute(builder: (context) {
+                              return const RegisterScreen();
+                            }));
+                          },
+                          child: const Text(
+                            "Don't have an account? Sign up",
+                            style: TextStyle(color: Colors.blue),
+                          ),
                         ),
                       ),
                     ],
@@ -184,13 +190,13 @@ class _LoginScreenState extends State<LoginScreen> {
       } else {
         showDialog(
           context: context,
-          builder: (ctx) => AlertDialog(
+          builder: (context) => AlertDialog(
             title: const Text("Error"),
             content: const Text("You have entered wrong email or password"),
             actions: <Widget>[
               TextButton(
                 onPressed: () {
-                  Navigator.of(ctx).pop();
+                  Navigator.of(context).pop();
                 },
                 child: const Text(
                   "Okay",

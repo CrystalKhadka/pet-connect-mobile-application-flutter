@@ -5,12 +5,13 @@ class MyButton extends StatelessWidget {
   final Color? bgColor;
   final Color? fgColor;
 
-  const MyButton(
-      {super.key,
-      required this.onPressed,
-      required this.child,
-      this.fgColor,
-      this.bgColor,});
+  const MyButton({
+    super.key,
+    required this.onPressed,
+    required this.child,
+    this.fgColor,
+    this.bgColor,
+  });
 
   final VoidCallback onPressed;
 
@@ -22,7 +23,6 @@ class MyButton extends StatelessWidget {
         backgroundColor: bgColor,
         foregroundColor: fgColor,
       ),
-      
       child: child,
     );
   }

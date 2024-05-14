@@ -9,6 +9,7 @@ class DashboardScreen extends StatelessWidget {
       appBar: AppBar(
         title: const Text('dashboard'),
         centerTitle: true,
+        automaticallyImplyLeading: false,
       ),
       body: const Text(
         'Dashboard',

@@ -7,7 +7,7 @@ class MyTextField extends StatelessWidget {
     required this.text,
     this.keyboardType,
     this.prefixIcon,
-    required this.obscureText,
+    this.obscureText,
     this.suffixIcon,
   });
 
@@ -15,7 +15,7 @@ class MyTextField extends StatelessWidget {
   final String text;
   final TextInputType? keyboardType;
   final Icon? prefixIcon;
-  final bool obscureText;
+  final bool? obscureText;
   final IconButton? suffixIcon;
 
   @override
@@ -28,7 +28,7 @@ class MyTextField extends StatelessWidget {
         suffixIcon: suffixIcon,
         hintText: text,
       ),
-      obscureText: obscureText,
+      obscureText: obscureText ?? false,
       keyboardType: keyboardType,
       // inputFormatters: [FilteringTextInputFormatter.digitsOnly],
       validator: (value) {
