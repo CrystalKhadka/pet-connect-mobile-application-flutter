@@ -81,7 +81,6 @@ class _LoginScreenState extends State<LoginScreen> {
                     },
                   ),
                 ),
-                const SizedBox(height: 20),
                 Row(
                   children: [
                     Checkbox(
@@ -109,7 +108,6 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                   ],
                 ),
-                const SizedBox(height: 20),
                 Center(
                   child: Column(
                     children: [
@@ -124,28 +122,6 @@ class _LoginScreenState extends State<LoginScreen> {
                           child: const Text('Log in'),
                         ),
                       ),
-                      const SizedBox(height: 20),
-                      const Text(
-                        'Continue With',
-                        style: TextStyle(fontWeight: FontWeight.bold),
-                      ),
-                      const SizedBox(height: 20),
-                      MyButton(
-                        onPressed: () {
-                          //TODO:  Implement Google Sign-in
-                        },
-                        fgColor: Colors.black,
-                        child: Column(
-                          children: [
-                            Image.asset(
-                              'assets/icons/google.png',
-                              height: 50,
-                            ),
-                            const Text('Google'),
-                          ],
-                        ),
-                      ),
-                      const SizedBox(height: 20),
                       SizedBox(
                         width: double.infinity,
                         child: TextButton(
@@ -159,6 +135,50 @@ class _LoginScreenState extends State<LoginScreen> {
                             "Don't have an account? Sign up",
                             style: TextStyle(color: Colors.blue),
                           ),
+                        ),
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Expanded(
+                            child: Divider(
+                              thickness: 0.7,
+                              color: Colors.grey.withOpacity(0.5),
+                            ),
+                          ),
+                          const Padding(
+                            padding: EdgeInsets.symmetric(
+                              vertical: 0,
+                              horizontal: 10,
+                            ),
+                            child: Text(
+                              'Continue with',
+                              style: TextStyle(
+                                color: Colors.black45,
+                              ),
+                            ),
+                          ),
+                          Expanded(
+                            child: Divider(
+                              thickness: 0.7,
+                              color: Colors.grey.withOpacity(0.5),
+                            ),
+                          ),
+                        ],
+                      ),
+                      MyButton(
+                        onPressed: () {
+                          //TODO:  Implement Google Sign-in
+                        },
+                        fgColor: Colors.black,
+                        child: Column(
+                          children: [
+                            Image.asset(
+                              'assets/icons/google.png',
+                              height: 50,
+                            ),
+                            const Text('Google'),
+                          ],
                         ),
                       ),
                     ],

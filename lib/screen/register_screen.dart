@@ -207,50 +207,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             ),
                           ),
                         ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Expanded(
-                              child: Divider(
-                                thickness: 0.7,
-                                color: Colors.grey.withOpacity(0.5),
-                              ),
-                            ),
-                            const Padding(
-                              padding: EdgeInsets.symmetric(
-                                vertical: 0,
-                                horizontal: 10,
-                              ),
-                              child: Text(
-                                'Continue with',
-                                style: TextStyle(
-                                  color: Colors.black45,
-                                ),
-                              ),
-                            ),
-                            Expanded(
-                              child: Divider(
-                                thickness: 0.7,
-                                color: Colors.grey.withOpacity(0.5),
-                              ),
-                            ),
-                          ],
-                        ),
-                        MyButton(
-                          onPressed: () {
-                            //TODO:  Implement Google Sign-in
-                          },
-                          fgColor: Colors.black,
-                          child: Column(
-                            children: [
-                              Image.asset(
-                                'assets/icons/google.png',
-                                height: 50,
-                              ),
-                              const Text('Google'),
-                            ],
-                          ),
-                        ),
                       ],
                     ),
                   ),
