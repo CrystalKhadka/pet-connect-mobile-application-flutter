@@ -20,10 +20,13 @@ class _SplashScreenState extends State<SplashScreen>
   void initState() {
     super.initState();
     _controller = AnimationController(
-      duration: const Duration(seconds: 1),
+      duration: const Duration(seconds: 5),
       vsync: this,
     );
-    _animation = Tween<double>(begin: 0.0, end: 1.0).animate(_controller);
+    _animation = Tween<double>(begin: 0.0, end: 1.0).animate(_controller)
+      ..addListener(() {
+        setState(() {}); // Update the UI when animation value changes
+      });
     _controller.forward();
     Timer(const Duration(seconds: 5), () {
       Navigator.pushReplacement(
@@ -64,7 +67,9 @@ class _SplashScreenState extends State<SplashScreen>
             children: [
               Padding(
                 padding: EdgeInsets.only(bottom: 20.0),
-                child: CircularProgressIndicator(),
+                child: CircularProgressIndicator(
+                  backgroundColor: Colors.blue,
+                ),
               ),
               Center(
                 child: Text(

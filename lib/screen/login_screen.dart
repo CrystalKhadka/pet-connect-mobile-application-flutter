@@ -97,7 +97,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
-                    TextButton(
+                    MyButton(
                       onPressed: () {
                         // TODO: Implement Forgot Password functionality
                       },
@@ -213,8 +213,8 @@ class _LoginScreenState extends State<LoginScreen> {
           builder: (context) => AlertDialog(
             title: const Text("Error"),
             content: const Text("You have entered wrong email or password"),
-            actions: <Widget>[
-              TextButton(
+            actions: [
+              MyButton(
                 onPressed: () {
                   Navigator.of(context).pop();
                 },
