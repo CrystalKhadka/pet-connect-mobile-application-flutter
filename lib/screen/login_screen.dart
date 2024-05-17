@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import '../common/my_button.dart';
 import '../common/my_text_field.dart';
 import '../model/user_model.dart';
-import 'dashboard_screen.dart';
+import 'bottom_screen/dashboard_screen.dart';
 import 'register_screen.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -62,7 +62,6 @@ class _LoginScreenState extends State<LoginScreen> {
                   prefixIcon: const Icon(Icons.email),
                   text: 'Email',
                   keyboardType: TextInputType.emailAddress,
-                  obscureText: false,
                 ),
                 const SizedBox(height: 20),
                 MyTextField(
