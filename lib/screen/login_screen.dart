@@ -54,7 +54,9 @@ class _LoginScreenState extends State<LoginScreen> {
                 const SizedBox(height: 20),
                 const Text(
                   'Welcome!',
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                  style: TextStyle(
+                    fontFamily: 'Montserrat Bold Italic',
+                  ),
                 ),
                 const SizedBox(height: 20),
                 MyTextField(
@@ -152,9 +154,6 @@ class _LoginScreenState extends State<LoginScreen> {
                             ),
                             child: Text(
                               'Continue with',
-                              style: TextStyle(
-                                color: Colors.black45,
-                              ),
                             ),
                           ),
                           Expanded(
