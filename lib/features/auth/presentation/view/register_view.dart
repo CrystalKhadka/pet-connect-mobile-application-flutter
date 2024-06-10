@@ -1,18 +1,17 @@
+import 'package:final_assignment/core/common/my_button.dart';
+import 'package:final_assignment/core/common/my_text_field.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../common/my_button.dart';
-import '../common/my_text_field.dart';
-import 'login_screen.dart';
-
-class RegisterScreen extends StatefulWidget {
-  const RegisterScreen({super.key});
+class RegisterView extends ConsumerStatefulWidget {
+  const RegisterView({super.key});
 
   @override
-  State<RegisterScreen> createState() => _RegisterScreenState();
+  ConsumerState<ConsumerStatefulWidget> createState() => _RegisterViewState();
 }
 
-class _RegisterScreenState extends State<RegisterScreen> {
+class _RegisterViewState extends ConsumerState<RegisterView> {
   final _formKey = GlobalKey<FormState>();
 
   final _fnameController = TextEditingController();
@@ -166,11 +165,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
               ),
               const SizedBox(height: 10),
               TextButton(
-                onPressed: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (context) {
-                    return const LoginScreen();
-                  }));
-                },
+                onPressed: () {},
                 child: const Text(
                   "Already have an account? Log in",
                   style: TextStyle(color: Colors.blue),
@@ -218,13 +213,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
               content: const Text('Registration Success'),
               actions: [
                 TextButton(
-                  onPressed: () {
-                    Navigator.pop(context);
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) {
-                      return const LoginScreen();
-                    }));
-                  },
+                  onPressed: () {},
                   child: const Text('OK'),
                 ),
               ],

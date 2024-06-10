@@ -1,26 +1,22 @@
+import 'package:final_assignment/core/common/my_button.dart';
+import 'package:final_assignment/core/common/my_text_field.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../common/my_button.dart';
-import '../common/my_text_field.dart';
-import '../model/user_model.dart';
-import 'bottom_screen/dashboard_screen.dart';
-import 'register_screen.dart';
-
-class LoginScreen extends StatefulWidget {
-  const LoginScreen({super.key});
+class LoginView extends ConsumerStatefulWidget {
+  const LoginView({super.key});
 
   @override
-  State<LoginScreen> createState() => _LoginScreenState();
+  ConsumerState<ConsumerStatefulWidget> createState() => _LoginViewState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
+class _LoginViewState extends ConsumerState<LoginView> {
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
   bool termsAccepted = false;
   bool obscurePassword = true;
 
   final key = GlobalKey<FormState>();
-  UserModel? userModel;
 
   @override
   Widget build(BuildContext context) {
@@ -115,9 +111,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       SizedBox(
                         width: double.infinity,
                         child: MyButton(
-                          onPressed: () {
-                            _login();
-                          },
+                          onPressed: () {},
                           bgColor: const Color.fromRGBO(23, 88, 110, 1),
                           fgColor: Colors.white,
                           child: const Text('Log in'),
@@ -126,12 +120,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       SizedBox(
                         width: double.infinity,
                         child: TextButton(
-                          onPressed: () {
-                            Navigator.push(context,
-                                MaterialPageRoute(builder: (context) {
-                              return const RegisterScreen();
-                            }));
-                          },
+                          onPressed: () {},
                           child: const Text(
                             "Don't have an account? Sign up",
                             style: TextStyle(color: Colors.blue),
@@ -188,43 +177,5 @@ class _LoginScreenState extends State<LoginScreen> {
         ),
       ),
     );
-  }
-
-  void _login() {
-    if (key.currentState!.validate() && termsAccepted) {
-      userModel = UserModel(
-        email: emailController.text,
-        password: passwordController.text,
-      );
-      if (userModel!.validate()) {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) {
-              return const DashboardScreen();
-            },
-          ),
-        );
-      } else {
-        showDialog(
-          context: context,
-          builder: (context) => AlertDialog(
-            title: const Text("Error"),
-            content: const Text("You have entered wrong email or password"),
-            actions: [
-              MyButton(
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-                child: const Text(
-                  "Okay",
-                  style: TextStyle(fontSize: 20),
-                ),
-              ),
-            ],
-          ),
-        );
-      }
-    }
   }
 }
