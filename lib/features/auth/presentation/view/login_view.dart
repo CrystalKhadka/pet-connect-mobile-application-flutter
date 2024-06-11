@@ -1,5 +1,6 @@
 import 'package:final_assignment/core/common/my_button.dart';
 import 'package:final_assignment/core/common/my_text_field.dart';
+import 'package:final_assignment/features/auth/presentation/viewmodel/auth_view_model.dart';
 import 'package:final_assignment/features/auth/presentation/viewmodel/login_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -12,7 +13,6 @@ class LoginView extends ConsumerStatefulWidget {
 }
 
 class _LoginViewState extends ConsumerState<LoginView> {
-
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
   bool termsAccepted = false;
@@ -22,6 +22,7 @@ class _LoginViewState extends ConsumerState<LoginView> {
 
   @override
   Widget build(BuildContext context) {
+    final authState = ref.watch(authViewModelProvider);
     return Scaffold(
       appBar: AppBar(
         backgroundColor: const Color.fromRGBO(23, 88, 110, 0.8),
@@ -68,26 +69,28 @@ class _LoginViewState extends ConsumerState<LoginView> {
                   controller: passwordController,
                   prefixIcon: const Icon(Icons.lock),
                   text: 'Password',
-                  obscureText: obscurePassword,
+                  obscureText: authState.isObscure,
                   suffixIcon: IconButton(
                     icon: Icon(
-                      obscurePassword ? Icons.visibility : Icons.visibility_off,
+                      authState.isObscure
+                          ? Icons.visibility
+                          : Icons.visibility_off,
                     ),
                     onPressed: () {
-                      setState(() {
-                        obscurePassword = !obscurePassword;
-                      });
+                      ref
+                          .read(authViewModelProvider.notifier)
+                          .obscurePassword();
                     },
                   ),
                 ),
                 Row(
                   children: [
                     Checkbox(
-                      value: termsAccepted,
+                      value: authState.termsAndConditions,
                       onChanged: (value) {
-                        setState(() {
-                          termsAccepted = value ?? false;
-                        });
+                        ref
+                            .read(authViewModelProvider.notifier)
+                            .termsAndConditions();
                       },
                     ),
                     const Text('I accept the terms and conditions'),

@@ -1,5 +1,7 @@
 import 'package:final_assignment/core/common/my_button.dart';
 import 'package:final_assignment/core/common/my_text_field.dart';
+import 'package:final_assignment/features/auth/domain/entity/auth_entity.dart';
+import 'package:final_assignment/features/auth/presentation/viewmodel/auth_view_model.dart';
 import 'package:final_assignment/features/auth/presentation/viewmodel/register_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -25,11 +27,11 @@ class _RegisterViewState extends ConsumerState<RegisterView> {
   final _birthDateController = TextEditingController();
 
   DateTime? _selectedDate;
-  String _selectedGender = "male";
-  bool _obscurePassword = true;
+  final String _selectedGender = "male";
 
   @override
   Widget build(BuildContext context) {
+    final authState = ref.watch(authViewModelProvider);
     return Scaffold(
       appBar: AppBar(
         backgroundColor: const Color.fromRGBO(23, 88, 110, 0.8),
@@ -75,15 +77,15 @@ class _RegisterViewState extends ConsumerState<RegisterView> {
               MyTextField(
                 controller: _passwordController,
                 text: 'Password',
-                obscureText: _obscurePassword,
+                obscureText: authState.isObscure,
                 suffixIcon: IconButton(
                   icon: Icon(
-                    _obscurePassword ? Icons.visibility : Icons.visibility_off,
+                    authState.isObscure
+                        ? Icons.visibility
+                        : Icons.visibility_off,
                   ),
                   onPressed: () {
-                    setState(() {
-                      _obscurePassword = !_obscurePassword;
-                    });
+                    ref.read(authViewModelProvider.notifier).obscurePassword();
                   },
                 ),
                 prefixIcon: const Icon(Icons.lock),
@@ -92,15 +94,15 @@ class _RegisterViewState extends ConsumerState<RegisterView> {
               MyTextField(
                 controller: _confirmPasswordController,
                 text: 'Confirm Password',
-                obscureText: _obscurePassword,
+                obscureText: authState.isObscure,
                 suffixIcon: IconButton(
                   icon: Icon(
-                    _obscurePassword ? Icons.visibility : Icons.visibility_off,
+                    authState.isObscure
+                        ? Icons.visibility
+                        : Icons.visibility_off,
                   ),
                   onPressed: () {
-                    setState(() {
-                      _obscurePassword = !_obscurePassword;
-                    });
+                    ref.read(authViewModelProvider.notifier).obscurePassword();
                   },
                 ),
                 prefixIcon: const Icon(Icons.lock),
@@ -137,21 +139,17 @@ class _RegisterViewState extends ConsumerState<RegisterView> {
                       style: Theme.of(context).textTheme.titleMedium),
                   Radio<String>(
                     value: 'male',
-                    groupValue: _selectedGender,
+                    groupValue: authState.gender,
                     onChanged: (value) {
-                      setState(() {
-                        _selectedGender = value!;
-                      });
+                      ref.read(authViewModelProvider.notifier).gender(value!);
                     },
                   ),
                   const Text('Male'),
                   Radio<String>(
                     value: 'female',
-                    groupValue: _selectedGender,
+                    groupValue: authState.gender,
                     onChanged: (value) {
-                      setState(() {
-                        _selectedGender = value!;
-                      });
+                      ref.read(authViewModelProvider.notifier).gender(value!);
                     },
                   ),
                   const Text('Female'),
@@ -159,7 +157,18 @@ class _RegisterViewState extends ConsumerState<RegisterView> {
               ),
               const SizedBox(height: 20),
               MyButton(
-                onPressed: _submitForm,
+                onPressed: () {
+                  AuthEntity auth = AuthEntity(
+                      fname: _fnameController.text,
+                      lname: _lnameController.text,
+                      email: _emailController.text,
+                      password: _passwordController.text,
+                      phone: _phoneController.text,
+                      address: _addressController.text,
+                      gender: authState.gender,
+                      date: _birthDateController.text);
+                  ref.read(authViewModelProvider.notifier).registerUser(auth);
+                },
                 bgColor: const Color.fromRGBO(23, 88, 110, 1),
                 fgColor: Colors.white,
                 child: const Text('Sign Up'),
@@ -193,36 +202,6 @@ class _RegisterViewState extends ConsumerState<RegisterView> {
       setState(() {
         _selectedDate = picked;
         _birthDateController.text = picked.toString().split(' ')[0];
-      });
-    }
-  }
-
-  void _submitForm() {
-    if (_formKey.currentState!.validate()) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Processing Data'),
-        ),
-      );
-
-      // Add a delay before showing the success dialog
-      Future.delayed(const Duration(seconds: 2), () {
-        // Show the success dialog
-        showDialog(
-          context: context,
-          builder: (context) {
-            return AlertDialog(
-              title: const Text('Success'),
-              content: const Text('Registration Success'),
-              actions: [
-                TextButton(
-                  onPressed: () {},
-                  child: const Text('OK'),
-                ),
-              ],
-            );
-          },
-        );
       });
     }
   }
