@@ -1,19 +1,19 @@
+import 'package:final_assignment/features/splash/presentation/viewmodel/splash_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../viewmodel/splash_view_model.dart';
-
-class SplashScreen extends ConsumerStatefulWidget {
-  const SplashScreen({super.key});
+class SplashView extends ConsumerStatefulWidget {
+  const SplashView({super.key});
 
   @override
-  ConsumerState<ConsumerStatefulWidget> createState() => _SplashScreenState();
+  ConsumerState<ConsumerStatefulWidget> createState() => _SplashViewState();
 }
 
-class _SplashScreenState extends ConsumerState<SplashScreen> {
+class _SplashViewState extends ConsumerState<SplashView> {
   @override
   void initState() {
     ref.read(splashViewModelProvider.notifier).openLoginView();
+
     super.initState();
   }
 
@@ -39,9 +39,7 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
               children: [
                 Padding(
                   padding: EdgeInsets.only(bottom: 20.0),
-                  child: CircularProgressIndicator(
-                    backgroundColor: Colors.blue,
-                  ),
+                  child: CircularProgressIndicator(),
                 ),
                 Center(
                   child: Text(

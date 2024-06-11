@@ -10,9 +10,6 @@ class DashboardScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Dashboard'),
-        centerTitle: true,
-        backgroundColor: const Color.fromRGBO(23, 88, 110, 0.8),
-        automaticallyImplyLeading: false,
       ),
       body: const HomeScreen(),
       bottomNavigationBar: BottomNavigationBar(

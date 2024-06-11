@@ -14,7 +14,7 @@ class App extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Student Management',
       theme: AppTheme.getApplicationTheme(false),
-      home: const SplashScreen(),
+      home: const SplashView(),
     );
   }
 }

@@ -4,7 +4,7 @@ import 'package:final_assignment/features/auth/presentation/view/login_view.dart
 
 class LoginViewNavigator with RegisterViewRoute {}
 
-mixin LoginViewROute {
+mixin LoginViewRoute {
   openLoginView() {
     NavigateRoute.popAndPushRoute(const LoginView());
   }
