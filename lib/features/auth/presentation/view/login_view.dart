@@ -1,5 +1,6 @@
 import 'package:final_assignment/core/common/my_button.dart';
 import 'package:final_assignment/core/common/my_text_field.dart';
+import 'package:final_assignment/features/auth/presentation/viewmodel/login_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -11,6 +12,7 @@ class LoginView extends ConsumerStatefulWidget {
 }
 
 class _LoginViewState extends ConsumerState<LoginView> {
+
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
   bool termsAccepted = false;
@@ -120,7 +122,11 @@ class _LoginViewState extends ConsumerState<LoginView> {
                       SizedBox(
                         width: double.infinity,
                         child: TextButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            ref
+                                .read(loginViewModelProvider.notifier)
+                                .openRegisterView();
+                          },
                           child: const Text(
                             "Don't have an account? Sign up",
                             style: TextStyle(color: Colors.blue),

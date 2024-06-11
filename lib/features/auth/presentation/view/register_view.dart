@@ -1,5 +1,6 @@
 import 'package:final_assignment/core/common/my_button.dart';
 import 'package:final_assignment/core/common/my_text_field.dart';
+import 'package:final_assignment/features/auth/presentation/viewmodel/register_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -165,7 +166,9 @@ class _RegisterViewState extends ConsumerState<RegisterView> {
               ),
               const SizedBox(height: 10),
               TextButton(
-                onPressed: () {},
+                onPressed: () {
+                  ref.read(registerViewModelProvider.notifier).openLoginView();
+                },
                 child: const Text(
                   "Already have an account? Log in",
                   style: TextStyle(color: Colors.blue),
