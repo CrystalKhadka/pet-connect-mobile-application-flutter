@@ -1,5 +1,5 @@
-import 'package:final_assignment/core/common/my_button.dart';
-import 'package:final_assignment/core/common/my_text_field.dart';
+import 'package:final_assignment/features/auth/presentation/widgets/my_button.dart';
+import 'package:final_assignment/features/auth/presentation/widgets/my_text_field.dart';
 import 'package:final_assignment/features/auth/domain/entity/auth_entity.dart';
 import 'package:final_assignment/features/auth/presentation/viewmodel/auth_view_model.dart';
 import 'package:final_assignment/features/auth/presentation/viewmodel/register_view_model.dart';
