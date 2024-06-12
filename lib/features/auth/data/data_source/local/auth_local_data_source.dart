@@ -40,4 +40,17 @@ class AuthLocalDataSource {
       return Left(Failure(error: e.toString()));
     }
   }
+
+  Future<Either<Failure, bool>> loginUser(String email, String password) async {
+    try {
+      final user = await hiveService.login(email, password);
+
+      if (user!.email.isEmpty) {
+        return Left(Failure(error: 'User not found'));
+      }
+      return const Right(true);
+    } catch (error) {
+      return Left(Failure(error: error.toString()));
+    }
+  }
 }

@@ -1,7 +1,7 @@
-import 'package:final_assignment/features/auth/presentation/widgets/my_button.dart';
-import 'package:final_assignment/features/auth/presentation/widgets/my_text_field.dart';
 import 'package:final_assignment/features/auth/presentation/viewmodel/auth_view_model.dart';
 import 'package:final_assignment/features/auth/presentation/viewmodel/login_view_model.dart';
+import 'package:final_assignment/features/auth/presentation/widgets/my_button.dart';
+import 'package:final_assignment/features/auth/presentation/widgets/my_text_field.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -116,7 +116,12 @@ class _LoginViewState extends ConsumerState<LoginView> {
                       SizedBox(
                         width: double.infinity,
                         child: MyButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            ref.read(authViewModelProvider.notifier).loginUser(
+                                  emailController.text,
+                                  passwordController.text,
+                                );
+                          },
                           bgColor: const Color.fromRGBO(23, 88, 110, 1),
                           fgColor: Colors.white,
                           child: const Text('Log in'),

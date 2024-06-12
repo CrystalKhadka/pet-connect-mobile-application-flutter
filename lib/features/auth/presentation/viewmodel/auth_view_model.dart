@@ -30,6 +30,21 @@ class AuthViewModel extends StateNotifier<AuthState> {
     );
   }
 
+  void loginUser(String email, String password) async {
+    state = state.copyWith(isLoading: true);
+    var data = await authUseCase.loginUser(email, password);
+    data.fold(
+      (l) {
+        state = state.copyWith(isLoading: false, error: l.error);
+        showMySnackBar(message: l.error, color: Colors.red);
+      },
+      (r) {
+        state = state.copyWith(isLoading: false);
+        showMySnackBar(message: "User logged in successfully");
+      },
+    );
+  }
+
   void obscurePassword() {
     state = state.copyWith(isObscure: !state.isObscure);
   }
