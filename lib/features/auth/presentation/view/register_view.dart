@@ -1,8 +1,8 @@
-import 'package:final_assignment/features/auth/presentation/widgets/my_button.dart';
-import 'package:final_assignment/features/auth/presentation/widgets/my_text_field.dart';
 import 'package:final_assignment/features/auth/domain/entity/auth_entity.dart';
 import 'package:final_assignment/features/auth/presentation/viewmodel/auth_view_model.dart';
 import 'package:final_assignment/features/auth/presentation/viewmodel/register_view_model.dart';
+import 'package:final_assignment/features/auth/presentation/widgets/my_button.dart';
+import 'package:final_assignment/features/auth/presentation/widgets/my_text_field.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -27,7 +27,8 @@ class _RegisterViewState extends ConsumerState<RegisterView> {
   final _birthDateController = TextEditingController();
 
   DateTime? _selectedDate;
-  final String _selectedGender = "male";
+  String _selectedGender = "male";
+  bool _isObscure = true;
 
   @override
   Widget build(BuildContext context) {
@@ -77,15 +78,15 @@ class _RegisterViewState extends ConsumerState<RegisterView> {
               MyTextField(
                 controller: _passwordController,
                 text: 'Password',
-                obscureText: authState.isObscure,
+                obscureText: _isObscure,
                 suffixIcon: IconButton(
                   icon: Icon(
-                    authState.isObscure
-                        ? Icons.visibility
-                        : Icons.visibility_off,
+                    _isObscure ? Icons.visibility : Icons.visibility_off,
                   ),
                   onPressed: () {
-                    ref.read(authViewModelProvider.notifier).obscurePassword();
+                    setState(() {
+                      _isObscure = !_isObscure;
+                    });
                   },
                 ),
                 prefixIcon: const Icon(Icons.lock),
@@ -94,15 +95,15 @@ class _RegisterViewState extends ConsumerState<RegisterView> {
               MyTextField(
                 controller: _confirmPasswordController,
                 text: 'Confirm Password',
-                obscureText: authState.isObscure,
+                obscureText: _isObscure,
                 suffixIcon: IconButton(
                   icon: Icon(
-                    authState.isObscure
-                        ? Icons.visibility
-                        : Icons.visibility_off,
+                    _isObscure ? Icons.visibility : Icons.visibility_off,
                   ),
                   onPressed: () {
-                    ref.read(authViewModelProvider.notifier).obscurePassword();
+                    setState(() {
+                      _isObscure = !_isObscure;
+                    });
                   },
                 ),
                 prefixIcon: const Icon(Icons.lock),
@@ -113,9 +114,22 @@ class _RegisterViewState extends ConsumerState<RegisterView> {
                 text: 'Birth Date',
                 prefixIcon: const Icon(Icons.calendar_today),
                 suffixIcon: IconButton(
-                  icon: const Icon(Icons.date_range),
-                  onPressed: () => _selectDate(context),
-                ),
+                    icon: const Icon(Icons.date_range),
+                    onPressed: () async {
+                      final DateTime? picked = await showDatePicker(
+                        context: context,
+                        initialDate: DateTime.now(),
+                        firstDate: DateTime(1900),
+                        lastDate: DateTime.now(),
+                      );
+                      if (picked != null && picked != _selectedDate) {
+                        setState(() {
+                          _selectedDate = picked;
+                          _birthDateController.text =
+                              picked.toString().split(' ')[0];
+                        });
+                      }
+                    }),
               ),
               const SizedBox(height: 10),
               MyTextField(
@@ -139,17 +153,21 @@ class _RegisterViewState extends ConsumerState<RegisterView> {
                       style: Theme.of(context).textTheme.titleMedium),
                   Radio<String>(
                     value: 'male',
-                    groupValue: authState.gender,
+                    groupValue: _selectedGender,
                     onChanged: (value) {
-                      ref.read(authViewModelProvider.notifier).gender(value!);
+                      setState(() {
+                        _selectedGender = value!;
+                      });
                     },
                   ),
                   const Text('Male'),
                   Radio<String>(
                     value: 'female',
-                    groupValue: authState.gender,
+                    groupValue: _selectedGender,
                     onChanged: (value) {
-                      ref.read(authViewModelProvider.notifier).gender(value!);
+                      setState(() {
+                        _selectedGender = value!;
+                      });
                     },
                   ),
                   const Text('Female'),
@@ -165,7 +183,7 @@ class _RegisterViewState extends ConsumerState<RegisterView> {
                       password: _passwordController.text,
                       phone: _phoneController.text,
                       address: _addressController.text,
-                      gender: authState.gender,
+                      gender: _selectedGender,
                       date: _birthDateController.text);
                   ref.read(authViewModelProvider.notifier).registerUser(auth);
                 },
@@ -189,20 +207,5 @@ class _RegisterViewState extends ConsumerState<RegisterView> {
         ),
       ),
     );
-  }
-
-  void _selectDate(BuildContext context) async {
-    final DateTime? picked = await showDatePicker(
-      context: context,
-      initialDate: DateTime.now(),
-      firstDate: DateTime(1900),
-      lastDate: DateTime.now(),
-    );
-    if (picked != null && picked != _selectedDate) {
-      setState(() {
-        _selectedDate = picked;
-        _birthDateController.text = picked.toString().split(' ')[0];
-      });
-    }
   }
 }

@@ -39,8 +39,10 @@ class HiveService {
 
   Future<AuthHiveModel> getUserByEmail(String email) async {
     var box = await Hive.openBox<AuthHiveModel>(HiveTableConstant.userBoxName);
-    var user = box.values.firstWhere((element) => element.email == email,
-        orElse: () => AuthHiveModel.empty());
+    var user = box.values.firstWhere(
+      (element) => element.email == email,
+      orElse: () => AuthHiveModel.empty(),
+    );
     return user;
   }
 }

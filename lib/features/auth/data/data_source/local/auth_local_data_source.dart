@@ -23,15 +23,15 @@ class AuthLocalDataSource {
 
   Future<Either<Failure, bool>> registerUser(AuthEntity user) async {
     try {
+      // Convert entity to model
+      final hiveUser = authHiveModel.fromEntity(user);
+
       // If already email throw error
-      final userByEmail = await hiveService.getUserByEmail(user.email);
+      final userByEmail = await hiveService.getUserByEmail(hiveUser.email);
 
       if (userByEmail.email.isNotEmpty) {
         return Left(Failure(error: 'Email already exists'));
       }
-
-      // Convert entity to model
-      final hiveUser = authHiveModel.fromEntity(user);
 
       // Register user
       await hiveService.registerUser(hiveUser);
@@ -46,7 +46,7 @@ class AuthLocalDataSource {
       final user = await hiveService.login(email, password);
 
       if (user!.email.isEmpty) {
-        return Left(Failure(error: 'User not found'));
+        return Left(Failure(error: 'User Credentials not found'));
       }
       return const Right(true);
     } catch (error) {

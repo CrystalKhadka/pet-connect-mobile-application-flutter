@@ -69,28 +69,26 @@ class _LoginViewState extends ConsumerState<LoginView> {
                   controller: passwordController,
                   prefixIcon: const Icon(Icons.lock),
                   text: 'Password',
-                  obscureText: authState.isObscure,
+                  obscureText: obscurePassword,
                   suffixIcon: IconButton(
                     icon: Icon(
-                      authState.isObscure
-                          ? Icons.visibility
-                          : Icons.visibility_off,
+                      obscurePassword ? Icons.visibility : Icons.visibility_off,
                     ),
                     onPressed: () {
-                      ref
-                          .read(authViewModelProvider.notifier)
-                          .obscurePassword();
+                      setState(() {
+                        obscurePassword = !obscurePassword;
+                      });
                     },
                   ),
                 ),
                 Row(
                   children: [
                     Checkbox(
-                      value: authState.termsAndConditions,
+                      value: termsAccepted,
                       onChanged: (value) {
-                        ref
-                            .read(authViewModelProvider.notifier)
-                            .termsAndConditions();
+                        setState(() {
+                          termsAccepted = value!;
+                        });
                       },
                     ),
                     const Text('I accept the terms and conditions'),
