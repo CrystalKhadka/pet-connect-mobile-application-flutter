@@ -12,7 +12,7 @@ class App extends StatelessWidget {
     return MaterialApp(
       navigatorKey: AppNavigator.navigatorKey,
       debugShowCheckedModeBanner: false,
-      title: 'Student Management',
+      title: 'Pet Adoption App',
       theme: AppTheme.getApplicationTheme(false),
       home: const SplashView(),
     );

@@ -21,7 +21,6 @@ class _SplashViewState extends ConsumerState<SplashView> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        backgroundColor: Colors.white,
         body: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [

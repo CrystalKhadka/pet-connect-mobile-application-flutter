@@ -15,7 +15,7 @@ class AppTheme {
               primary: Color.fromARGB(255, 17, 119, 20),
             ),
       brightness: isDark ? Brightness.dark : Brightness.light,
-      fontFamily: 'Montserrat',
+      fontFamily: 'OpenSans Regular',
       useMaterial3: true,
 
       // Change app bar color
@@ -44,10 +44,22 @@ class AppTheme {
         ),
       ),
 
+      // Change icon button theme
       iconButtonTheme: IconButtonThemeData(
           style: IconButton.styleFrom(
         foregroundColor: Colors.white,
       )),
+
+      // Change text button theme
+      textButtonTheme: TextButtonThemeData(
+        style: TextButton.styleFrom(
+          foregroundColor: isDark ? Colors.white : Colors.black,
+          textStyle: const TextStyle(
+            fontSize: 15,
+            fontFamily: 'OpenSans Regular',
+          ),
+        ),
+      ),
 
       // Change text field theme
       inputDecorationTheme: const InputDecorationTheme(
@@ -63,7 +75,7 @@ class AppTheme {
         ),
         focusedBorder: OutlineInputBorder(
           borderSide: BorderSide(
-            color: ThemeConstant.primaryColor,
+            color: Colors.green,
           ),
         ),
       ),
@@ -73,7 +85,7 @@ class AppTheme {
       ),
       //Bottom navigation bar theme
       bottomNavigationBarTheme: const BottomNavigationBarThemeData(
-        backgroundColor: Colors.lightGreen,
+        backgroundColor: ThemeConstant.primaryColor,
         selectedItemColor: Colors.white,
         unselectedItemColor: Colors.black,
         type: BottomNavigationBarType.fixed,

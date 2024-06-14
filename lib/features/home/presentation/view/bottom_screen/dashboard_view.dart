@@ -29,6 +29,7 @@ class _DashboardViewState extends ConsumerState<DashboardView> {
             const Text('Pet Connect'),
             const Spacer(),
             IconButton(
+              // Total notifications 2
               icon: const Icon(Icons.notifications),
               onPressed: () {},
             ),
@@ -45,10 +46,6 @@ class _DashboardViewState extends ConsumerState<DashboardView> {
       ),
       body: _children[currentIndex],
       bottomNavigationBar: BottomNavigationBar(
-        backgroundColor: Colors.blue,
-        selectedItemColor: Colors.black,
-        unselectedItemColor: Colors.white,
-        type: BottomNavigationBarType.fixed,
         items: const [
           BottomNavigationBarItem(
             icon: Icon(Icons.home),
@@ -63,7 +60,7 @@ class _DashboardViewState extends ConsumerState<DashboardView> {
             label: 'Chat',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.info),
+            icon: Icon(Icons.settings),
             label: 'Settings',
           ),
         ],
