@@ -12,10 +12,10 @@ class AppTheme {
               primary: ThemeConstant.darkPrimaryColor,
             )
           : const ColorScheme.light(
-              primary: Color.fromARGB(255, 17, 119, 20),
+              primary: Colors.black,
             ),
       brightness: isDark ? Brightness.dark : Brightness.light,
-      fontFamily: 'OpenSans Regular',
+      fontFamily: 'OpenSans Bold',
       useMaterial3: true,
 
       // Change app bar color
@@ -43,12 +43,6 @@ class AppTheme {
           ),
         ),
       ),
-
-      // Change icon button theme
-      iconButtonTheme: IconButtonThemeData(
-          style: IconButton.styleFrom(
-        foregroundColor: Colors.white,
-      )),
 
       // Change text button theme
       textButtonTheme: TextButtonThemeData(
