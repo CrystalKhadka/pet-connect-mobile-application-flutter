@@ -11,6 +11,7 @@ class MyTextField extends StatelessWidget {
     this.obscureText,
     this.suffixIcon,
     this.inputFormatters,
+    this.validator,
   });
 
   final TextEditingController controller;
@@ -20,6 +21,7 @@ class MyTextField extends StatelessWidget {
   final bool? obscureText;
   final IconButton? suffixIcon;
   final List<TextInputFormatter>? inputFormatters;
+  final String? Function(String?)? validator;
 
   @override
   Widget build(BuildContext context) {
@@ -34,12 +36,7 @@ class MyTextField extends StatelessWidget {
       obscureText: obscureText ?? false,
       keyboardType: keyboardType,
       inputFormatters: inputFormatters,
-      validator: (value) {
-        if (value!.isEmpty) {
-          return 'Please enter your $text';
-        }
-        return null;
-      },
+      validator: validator,
     );
   }
 }

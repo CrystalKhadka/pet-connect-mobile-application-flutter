@@ -1,4 +1,4 @@
-import 'package:final_assignment/screen/splash_screen.dart';
+import 'package:final_assignment/features/splash/presentation/view/splash_screen.dart';
 import 'package:flutter/material.dart';
 
 import 'navigator_key/navigator_key.dart';
@@ -12,9 +12,9 @@ class App extends StatelessWidget {
     return MaterialApp(
       navigatorKey: AppNavigator.navigatorKey,
       debugShowCheckedModeBanner: false,
-      title: 'Student Management',
+      title: 'Pet Adoption App',
       theme: AppTheme.getApplicationTheme(false),
-      home: const SplashScreen(),
+      home: const SplashView(),
     );
   }
 }
