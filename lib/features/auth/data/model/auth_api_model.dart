@@ -12,7 +12,7 @@ final authApiModelProvider = Provider<AuthApiModel>(
 @JsonSerializable()
 class AuthApiModel extends Equatable {
   @JsonKey(name: '_id')
-  final String id;
+  final String? id;
   final String firstName;
   final String lastName;
   final String email;
@@ -23,7 +23,7 @@ class AuthApiModel extends Equatable {
   final String phone;
 
   const AuthApiModel({
-    required this.id,
+    this.id,
     required this.firstName,
     required this.lastName,
     required this.email,
@@ -49,26 +49,25 @@ class AuthApiModel extends Equatable {
 
   AuthEntity toEntity() {
     return AuthEntity(
-      userId: id,
-      fname: firstName,
-      lname: lastName,
+      id: id,
+      firstName: firstName,
+      lastName: lastName,
       email: email,
       password: password,
       phone: phone,
       address: address,
       gender: gender,
-      date: birthDate,
+      birthDate: birthDate,
     );
   }
 
   AuthApiModel fromEntity(AuthEntity entity) {
     return AuthApiModel(
-        id: entity.userId!,
-        firstName: entity.fname,
-        lastName: entity.lname,
+        firstName: entity.firstName,
+        lastName: entity.lastName,
         email: entity.email,
         password: entity.password,
-        birthDate: entity.date,
+        birthDate: entity.birthDate,
         address: entity.address,
         gender: entity.gender,
         phone: entity.phone);
@@ -78,7 +77,7 @@ class AuthApiModel extends Equatable {
       _$AuthApiModelFromJson(json);
 
   Map<String, dynamic> toJson() => _$AuthApiModelToJson(this);
-  
+
   @override
   List<Object?> get props => [
         id,

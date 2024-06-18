@@ -236,14 +236,14 @@ class _RegisterViewState extends ConsumerState<RegisterView> {
                     onPressed: () {
                       if (_formKey.currentState!.validate()) {
                         AuthEntity auth = AuthEntity(
-                            fname: _fnameController.text,
-                            lname: _lnameController.text,
+                            firstName: _fnameController.text,
+                            lastName: _lnameController.text,
                             email: _emailController.text,
                             password: _passwordController.text,
                             phone: _phoneController.text,
                             address: _addressController.text,
                             gender: _selectedGender,
-                            date: _birthDateController.text);
+                            birthDate: _birthDateController.text);
                         ref
                             .read(authViewModelProvider.notifier)
                             .registerUser(auth);
