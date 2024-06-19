@@ -37,8 +37,26 @@ class AuthRemoteDataSource {
             error: response.data['message'],
             statusCode: response.statusCode.toString()),
       );
-    } catch (e) {
-      return Left(Failure(error: e.toString()));
+    } on DioException catch (e) {
+      return Left(Failure(error: e.error.toString()));
+    }
+  }
+
+  Future<Either<Failure, bool>> loginUser(
+      { required String email,required String password}) async {
+    try {
+      Response response = await dio.post(ApiEndpoints.loginUser,
+          data: {'email': email, 'password': password});
+
+      if (response.statusCode == 201) {
+        return const Right(true);
+      }
+
+      return Left(Failure(
+          error: response.data['message'],
+          statusCode: response.statusCode.toString()));
+    } on DioException catch (e) {
+      return Left(Failure(error: e.error.toString()));
     }
   }
 }
