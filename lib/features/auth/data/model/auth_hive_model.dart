@@ -54,25 +54,25 @@ class AuthHiveModel {
             gender: '');
 
   AuthEntity toEntity() => AuthEntity(
-      userId: userId,
-      fname: fname,
-      lname: lname,
+      id: userId,
+      firstName: fname,
+      lastName: lname,
       email: email,
       password: password,
       phone: phone,
       address: address,
       gender: gender,
-      date: date);
+      birthDate: date);
 
   AuthHiveModel fromEntity(AuthEntity entity) => AuthHiveModel(
         userId: const Uuid().v4(),
-        fname: entity.fname,
-        lname: entity.lname,
+        fname: entity.firstName,
+        lname: entity.lastName,
         email: entity.email,
         password: entity.password,
         phone: entity.phone,
         address: entity.address,
-        date: entity.date,
+        date: entity.birthDate,
         gender: entity.gender,
       );
 
