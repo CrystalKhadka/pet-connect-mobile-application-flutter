@@ -1,8 +1,8 @@
 import 'package:final_assignment/features/home/presentation/view/bottom_screen/chat_view.dart';
 import 'package:final_assignment/features/home/presentation/view/bottom_screen/home_view.dart';
-import 'package:final_assignment/features/home/presentation/view/bottom_screen/pet_list_view.dart';
 import 'package:final_assignment/features/home/presentation/view/bottom_screen/settings_view.dart';
 import 'package:final_assignment/features/home/presentation/viewmodel/home_view_model.dart';
+import 'package:final_assignment/features/pet/presentation/view/pet_list_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -21,6 +21,7 @@ class _DashboardViewState extends ConsumerState<DashboardView> {
     const ChatView(),
     const SettingsView(),
   ];
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(

@@ -1,3 +1,4 @@
+import 'package:final_assignment/features/home/presentation/widgets/my_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -10,6 +11,7 @@ class HomeView extends ConsumerStatefulWidget {
 
 class _HomeViewState extends ConsumerState<HomeView> {
   late TextEditingController _searchController;
+  ScrollController _scrollController = ScrollController();
 
   @override
   void initState() {
@@ -28,7 +30,7 @@ class _HomeViewState extends ConsumerState<HomeView> {
     return SizedBox.expand(
       child: Padding(
         padding: const EdgeInsets.all(16.0),
-        child: Column(
+        child: ListView(
           children: [
             const SizedBox(
               height: 20,
@@ -55,9 +57,10 @@ class _HomeViewState extends ConsumerState<HomeView> {
                 const Text(
                   'Pet Categories',
                   style: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.w100,
-                      color: Colors.grey),
+                    fontSize: 18,
+                    fontWeight: FontWeight.w100,
+                    color: Colors.grey,
+                  ),
                 ),
                 TextButton(
                   onPressed: () {},
@@ -71,30 +74,36 @@ class _HomeViewState extends ConsumerState<HomeView> {
                 ),
               ],
             ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                for (var i = 0; i < 4; i++)
-                  SizedBox(
-                    child: TextButton(
-                      onPressed: () {},
-                      child: const Column(
-                        children: [
-                          Icon(
-                            Icons.pets,
-                            size: 50,
-                            color: Colors.black,
-                          ),
-                          Text(
-                            'Cat',
-                            style: TextStyle(
-                                fontSize: 18, fontWeight: FontWeight.bold),
-                          )
-                        ],
+            SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  for (var i = 0; i < 4; i++)
+                    SizedBox(
+                      width: 100,
+                      child: TextButton(
+                        onPressed: () {},
+                        child: const Column(
+                          children: [
+                            Icon(
+                              Icons.pets,
+                              size: 50,
+                              color: Colors.black,
+                            ),
+                            Text(
+                              'Cat',
+                              style: TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            )
+                          ],
+                        ),
                       ),
                     ),
-                  ),
-              ],
+                ],
+              ),
             ),
             const SizedBox(
               height: 20,
@@ -105,9 +114,10 @@ class _HomeViewState extends ConsumerState<HomeView> {
                 const Text(
                   'Adopt Pet',
                   style: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.w100,
-                      color: Colors.grey),
+                    fontSize: 18,
+                    fontWeight: FontWeight.w100,
+                    color: Colors.grey,
+                  ),
                 ),
                 TextButton(
                   onPressed: () {},
@@ -120,6 +130,20 @@ class _HomeViewState extends ConsumerState<HomeView> {
                   ),
                 ),
               ],
+            ),
+            const SizedBox(
+              height: 10,
+            ),
+            SizedBox(
+              height: 200,
+              child: ListView.builder(
+                scrollDirection: Axis.horizontal,
+                controller: _scrollController,
+                itemCount: 4,
+                itemBuilder: (context, index) {
+                  return const MyCard();
+                },
+              ),
             ),
           ],
         ),
