@@ -9,4 +9,11 @@ class ApiEndpoints {
   // ====================== Auth Routes ======================
   static const String loginUser = "user/login";
   static const String registerUser = "user/register";
+
+  // Pet Routes
+  static const String getAllPets = "pet/all";
+  static const String getPetById = "pet/get/";
+  static const String pagination = "pet/pagination";
+  static const String getAllPetsByOwner = "pet/all/";
+  static const String getAllSpecies = "pet/species";
 }

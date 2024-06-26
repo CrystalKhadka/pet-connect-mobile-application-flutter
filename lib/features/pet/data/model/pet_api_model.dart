@@ -96,6 +96,16 @@ class PetApiModel extends Equatable {
         createdBy: entity.createdBy);
   }
 
+  // To list of entity
+  List<PetEntity> toEntities(List<PetApiModel> pets) {
+    return pets.map((pet) => pet.toEntity()).toList();
+  }
+
+  // From list of entity
+  List<PetApiModel> fromEntities(List<PetEntity> pets) {
+    return pets.map((pet) => PetApiModel.fromEntity(pet)).toList();
+  }
+
   @override
   List<Object?> get props => [
         id,
