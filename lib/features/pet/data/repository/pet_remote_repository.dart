@@ -14,8 +14,9 @@ class PetRemoteRepository implements IPetRepository {
   final PetRemoteDataSource petRemoteDataSource;
 
   PetRemoteRepository({required this.petRemoteDataSource});
+
   @override
   Future<Either<Failure, List<PetEntity>>> pagination(int page, int limit) {
-    return petRemoteDataSource.pagination(page: page, limit: 2);
+    return petRemoteDataSource.pagination(page: page, limit: limit);
   }
 }

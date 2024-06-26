@@ -16,6 +16,8 @@ class MyCard extends StatelessWidget {
           children: [
             Image.network(
               '${ApiEndpoints.petImage}${petEntity.petImage}',
+              fit: BoxFit.cover,
+              height: 150,
             ),
             const SizedBox(
               height: 10,
