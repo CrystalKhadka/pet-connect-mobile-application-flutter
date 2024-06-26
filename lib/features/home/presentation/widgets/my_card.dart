@@ -1,7 +1,11 @@
+import 'package:final_assignment/app/constants/api_endpoints.dart';
+import 'package:final_assignment/features/pet/domain/entity/pet_entity.dart';
 import 'package:flutter/material.dart';
 
 class MyCard extends StatelessWidget {
-  const MyCard({super.key});
+  const MyCard({super.key, required this.petEntity});
+
+  final PetEntity petEntity;
 
   @override
   Widget build(BuildContext context) {
@@ -10,17 +14,15 @@ class MyCard extends StatelessWidget {
       child: Card(
         child: Column(
           children: [
-            Image.asset(
-              'assets/images/pet.jpg',
-              fit: BoxFit.cover,
-              height: 150,
+            Image.network(
+              '${ApiEndpoints.petImage}${petEntity.petImage}',
             ),
             const SizedBox(
               height: 10,
             ),
-            const Text(
-              'Pet Name',
-              style: TextStyle(
+            Text(
+              petEntity.petName,
+              style: const TextStyle(
                 fontSize: 18,
                 fontWeight: FontWeight.bold,
               ),
@@ -28,9 +30,9 @@ class MyCard extends StatelessWidget {
             const SizedBox(
               height: 10,
             ),
-            const Text(
-              'Pet Description',
-              style: TextStyle(
+            Text(
+              petEntity.petDescription,
+              style: const TextStyle(
                 fontSize: 14,
                 fontWeight: FontWeight.w100,
               ),
@@ -38,9 +40,9 @@ class MyCard extends StatelessWidget {
             const SizedBox(
               height: 10,
             ),
-            const Text(
-              'Pet Age',
-              style: TextStyle(
+            Text(
+              petEntity.petAge.toString(),
+              style: const TextStyle(
                 fontSize: 14,
                 fontWeight: FontWeight.w100,
               ),

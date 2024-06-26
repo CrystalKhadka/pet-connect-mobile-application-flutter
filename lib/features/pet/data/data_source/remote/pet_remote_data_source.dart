@@ -26,15 +26,15 @@ class PetRemoteDataSource {
     required this.petApiModel,
   });
 
-  Future<Either<Failure, List<PetEntity>>> pagination(int page) async {
+  Future<Either<Failure, List<PetEntity>>> pagination({required int page,required int limit}) async {
     try {
       final response = await dio.get(
         ApiEndpoints.pagination,
-        queryParameters: {'page': page, 'limit': 4},
+        queryParameters: {'page': page, 'limit': 3},
       );
       if (response.statusCode == 200) {
         final paginationDto = PaginationDto.fromJson(response.data);
-        return Right(petApiModel.toEntities(paginationDto.data));
+        return Right(petApiModel.toEntities(paginationDto.pets));
       }
       return Left(Failure(
           error: response.data['message'],
