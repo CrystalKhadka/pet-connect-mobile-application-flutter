@@ -28,12 +28,12 @@ class _HomeViewState extends ConsumerState<HomeView> {
 
   @override
   Widget build(BuildContext context) {
-    final homeState = ref.watch(homeViewModelProvider);
+    final petState = ref.watch(homeViewModelProvider);
     return NotificationListener(
       onNotification: (notification) {
         if (notification is ScrollEndNotification) {
           if (_scrollController.position.extentAfter == 0) {
-            if (homeState.hasReachedMax) {
+            if (petState.hasReachedMax) {
               return false;
             }
             ref.read(homeViewModelProvider.notifier).fetchPets();
@@ -46,9 +46,7 @@ class _HomeViewState extends ConsumerState<HomeView> {
           padding: const EdgeInsets.all(16.0),
           child: Column(
             children: [
-              const SizedBox(
-                height: 20,
-              ),
+              const SizedBox(height: 20),
               TextFormField(
                 decoration: InputDecoration(
                   border: OutlineInputBorder(
@@ -59,12 +57,14 @@ class _HomeViewState extends ConsumerState<HomeView> {
                     icon: const Icon(Icons.search),
                     onPressed: () {},
                   ),
+                  prefixIcon: IconButton(
+                    icon: const Icon(Icons.filter_alt),
+                    onPressed: () {},
+                  ),
                 ),
                 controller: _searchController,
               ),
-              const SizedBox(
-                height: 20,
-              ),
+              const SizedBox(height: 20),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -88,40 +88,25 @@ class _HomeViewState extends ConsumerState<HomeView> {
                   ),
                 ],
               ),
-              SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    for (var i = 0; i < 4; i++)
-                      SizedBox(
-                        width: 100,
-                        child: TextButton(
-                          onPressed: () {},
-                          child: const Column(
-                            children: [
-                              Icon(
-                                Icons.pets,
-                                size: 50,
-                                color: Colors.black,
-                              ),
-                              Text(
-                                'Cat',
-                                style: TextStyle(
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              )
-                            ],
-                          ),
-                        ),
+              const SizedBox(height: 10),
+              Flexible(
+                child: GridView.builder(
+                  scrollDirection: Axis.horizontal,
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 1,
+                    childAspectRatio: 1,
+                  ),
+                  itemCount: petState.species.length,
+                  itemBuilder: (context, index) {
+                    return Card(
+                      child: Center(
+                        child: Text(petState.species[index]),
                       ),
-                  ],
+                    );
+                  },
                 ),
               ),
-              const SizedBox(
-                height: 20,
-              ),
+              const SizedBox(height: 10),
               Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
@@ -152,25 +137,31 @@ class _HomeViewState extends ConsumerState<HomeView> {
                   ),
                 ],
               ),
-              const SizedBox(
-                height: 10,
-              ),
+              const SizedBox(height: 10),
               Expanded(
-                child: ListView.builder(
+                flex: 3,
+                child: GridView.builder(
                   scrollDirection: Axis.horizontal,
                   controller: _scrollController,
-                  itemCount: homeState.pets.length,
-                  physics: const AlwaysScrollableScrollPhysics(),
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 1,
+                    childAspectRatio: 1.5,
+                    mainAxisSpacing: 10,
+                    crossAxisSpacing: 10,
+                  ),
+                  itemCount: petState.pets.length,
                   itemBuilder: (context, index) {
-                    return MyCard(
-                      petEntity: homeState.pets[index],
-                    );
+                    return MyCard(petEntity: petState.pets[index]);
                   },
                 ),
               ),
-              if (homeState.isLoading) ...{
-                const CircularProgressIndicator(color: Colors.red)
-              }
+              if (petState.isLoading) ...{
+                const Padding(
+                  padding: EdgeInsets.symmetric(vertical: 20),
+                  child: CircularProgressIndicator(color: Colors.red),
+                )
+              },
+              const SizedBox(height: 10),
             ],
           ),
         ),

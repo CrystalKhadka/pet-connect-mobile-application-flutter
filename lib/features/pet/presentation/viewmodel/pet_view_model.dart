@@ -11,6 +11,7 @@ final petViewModelProvider = StateNotifierProvider<PetViewModel, PetState>(
 class PetViewModel extends StateNotifier<PetState> {
   PetViewModel({required this.petUseCase}) : super(PetState.initial()) {
     fetchPets();
+    fetchSpecies();
   }
 
   final PetUseCase petUseCase;
@@ -48,5 +49,16 @@ class PetViewModel extends StateNotifier<PetState> {
         },
       );
     }
+  }
+
+  Future fetchSpecies() async {
+    final result = await petUseCase.getAllSpecies();
+    result.fold(
+      (failure) => state = state.copyWith(
+        isLoading: false,
+        error: failure.error,
+      ),
+      (data) => state = state.copyWith(species: data),
+    );
   }
 }

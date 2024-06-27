@@ -6,6 +6,7 @@ class PetState {
   final List<PetEntity> pets;
   final bool hasReachedMax;
   final int page;
+  final List<String> species;
 
   factory PetState.initial() {
     return PetState(
@@ -14,6 +15,7 @@ class PetState {
       pets: [],
       page: 0,
       hasReachedMax: false,
+      species: [],
     );
   }
 
@@ -23,6 +25,7 @@ class PetState {
     required this.pets,
     required this.page,
     required this.hasReachedMax,
+    required this.species,
   });
 
   PetState copyWith({
@@ -31,6 +34,7 @@ class PetState {
     List<PetEntity>? pets,
     int? page,
     bool? hasReachedMax,
+    List<String>? species,
   }) {
     return PetState(
       isLoading: isLoading ?? this.isLoading,
@@ -38,6 +42,7 @@ class PetState {
       pets: pets ?? this.pets,
       page: page ?? this.page,
       hasReachedMax: hasReachedMax ?? this.hasReachedMax,
+      species: species ?? this.species,
     );
   }
 }

@@ -1,22 +1,24 @@
 import 'package:final_assignment/features/home/presentation/navigator/dashboard_navigator.dart';
-import 'package:final_assignment/features/home/presentation/state/home_state.dart';
 import 'package:final_assignment/features/pet/domain/usecases/pet_usecase.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../pet/presentation/state/pet_state.dart';
+
 // Provider
-final homeViewModelProvider = StateNotifierProvider<HomeViewModel, HomeState>(
+final homeViewModelProvider = StateNotifierProvider<HomeViewModel, PetState>(
   (ref) => HomeViewModel(
     navigator: ref.watch(dashboardNavigatorProvider),
     petUseCase: ref.watch(petUseCaseProvider),
   ),
 );
 
-class HomeViewModel extends StateNotifier<HomeState> {
+class HomeViewModel extends StateNotifier<PetState> {
   HomeViewModel({
     required this.navigator,
     required this.petUseCase,
-  }) : super(HomeState.initial()) {
+  }) : super(PetState.initial()) {
     fetchPets();
+    fetchSpecies();
   }
 
   final DashboardViewNavigator navigator;
@@ -27,7 +29,7 @@ class HomeViewModel extends StateNotifier<HomeState> {
   }
 
   Future resetState() async {
-    state = HomeState.initial();
+    state = PetState.initial();
     fetchPets();
   }
 
@@ -42,10 +44,10 @@ class HomeViewModel extends StateNotifier<HomeState> {
       final result = await petUseCase.pagination(page, 2);
       result.fold(
         (failure) => state = state.copyWith(
-            hasReachedMax: true,
-            isLoading: false,
-            isError: true,
-            errorMessage: failure.error),
+          hasReachedMax: true,
+          isLoading: false,
+          error: failure.error,
+        ),
         (data) {
           if (data.isEmpty) {
             state = state.copyWith(hasReachedMax: true);
@@ -59,5 +61,16 @@ class HomeViewModel extends StateNotifier<HomeState> {
         },
       );
     }
+  }
+
+  Future fetchSpecies() async {
+    final result = await petUseCase.getAllSpecies();
+    result.fold(
+      (failure) => state = state.copyWith(
+        isLoading: false,
+        error: failure.error,
+      ),
+      (data) => state = state.copyWith(species: data),
+    );
   }
 }

@@ -107,13 +107,7 @@ class _PetListViewState extends ConsumerState<PetListView> {
                 const Text('No more data')
               else ...{
                 const SizedBox(
-                  height: 20,
-                ),
-                const Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    CircularProgressIndicator(color: Colors.red),
-                  ],
+                  height: 10,
                 ),
               }
             ],

@@ -19,4 +19,9 @@ class PetRemoteRepository implements IPetRepository {
   Future<Either<Failure, List<PetEntity>>> pagination(int page, int limit) {
     return petRemoteDataSource.pagination(page: page, limit: limit);
   }
+
+  @override
+  Future<Either<Failure, List<String>>> getAllSpecies() {
+    return petRemoteDataSource.getAllSpecies();
+  }
 }
