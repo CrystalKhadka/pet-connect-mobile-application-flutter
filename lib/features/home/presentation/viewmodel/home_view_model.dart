@@ -1,3 +1,4 @@
+import 'package:final_assignment/core/shared_prefs/user_shared_prefs.dart';
 import 'package:final_assignment/features/home/presentation/navigator/dashboard_navigator.dart';
 import 'package:final_assignment/features/pet/domain/usecases/pet_usecase.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -9,6 +10,7 @@ final homeViewModelProvider = StateNotifierProvider<HomeViewModel, PetState>(
   (ref) => HomeViewModel(
     navigator: ref.watch(dashboardNavigatorProvider),
     petUseCase: ref.watch(petUseCaseProvider),
+    userSharedPrefs: ref.watch(userSharedPrefsProvider),
   ),
 );
 
@@ -16,6 +18,7 @@ class HomeViewModel extends StateNotifier<PetState> {
   HomeViewModel({
     required this.navigator,
     required this.petUseCase,
+    required this.userSharedPrefs,
   }) : super(PetState.initial()) {
     fetchPets();
     fetchSpecies();
@@ -23,6 +26,7 @@ class HomeViewModel extends StateNotifier<PetState> {
 
   final DashboardViewNavigator navigator;
   final PetUseCase petUseCase;
+  final UserSharedPrefs userSharedPrefs;
 
   void openLoginView() {
     navigator.openLoginView();
@@ -31,6 +35,7 @@ class HomeViewModel extends StateNotifier<PetState> {
   Future resetState() async {
     state = PetState.initial();
     fetchPets();
+    fetchSpecies();
   }
 
   Future fetchPets() async {
@@ -71,6 +76,17 @@ class HomeViewModel extends StateNotifier<PetState> {
         error: failure.error,
       ),
       (data) => state = state.copyWith(species: data),
+    );
+  }
+
+  Future logout() async {
+    final result = await userSharedPrefs.removeUserToken();
+    result.fold(
+      (failure) => state = state.copyWith(
+        isLoading: false,
+        error: failure.error,
+      ),
+      (data) => openLoginView(),
     );
   }
 }

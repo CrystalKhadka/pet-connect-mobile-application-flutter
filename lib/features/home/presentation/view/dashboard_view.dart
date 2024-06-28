@@ -43,7 +43,7 @@ class _DashboardViewState extends ConsumerState<DashboardView> {
               IconButton(
                 onPressed: () {
                   // Logout
-                  ref.read(homeViewModelProvider.notifier).openLoginView();
+                  ref.read(homeViewModelProvider.notifier).logout();
                 },
                 icon: const Icon(Icons.logout),
               ),

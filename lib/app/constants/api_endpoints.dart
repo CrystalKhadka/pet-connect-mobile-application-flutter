@@ -10,6 +10,7 @@ class ApiEndpoints {
   // ====================== Auth Routes ======================
   static const String loginUser = "user/login";
   static const String registerUser = "user/register";
+  static const String verifyUser = "user/verify";
 
   // Pet Routes
   static const String getAllPets = "pet/all";
