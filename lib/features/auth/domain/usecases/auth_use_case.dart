@@ -20,4 +20,12 @@ class AuthUseCase {
   Future<Either<Failure, bool>> loginUser(String email, String password) {
     return authRepository.loginUser(email, password);
   }
+
+  Future<Either<Failure, bool>> verifyUser() {
+    return authRepository.verifyUser();
+  }
+
+  Future<Either<Failure, AuthEntity>> getCurrentUser() {
+    return authRepository.getCurrentUser();
+  }
 }

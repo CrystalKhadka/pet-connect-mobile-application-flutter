@@ -1,8 +1,7 @@
 import 'package:final_assignment/features/home/presentation/view/bottom_screen/chat_view.dart';
 import 'package:final_assignment/features/home/presentation/view/bottom_screen/home_view.dart';
-import 'package:final_assignment/features/home/presentation/view/bottom_screen/pet_list_view.dart';
-import 'package:final_assignment/features/home/presentation/view/bottom_screen/settings_view.dart';
-import 'package:final_assignment/features/home/presentation/viewmodel/home_view_model.dart';
+import 'package:final_assignment/features/pet/presentation/view/pet_list_view.dart';
+import 'package:final_assignment/features/settings/presentation/view/profile_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -19,36 +18,13 @@ class _DashboardViewState extends ConsumerState<DashboardView> {
     const HomeView(),
     const PetListView(),
     const ChatView(),
-    const SettingsView(),
+    const ProfileView(),
   ];
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        appBar: AppBar(
-          title: Row(
-            children: [
-              const Text('Pet Connect'),
-              const Spacer(),
-              IconButton(
-                // Total notifications 2
-                icon: const Icon(Icons.notifications),
-                onPressed: () {},
-              ),
-              IconButton(
-                onPressed: () {},
-                icon: const Icon(Icons.person),
-              ),
-              IconButton(
-                onPressed: () {
-                  // Logout
-                  ref.read(homeViewModelProvider.notifier).openLoginView();
-                },
-                icon: const Icon(Icons.logout),
-              ),
-            ],
-          ),
-        ),
         body: _children[currentIndex],
         bottomNavigationBar: BottomNavigationBar(
           items: const [
@@ -65,8 +41,8 @@ class _DashboardViewState extends ConsumerState<DashboardView> {
               label: 'Chat',
             ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.settings),
-              label: 'Settings',
+              icon: Icon(Icons.person),
+              label: 'Profile',
             ),
           ],
           currentIndex: currentIndex,
