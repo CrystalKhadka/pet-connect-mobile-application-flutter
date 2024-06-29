@@ -90,7 +90,9 @@ class HomeViewModel extends StateNotifier<PetState> {
   }
 
   Future logout() async {
-    final accept = myYesNoDialog(title: 'Are you sure you want to logout?');
+    final accept =
+        await myYesNoDialog(title: 'Are you sure you want to logout?');
+
     if (accept) {
       final result = await userSharedPrefs.removeUserToken();
       result.fold(
