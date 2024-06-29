@@ -24,4 +24,8 @@ class AuthUseCase {
   Future<Either<Failure, bool>> verifyUser() {
     return authRepository.verifyUser();
   }
+
+  Future<Either<Failure, AuthEntity>> getCurrentUser() {
+    return authRepository.getCurrentUser();
+  }
 }

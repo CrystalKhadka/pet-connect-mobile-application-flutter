@@ -1,8 +1,9 @@
+import 'package:final_assignment/features/pet/presentation/widgets/device_info.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../home/presentation/widgets/my_card.dart';
 import '../viewmodel/pet_view_model.dart';
+import '../widgets/my_card.dart';
 
 class PetListView extends ConsumerStatefulWidget {
   const PetListView({super.key});
@@ -24,6 +25,7 @@ class _PetListViewState extends ConsumerState<PetListView> {
 
   @override
   Widget build(BuildContext context) {
+    final isTabletDevice = DeviceInfo.isTabletDevice();
     final petState = ref.watch(petViewModelProvider);
 
     return NotificationListener(
@@ -90,12 +92,11 @@ class _PetListViewState extends ConsumerState<PetListView> {
                   child: GridView.builder(
                     physics: const AlwaysScrollableScrollPhysics(),
                     controller: _scrollController,
-                    gridDelegate:
-                        const SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 2,
+                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: isTabletDevice ? 3 : 2,
                       mainAxisSpacing: 10,
                       crossAxisSpacing: 10,
-                      childAspectRatio: 0.6,
+                      childAspectRatio: isTabletDevice ? 1.5 : 0.6,
                     ),
                     itemCount: petState.pets.length,
                     itemBuilder: (context, index) {

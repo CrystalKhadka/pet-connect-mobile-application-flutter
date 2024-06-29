@@ -4,6 +4,8 @@ import 'package:final_assignment/features/pet/presentation/state/pet_state.dart'
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../widgets/device_info.dart';
+
 final petViewModelProvider = StateNotifierProvider<PetViewModel, PetState>(
   (ref) => PetViewModel(
     petUseCase: ref.read(petUseCaseProvider),
@@ -32,7 +34,8 @@ class PetViewModel extends StateNotifier<PetState> {
     final hasReachedMax = currentState.hasReachedMax;
     if (!hasReachedMax) {
       // get data from data source
-      final result = await petUseCase.pagination(page, 6);
+      final limit = DeviceInfo.isTabletDevice() ? 9 : 6;
+      final result = await petUseCase.pagination(page, limit);
       result.fold(
         (failure) => state = state.copyWith(
           hasReachedMax: true,

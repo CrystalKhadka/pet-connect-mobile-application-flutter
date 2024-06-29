@@ -14,4 +14,6 @@ abstract class IAuthRepository {
   Future<Either<Failure, bool>> loginUser(String email, String password);
 
   Future<Either<Failure, bool>> verifyUser();
+
+  Future<Either<Failure, AuthEntity>> getCurrentUser();
 }

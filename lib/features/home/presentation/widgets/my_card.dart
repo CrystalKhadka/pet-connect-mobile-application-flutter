@@ -43,7 +43,7 @@ class MyCard extends StatelessWidget {
                     ),
                     const SizedBox(height: 4),
                     Text(
-                      petEntity.petDescription,
+                      petEntity.petBreed,
                       style: const TextStyle(
                         fontSize: 14,
                         fontWeight: FontWeight.w400,
@@ -51,7 +51,7 @@ class MyCard extends StatelessWidget {
                     ),
                     const SizedBox(height: 4),
                     Text(
-                      'Age: ${petEntity.petAge}',
+                      'Age: ${petEntity.petAge} months',
                       style: const TextStyle(
                         fontSize: 14,
                         fontWeight: FontWeight.w300,
