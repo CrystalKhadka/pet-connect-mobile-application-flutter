@@ -1,9 +1,11 @@
+import 'package:final_assignment/core/common/my_snackbar.dart';
 import 'package:final_assignment/features/auth/presentation/viewmodel/auth_view_model.dart';
 import 'package:final_assignment/features/auth/presentation/viewmodel/login_view_model.dart';
 import 'package:final_assignment/features/auth/presentation/widgets/my_button.dart';
 import 'package:final_assignment/features/auth/presentation/widgets/my_text_field.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:local_auth/local_auth.dart';
 
 class LoginView extends ConsumerStatefulWidget {
   const LoginView({super.key});
@@ -15,6 +17,7 @@ class LoginView extends ConsumerStatefulWidget {
 class _LoginViewState extends ConsumerState<LoginView> {
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
+  final LocalAuthentication _localAuth = LocalAuthentication();
   bool rememberMe = false;
   bool obscurePassword = true;
 
@@ -119,23 +122,56 @@ class _LoginViewState extends ConsumerState<LoginView> {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
-                        SizedBox(
-                          width: double.infinity,
-                          child: MyButton(
-                            onPressed: () {
-                              if (key.currentState!.validate()) {
-                                ref
-                                    .read(authViewModelProvider.notifier)
-                                    .loginUser(
-                                      emailController.text,
-                                      passwordController.text,
-                                    );
-                              }
-                            },
-                            bgColor: const Color.fromRGBO(23, 88, 110, 1),
-                            fgColor: Colors.white,
-                            child: const Text('Log in'),
-                          ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            SizedBox(
+                              width: MediaQuery.of(context).size.width * 0.5,
+                              child: MyButton(
+                                onPressed: () {
+                                  if (key.currentState!.validate()) {
+                                    ref
+                                        .read(authViewModelProvider.notifier)
+                                        .loginUser(
+                                          emailController.text,
+                                          passwordController.text,
+                                        );
+                                  }
+                                },
+                                bgColor: const Color.fromRGBO(23, 88, 110, 1),
+                                fgColor: Colors.white,
+                                child: const Text('Log in'),
+                              ),
+                            ),
+                            IconButton(
+                              onPressed: () async {
+                                bool authenticated = false;
+                                try {
+                                  authenticated = await _localAuth.authenticate(
+                                    localizedReason:
+                                        'Authenticate to enable fingerprint',
+                                    options: const AuthenticationOptions(
+                                      stickyAuth: true,
+                                      biometricOnly: true,
+                                      useErrorDialogs: true,
+                                    ),
+                                  );
+                                } catch (e) {
+                                  showMySnackBar(
+                                      message:
+                                          'Fingerprint authentication failed',
+                                      color: Colors.red);
+                                }
+
+                                if (authenticated) {
+                                  ref
+                                      .read(loginViewModelProvider.notifier)
+                                      .openDashboardView();
+                                }
+                              },
+                              icon: const Icon(Icons.fingerprint),
+                            )
+                          ],
                         ),
                         SizedBox(
                           width: double.infinity,

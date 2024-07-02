@@ -28,4 +28,5 @@ class AuthUseCase {
   Future<Either<Failure, AuthEntity>> getCurrentUser() {
     return authRepository.getCurrentUser();
   }
+  
 }
