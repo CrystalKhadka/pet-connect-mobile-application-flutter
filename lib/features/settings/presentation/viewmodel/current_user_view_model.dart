@@ -3,38 +3,34 @@ import 'package:final_assignment/core/common/my_yes_no_dialog.dart';
 import 'package:final_assignment/features/settings/presentation/state/current_user_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:local_auth/local_auth.dart';
 
+import '../../../../core/shared_prefs/user_shared_prefs.dart';
 import '../../../auth/domain/usecases/auth_use_case.dart';
 
 final currentUserViewModelProvider =
-    StateNotifierProvider<CurrentUserViewModel, CurrentUserState>((ref) {
-  final authUseCase = ref.watch(authUseCaseProvider);
-  return CurrentUserViewModel(authUseCase: authUseCase);
-});
+    StateNotifierProvider<CurrentUserViewModel, CurrentUserState>(
+        (ref) => CurrentUserViewModel(
+              authUseCase: ref.read(authUseCaseProvider),
+              userSharedPrefs: ref.read(userSharedPrefsProvider),
+            ));
 
 class CurrentUserViewModel extends StateNotifier<CurrentUserState> {
   final AuthUseCase authUseCase;
   late LocalAuthentication _localAuth;
-  late FlutterSecureStorage _secureStorage;
+  final UserSharedPrefs userSharedPrefs;
 
-  CurrentUserViewModel({required this.authUseCase})
-      : super(CurrentUserState.initial()) {
+  CurrentUserViewModel({
+    required this.authUseCase,
+    required this.userSharedPrefs,
+  }) : super(CurrentUserState.initial()) {
     initialize();
   }
 
   Future<void> initialize() async {
     _localAuth = LocalAuthentication();
-    _secureStorage = FlutterSecureStorage(aOptions: _getAndroidOptions());
     await getCurrentUser();
-    await loadFingerprintEnabled(); // Load fingerprint status from secure storage
-  }
-
-  AndroidOptions _getAndroidOptions() {
-    return const AndroidOptions(
-      encryptedSharedPreferences: true,
-    );
+    await checkFingerprint();
   }
 
   Future<void> getCurrentUser() async {
@@ -63,9 +59,7 @@ class CurrentUserViewModel extends StateNotifier<CurrentUserState> {
       );
       if (result) {
         state = state.copyWith(isFingerprintEnabled: false);
-        await saveFingerprintEnabled(
-            false); // Save fingerprint status to secure storage
-        showMySnackBar(message: 'Fingerprint disabled', color: Colors.green);
+        userSharedPrefs.saveFingerPrintId('');
       }
     } else {
       bool authenticated = false;
@@ -85,33 +79,26 @@ class CurrentUserViewModel extends StateNotifier<CurrentUserState> {
 
       if (authenticated) {
         state = state.copyWith(isFingerprintEnabled: true);
-        await saveFingerprintEnabled(
-            true); // Save fingerprint status to secure storage
+        userSharedPrefs.saveFingerPrintId(state.authEntity!.id ?? '');
         showMySnackBar(message: 'Fingerprint enabled', color: Colors.green);
       }
     }
   }
 
-  Future<void> loadFingerprintEnabled() async {
-    try {
-      final isEnabled =
-          await _secureStorage.read(key: 'fingerprint_enabled') == 'true';
-      state = state.copyWith(isFingerprintEnabled: isEnabled);
-    } catch (e) {
-      print('Error loading fingerprint status from secure storage: $e');
-      showMySnackBar(
-          message: 'Failed to load fingerprint status', color: Colors.red);
-    }
-  }
-
-  Future<void> saveFingerprintEnabled(bool isEnabled) async {
-    try {
-      await _secureStorage.write(
-          key: 'fingerprint_enabled', value: isEnabled.toString());
-    } catch (e) {
-      print('Error saving fingerprint status to secure storage: $e');
-      showMySnackBar(
-          message: 'Failed to save fingerprint status', color: Colors.red);
-    }
+  Future<void> checkFingerprint() async {
+    final currentUserId = state.authEntity!.id;
+    final result = await userSharedPrefs.checkId();
+    result.fold(
+      (l) {
+        state = state.copyWith(isFingerprintEnabled: false);
+      },
+      (r) {
+        if (r == currentUserId) {
+          state = state.copyWith(isFingerprintEnabled: true);
+        } else {
+          state = state.copyWith(isFingerprintEnabled: false);
+        }
+      },
+    );
   }
 }

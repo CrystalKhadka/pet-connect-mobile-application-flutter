@@ -13,7 +13,7 @@ class ApiEndpoints {
   static const String registerUser = "user/register";
   static const String verifyUser = "user/verify";
   static const String getMe = "user/getMe";
-  
+  static const String getToken = "user/getToken";
 
   // Pet Routes
   static const String getAllPets = "pet/all";

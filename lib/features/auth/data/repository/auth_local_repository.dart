@@ -36,4 +36,10 @@ class AuthLocalRepository implements IAuthRepository {
     // TODO: implement getCurrentUser
     throw UnimplementedError();
   }
+
+  @override
+  Future<Either<Failure, bool>> fingerPrintLogin(String id) {
+    // TODO: implement fingerPrintLogin
+    throw UnimplementedError();
+  }
 }

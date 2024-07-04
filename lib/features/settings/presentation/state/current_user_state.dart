@@ -1,5 +1,3 @@
-import 'package:shared_preferences/shared_preferences.dart';
-
 import '../../../auth/domain/entity/auth_entity.dart';
 
 class CurrentUserState {
@@ -7,7 +5,6 @@ class CurrentUserState {
   final AuthEntity? authEntity;
   final String? error;
   final bool isFingerprintEnabled;
-  late SharedPreferences sharedPreferences;
 
   CurrentUserState(
       {required this.isLoading,

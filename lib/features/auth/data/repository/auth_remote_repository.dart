@@ -35,4 +35,9 @@ class AuthRemoteRepository implements IAuthRepository {
   Future<Either<Failure, AuthEntity>> getCurrentUser() {
     return authRemoteDataSource.getMe();
   }
+
+  @override
+  Future<Either<Failure, bool>> fingerPrintLogin(String id) {
+    return authRemoteDataSource.fingerPrintLogin(id);
+  }
 }

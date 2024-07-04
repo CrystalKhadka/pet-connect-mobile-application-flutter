@@ -1,7 +1,5 @@
-import 'package:final_assignment/core/common/my_snackbar.dart';
 import 'package:final_assignment/features/auth/presentation/navigator/login_navigator.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:local_auth/local_auth.dart';
 
 final loginViewModelProvider =
     StateNotifierProvider<LoginViewModel, void>((ref) {
@@ -13,7 +11,7 @@ class LoginViewModel extends StateNotifier<void> {
   LoginViewModel(this.navigator) : super(null);
 
   final LoginViewNavigator navigator;
-  
+
   void openRegisterView() {
     navigator.openRegisterView();
   }
@@ -21,8 +19,4 @@ class LoginViewModel extends StateNotifier<void> {
   void openDashboardView() {
     navigator.openDashboardView();
   }
-
-   
-
-  
 }

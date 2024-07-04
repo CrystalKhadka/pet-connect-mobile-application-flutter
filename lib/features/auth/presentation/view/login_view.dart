@@ -56,7 +56,7 @@ class _LoginViewState extends ConsumerState<LoginView> {
   }
 
   void _checkGyroscopeValues(List<double> values) async {
-    const double threshold = 0.5; // Example threshold value, adjust as needed
+    const double threshold = 5; // Example threshold value, adjust as needed
     if (values.any((value) => value.abs() > threshold)) {
       if (showYesNoDialog && !isDialogShowing) {
         isDialogShowing = true;
@@ -193,30 +193,10 @@ class _LoginViewState extends ConsumerState<LoginView> {
                               ),
                             ),
                             IconButton(
-                              onPressed: () async {
-                                bool authenticated = false;
-                                try {
-                                  authenticated = await _localAuth.authenticate(
-                                    localizedReason:
-                                        'Authenticate to enable fingerprint',
-                                    options: const AuthenticationOptions(
-                                      stickyAuth: true,
-                                      biometricOnly: true,
-                                      useErrorDialogs: true,
-                                    ),
-                                  );
-                                } catch (e) {
-                                  showMySnackBar(
-                                      message:
-                                          'Fingerprint authentication failed',
-                                      color: Colors.red);
-                                }
-
-                                if (authenticated) {
-                                  ref
-                                      .read(loginViewModelProvider.notifier)
-                                      .openDashboardView();
-                                }
+                              onPressed: () {
+                                ref
+                                    .read(authViewModelProvider.notifier)
+                                    .fingerPrintLogin();
                               },
                               icon: const Icon(Icons.fingerprint),
                             )

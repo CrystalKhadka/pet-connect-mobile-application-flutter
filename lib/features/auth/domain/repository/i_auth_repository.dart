@@ -7,7 +7,7 @@ import 'package:final_assignment/features/auth/domain/entity/auth_entity.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 final authRepositoryProvider = Provider<IAuthRepository>((ref) {
-  final checkConnectivity = ref.read(connectivityStatusProvider);
+  final checkConnectivity = ref.watch(connectivityStatusProvider);
   if (checkConnectivity == ConnectivityStatus.isConnected) {
     return ref.read(authRemoteRepositoryProvider);
   } else {
@@ -24,5 +24,5 @@ abstract class IAuthRepository {
 
   Future<Either<Failure, AuthEntity>> getCurrentUser();
 
-  
+  Future<Either<Failure, bool>> fingerPrintLogin(String id);
 }
