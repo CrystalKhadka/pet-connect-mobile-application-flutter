@@ -9,7 +9,6 @@ import 'package:final_assignment/features/auth/presentation/widgets/my_button.da
 import 'package:final_assignment/features/auth/presentation/widgets/my_text_field.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:local_auth/local_auth.dart';
 
 class LoginView extends ConsumerStatefulWidget {
   const LoginView({super.key});
@@ -21,7 +20,6 @@ class LoginView extends ConsumerStatefulWidget {
 class _LoginViewState extends ConsumerState<LoginView> {
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
-  final LocalAuthentication _localAuth = LocalAuthentication();
   bool rememberMe = false;
   bool obscurePassword = true;
   bool showYesNoDialog = true;

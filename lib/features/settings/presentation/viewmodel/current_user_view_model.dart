@@ -88,6 +88,7 @@ class CurrentUserViewModel extends StateNotifier<CurrentUserState> {
   Future<void> checkFingerprint() async {
     final currentUserId = state.authEntity!.id;
     final result = await userSharedPrefs.checkId();
+
     result.fold(
       (l) {
         state = state.copyWith(isFingerprintEnabled: false);

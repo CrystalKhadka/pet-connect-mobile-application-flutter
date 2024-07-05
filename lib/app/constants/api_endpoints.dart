@@ -6,7 +6,7 @@ class ApiEndpoints {
 
   // static const String baseUrl = "http://10.0.2.2:5000/api/";
 
-  static const String baseUrl = "http://192.168.18.7:5000/api/";
+  static const String baseUrl = "http://192.168.137.1:5000/api/";
 
   // ====================== Auth Routes ======================
   static const String loginUser = "user/login";
@@ -21,6 +21,7 @@ class ApiEndpoints {
   static const String pagination = "pet/pagination";
   static const String getAllPetsByOwner = "pet/all/";
   static const String getAllSpecies = "pet/species";
-  static const String petImage = "http://192.168.18.7:5000/pets/";
+
+  static const String petImage = "http://192.168.137.1:5000/pets/";
 // static const String petImage = "http://10.0.2.2:5000/pets/";
 }
