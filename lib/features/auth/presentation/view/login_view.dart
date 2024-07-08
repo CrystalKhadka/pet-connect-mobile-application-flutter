@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:all_sensors2/all_sensors2.dart';
 import 'package:final_assignment/core/common/my_snackbar.dart';
 import 'package:final_assignment/core/common/my_yes_no_dialog.dart';
-import 'package:final_assignment/features/auth/presentation/viewmodel/auth_view_model.dart';
 import 'package:final_assignment/features/auth/presentation/viewmodel/login_view_model.dart';
 import 'package:final_assignment/features/auth/presentation/widgets/my_button.dart';
 import 'package:final_assignment/features/auth/presentation/widgets/my_text_field.dart';
@@ -178,7 +177,7 @@ class _LoginViewState extends ConsumerState<LoginView> {
                                 onPressed: () {
                                   if (key.currentState!.validate()) {
                                     ref
-                                        .read(authViewModelProvider.notifier)
+                                        .read(loginViewModelProvider.notifier)
                                         .loginUser(
                                           emailController.text,
                                           passwordController.text,
@@ -193,7 +192,7 @@ class _LoginViewState extends ConsumerState<LoginView> {
                             IconButton(
                               onPressed: () {
                                 ref
-                                    .read(authViewModelProvider.notifier)
+                                    .read(loginViewModelProvider.notifier)
                                     .fingerPrintLogin();
                               },
                               icon: const Icon(Icons.fingerprint),

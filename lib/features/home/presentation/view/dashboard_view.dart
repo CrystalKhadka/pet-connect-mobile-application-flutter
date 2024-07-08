@@ -1,7 +1,7 @@
 import 'package:final_assignment/features/home/presentation/view/bottom_screen/chat_view.dart';
 import 'package:final_assignment/features/home/presentation/view/bottom_screen/home_view.dart';
 import 'package:final_assignment/features/pet/presentation/view/pet_list_view.dart';
-import 'package:final_assignment/features/settings/presentation/view/profile_view.dart';
+import 'package:final_assignment/features/profile/presentation/view/profile_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
