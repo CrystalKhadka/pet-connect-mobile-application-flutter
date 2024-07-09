@@ -32,7 +32,7 @@ class _PetListViewState extends ConsumerState<PetListView> {
       onNotification: (notification) {
         if (notification is ScrollEndNotification) {
           if (_scrollController.position.extentAfter == 0) {
-            ref.read(petViewModelProvider.notifier).fetchPets();
+            ref.read(petViewModelProvider.notifier).fetchPets(petState.limit);
           }
         }
         return true;

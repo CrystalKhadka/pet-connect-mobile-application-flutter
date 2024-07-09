@@ -15,6 +15,7 @@ import 'login_test.mocks.dart';
   MockSpec<LoginViewNavigator>(),
 ])
 void main() {
+  TestWidgetsFlutterBinding.ensureInitialized();
   late AuthUseCase mockAuthUseCase;
   late LoginViewNavigator mockLoginViewNavigator;
   late ProviderContainer container;

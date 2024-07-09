@@ -18,8 +18,8 @@ class AuthUseCase {
 
   AuthUseCase({required this.authRepository, required this.userSharedPrefs});
 
-  Future<Either<Failure, bool>> registerUser(AuthEntity auth) {
-    return authRepository.registerUser(auth);
+  Future<Either<Failure, bool>> registerUser(AuthEntity? auth) {
+    return authRepository.registerUser(auth ?? const AuthEntity.empty());
   }
 
   Future<Either<Failure, bool>> loginUser(String? email, String? password) {
