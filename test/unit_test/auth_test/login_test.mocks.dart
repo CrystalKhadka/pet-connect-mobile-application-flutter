@@ -211,6 +211,58 @@ class MockAuthUseCase extends _i1.Mock implements _i5.AuthUseCase {
       ) as _i6.Future<_i4.Either<_i7.Failure, _i8.AuthEntity>>);
 
   @override
+  _i6.Future<_i4.Either<_i7.Failure, String>> getFingerPrintId() =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #getFingerPrintId,
+          [],
+        ),
+        returnValue: _i6.Future<_i4.Either<_i7.Failure, String>>.value(
+            _FakeEither_2<_i7.Failure, String>(
+          this,
+          Invocation.method(
+            #getFingerPrintId,
+            [],
+          ),
+        )),
+        returnValueForMissingStub:
+            _i6.Future<_i4.Either<_i7.Failure, String>>.value(
+                _FakeEither_2<_i7.Failure, String>(
+          this,
+          Invocation.method(
+            #getFingerPrintId,
+            [],
+          ),
+        )),
+      ) as _i6.Future<_i4.Either<_i7.Failure, String>>);
+
+  @override
+  _i6.Future<_i4.Either<_i7.Failure, bool>> saveFingerPrintId(String? id) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #saveFingerPrintId,
+          [id],
+        ),
+        returnValue: _i6.Future<_i4.Either<_i7.Failure, bool>>.value(
+            _FakeEither_2<_i7.Failure, bool>(
+          this,
+          Invocation.method(
+            #saveFingerPrintId,
+            [id],
+          ),
+        )),
+        returnValueForMissingStub:
+            _i6.Future<_i4.Either<_i7.Failure, bool>>.value(
+                _FakeEither_2<_i7.Failure, bool>(
+          this,
+          Invocation.method(
+            #saveFingerPrintId,
+            [id],
+          ),
+        )),
+      ) as _i6.Future<_i4.Either<_i7.Failure, bool>>);
+
+  @override
   _i6.Future<_i4.Either<_i7.Failure, bool>> fingerPrintLogin() =>
       (super.noSuchMethod(
         Invocation.method(

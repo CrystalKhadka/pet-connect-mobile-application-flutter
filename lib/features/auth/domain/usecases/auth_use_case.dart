@@ -34,6 +34,22 @@ class AuthUseCase {
     return authRepository.getCurrentUser();
   }
 
+  Future<Either<Failure, String>> getFingerPrintId() async {
+    final data = await userSharedPrefs.checkId();
+    return data.fold(
+      (l) => Left(Failure(error: l.error)),
+      (r) => Right(r),
+    );
+  }
+
+  Future<Either<Failure, bool>> saveFingerPrintId(String? id) async {
+    final data = await userSharedPrefs.saveFingerPrintId(id ?? '');
+    return data.fold(
+      (l) => Left(Failure(error: l.error)),
+      (r) => Right(r),
+    );
+  }
+
   Future<Either<Failure, bool>> fingerPrintLogin() async {
     final data = await userSharedPrefs.checkId();
     return data.fold((l) => Left(Failure(error: l.error)), (r) async {

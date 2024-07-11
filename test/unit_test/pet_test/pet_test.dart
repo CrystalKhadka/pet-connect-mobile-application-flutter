@@ -47,6 +47,41 @@ void main() {
     expect(petState.species.length, 3);
   });
 
+  test('get 3 species', () async {
+    // Arrange
+    when(mockPetUseCase.getAllSpecies())
+        .thenAnswer((_) async => Right(species));
+
+    when(mockPetUseCase.pagination(1, 6)).thenAnswer((_) async => Right(pets));
+
+    // Act
+    await container.read(petViewModelProvider.notifier).fetchSpecies();
+
+    final petState = container.read(petViewModelProvider);
+
+    // Assert
+    expect(petState.species.length, 3);
+  });
+
+  // reset state
+  test('reset state test', () async {
+    // Arrange
+    when(mockPetUseCase.pagination(1, 6)).thenAnswer((_) async => Right(pets));
+    when(mockPetUseCase.getAllSpecies())
+        .thenAnswer((_) async => Right(species));
+
+    // Act
+    await container.read(petViewModelProvider.notifier).resetState();
+
+    final petState = container.read(petViewModelProvider);
+
+    // Assert
+    expect(petState.pets.length, 6);
+    expect(petState.isLoading, false);
+    expect(petState.error, null);
+    expect(petState.species.length, 3);
+  });
+
   tearDown(() {
     container.dispose();
   });

@@ -9,10 +9,10 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 
+import 'login_test.mocks.dart';
 import 'register_test.mocks.dart';
 
 @GenerateNiceMocks([
-  MockSpec<AuthUseCase>(),
   MockSpec<RegisterViewNavigator>(),
 ])
 void main() {
@@ -70,7 +70,7 @@ void main() {
               lastName: 'khadka',
               email: 'khadka@gmail.com',
               password: '12345678',
-              phone: '123456789',
+              phone: '1234567890',
               address: 'KTM',
               gender: 'Male',
               birthDate: '12/12/2000'));
