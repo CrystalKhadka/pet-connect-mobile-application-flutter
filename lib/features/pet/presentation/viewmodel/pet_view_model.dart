@@ -1,10 +1,6 @@
-import 'package:final_assignment/core/common/my_snackbar.dart';
 import 'package:final_assignment/features/pet/domain/usecases/pet_usecase.dart';
 import 'package:final_assignment/features/pet/presentation/state/pet_state.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
-import '../widgets/device_info.dart';
 
 final petViewModelProvider = StateNotifierProvider<PetViewModel, PetState>(
   (ref) => PetViewModel(
@@ -14,7 +10,7 @@ final petViewModelProvider = StateNotifierProvider<PetViewModel, PetState>(
 
 class PetViewModel extends StateNotifier<PetState> {
   PetViewModel({required this.petUseCase}) : super(PetState.initial()) {
-    fetchPets();
+    fetchPets(state.limit);
     fetchSpecies();
   }
 
@@ -22,11 +18,11 @@ class PetViewModel extends StateNotifier<PetState> {
 
   Future<void> resetState() async {
     state = PetState.initial();
-    fetchPets();
+    fetchPets(state.limit);
     fetchSpecies();
   }
 
-  Future<void> fetchPets() async {
+  Future<void> fetchPets(int limit) async {
     state = state.copyWith(isLoading: true);
     final currentState = state;
     final page = currentState.page + 1;
@@ -34,7 +30,7 @@ class PetViewModel extends StateNotifier<PetState> {
     final hasReachedMax = currentState.hasReachedMax;
     if (!hasReachedMax) {
       // get data from data source
-      final limit = DeviceInfo.isTabletDevice() ? 9 : 6;
+
       final result = await petUseCase.pagination(page, limit);
       result.fold(
         (failure) => state = state.copyWith(
@@ -56,7 +52,7 @@ class PetViewModel extends StateNotifier<PetState> {
       );
     } else {
       state = state.copyWith(isLoading: false);
-      showMySnackBar(message: 'No more data to load.', color: Colors.red);
+      // showMySnackBar(message: 'No more data to load.', color: Colors.red);
     }
   }
 

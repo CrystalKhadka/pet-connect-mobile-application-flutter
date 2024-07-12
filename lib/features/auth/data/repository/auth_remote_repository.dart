@@ -5,7 +5,7 @@ import 'package:final_assignment/features/auth/domain/entity/auth_entity.dart';
 import 'package:final_assignment/features/auth/domain/repository/i_auth_repository.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-final authRemoteRepository = Provider<IAuthRepository>(
+final authRemoteRepositoryProvider = Provider<IAuthRepository>(
   (ref) => AuthRemoteRepository(
     authRemoteDataSource: ref.read(authRemoteDataSourceProvider),
   ),
@@ -34,5 +34,10 @@ class AuthRemoteRepository implements IAuthRepository {
   @override
   Future<Either<Failure, AuthEntity>> getCurrentUser() {
     return authRemoteDataSource.getMe();
+  }
+
+  @override
+  Future<Either<Failure, bool>> fingerPrintLogin(String id) {
+    return authRemoteDataSource.fingerPrintLogin(id);
   }
 }

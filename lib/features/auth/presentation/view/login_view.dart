@@ -1,4 +1,8 @@
-import 'package:final_assignment/features/auth/presentation/viewmodel/auth_view_model.dart';
+import 'dart:async';
+
+import 'package:all_sensors2/all_sensors2.dart';
+import 'package:final_assignment/core/common/my_snackbar.dart';
+import 'package:final_assignment/core/common/my_yes_no_dialog.dart';
 import 'package:final_assignment/features/auth/presentation/viewmodel/login_view_model.dart';
 import 'package:final_assignment/features/auth/presentation/widgets/my_button.dart';
 import 'package:final_assignment/features/auth/presentation/widgets/my_text_field.dart';
@@ -17,8 +21,55 @@ class _LoginViewState extends ConsumerState<LoginView> {
   final passwordController = TextEditingController();
   bool rememberMe = false;
   bool obscurePassword = true;
+  bool showYesNoDialog = true;
+  bool isDialogShowing = false;
 
   final key = GlobalKey<FormState>();
+
+  List<double> _gyroscopeValues = [];
+  final List<StreamSubscription<dynamic>> _streamSubscription = [];
+
+  @override
+  void initState() {
+    _streamSubscription.add(gyroscopeEvents!.listen((GyroscopeEvent event) {
+      setState(() {
+        _gyroscopeValues = <double>[event.x, event.y, event.z];
+
+        _checkGyroscopeValues(_gyroscopeValues);
+      });
+    }));
+
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    for (final subscription in _streamSubscription) {
+      subscription.cancel();
+    }
+    emailController.dispose();
+    passwordController.dispose();
+    super.dispose();
+  }
+
+  void _checkGyroscopeValues(List<double> values) async {
+    const double threshold = 5; // Example threshold value, adjust as needed
+    if (values.any((value) => value.abs() > threshold)) {
+      if (showYesNoDialog && !isDialogShowing) {
+        isDialogShowing = true;
+        final result = await myYesNoDialog(
+          title: 'Are you sure you want to send feedback?',
+        );
+        isDialogShowing = false;
+        if (result) {
+          showMySnackBar(
+            message: 'Feedback sent',
+            color: Colors.green,
+          );
+        }
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -32,9 +83,7 @@ class _LoginViewState extends ConsumerState<LoginView> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const SizedBox(
-                    height: 50,
-                  ),
+                  const SizedBox(height: 50),
                   const Center(
                     child: Text(
                       'Pet Connect',
@@ -119,23 +168,36 @@ class _LoginViewState extends ConsumerState<LoginView> {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
-                        SizedBox(
-                          width: double.infinity,
-                          child: MyButton(
-                            onPressed: () {
-                              if (key.currentState!.validate()) {
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            SizedBox(
+                              width: MediaQuery.of(context).size.width * 0.5,
+                              child: MyButton(
+                                onPressed: () {
+                                  if (key.currentState!.validate()) {
+                                    ref
+                                        .read(loginViewModelProvider.notifier)
+                                        .loginUser(
+                                          emailController.text,
+                                          passwordController.text,
+                                        );
+                                  }
+                                },
+                                bgColor: const Color.fromRGBO(23, 88, 110, 1),
+                                fgColor: Colors.white,
+                                child: const Text('Log in'),
+                              ),
+                            ),
+                            IconButton(
+                              onPressed: () {
                                 ref
-                                    .read(authViewModelProvider.notifier)
-                                    .loginUser(
-                                      emailController.text,
-                                      passwordController.text,
-                                    );
-                              }
-                            },
-                            bgColor: const Color.fromRGBO(23, 88, 110, 1),
-                            fgColor: Colors.white,
-                            child: const Text('Log in'),
-                          ),
+                                    .read(loginViewModelProvider.notifier)
+                                    .fingerPrintLogin();
+                              },
+                              icon: const Icon(Icons.fingerprint),
+                            )
+                          ],
                         ),
                         SizedBox(
                           width: double.infinity,

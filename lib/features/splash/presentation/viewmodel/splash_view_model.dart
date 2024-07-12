@@ -26,7 +26,7 @@ class SplashViewModel extends StateNotifier<void> {
     navigator.openDashboardView();
   }
 
-  void openView() async {
+  Future<void> openView() async {
     final result = await authUseCase.verifyUser();
     result.fold(
       (failure) => openLoginView(),

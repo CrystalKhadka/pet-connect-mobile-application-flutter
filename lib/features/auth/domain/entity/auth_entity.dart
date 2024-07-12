@@ -23,6 +23,19 @@ class AuthEntity extends Equatable {
     required this.birthDate,
   });
 
+  const AuthEntity.empty()
+      : this(
+          id: '',
+          firstName: '',
+          lastName: '',
+          email: '',
+          password: '',
+          phone: '',
+          address: '',
+          gender: '',
+          birthDate: '',
+        );
+
   @override
   List<Object?> get props => [
         id,

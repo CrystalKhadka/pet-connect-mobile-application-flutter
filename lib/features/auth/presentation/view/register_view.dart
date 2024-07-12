@@ -1,5 +1,4 @@
 import 'package:final_assignment/features/auth/domain/entity/auth_entity.dart';
-import 'package:final_assignment/features/auth/presentation/viewmodel/auth_view_model.dart';
 import 'package:final_assignment/features/auth/presentation/viewmodel/register_view_model.dart';
 import 'package:final_assignment/features/auth/presentation/widgets/my_button.dart';
 import 'package:final_assignment/features/auth/presentation/widgets/my_text_field.dart';
@@ -245,7 +244,7 @@ class _RegisterViewState extends ConsumerState<RegisterView> {
                             gender: _selectedGender,
                             birthDate: _birthDateController.text);
                         ref
-                            .read(authViewModelProvider.notifier)
+                            .read(registerViewModelProvider.notifier)
                             .registerUser(auth);
                       }
                     },

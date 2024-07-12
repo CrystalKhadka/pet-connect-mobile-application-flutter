@@ -123,4 +123,25 @@ class AuthRemoteDataSource {
       return Left(Failure(error: e.error.toString()));
     }
   }
+
+  Future<Either<Failure, bool>> fingerPrintLogin(String id) async {
+    try {
+      Response response = await dio.post(
+        ApiEndpoints.getToken,
+        data: {'id': id},
+      );
+      if (response.statusCode == 200) {
+        final token = response.data['token'];
+        await userSharedPrefs.setUserToken(token);
+        return const Right(true);
+      }
+      return Left(
+        Failure(
+            error: response.data['message'],
+            statusCode: response.statusCode.toString()),
+      );
+    } on DioException catch (e) {
+      return Left(Failure(error: e.error.toString()));
+    }
+  }
 }
