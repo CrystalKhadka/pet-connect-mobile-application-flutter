@@ -23,7 +23,7 @@ class PetApiModel extends Equatable {
   final String petImage;
   final String petStatus;
   final String createdAt;
-  final String createdBy;
+
 
   // Constructing the PetApiModel class
   const PetApiModel(
@@ -38,7 +38,7 @@ class PetApiModel extends Equatable {
       required this.petImage,
       required this.petStatus,
       required this.createdAt,
-      required this.createdBy});
+  });
 
   // Empty constructor
   const PetApiModel.empty()
@@ -52,8 +52,7 @@ class PetApiModel extends Equatable {
         petDescription = '',
         petImage = '',
         petStatus = '',
-        createdAt = '',
-        createdBy = '';
+        createdAt = '';
 
   // JSON deserialization
   factory PetApiModel.fromJson(Map<String, dynamic> json) =>
@@ -76,7 +75,7 @@ class PetApiModel extends Equatable {
         petImage: petImage,
         petStatus: petStatus,
         createdAt: createdAt,
-        createdBy: createdBy);
+        createdBy: '');
   }
 
   // From entity
@@ -93,7 +92,7 @@ class PetApiModel extends Equatable {
         petImage: entity.petImage,
         petStatus: entity.petStatus,
         createdAt: entity.createdAt,
-        createdBy: entity.createdBy);
+        );
   }
 
   // To list of entity
@@ -119,6 +118,6 @@ class PetApiModel extends Equatable {
         petImage,
         petStatus,
         createdAt,
-        createdBy
+       
       ];
 }

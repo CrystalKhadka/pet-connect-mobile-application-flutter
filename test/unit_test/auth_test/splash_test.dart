@@ -1,4 +1,5 @@
 import 'package:dartz/dartz.dart';
+import 'package:final_assignment/core/failure/failure.dart';
 import 'package:final_assignment/features/auth/domain/usecases/auth_use_case.dart';
 import 'package:final_assignment/features/splash/presentation/navigator/splash_navigator.dart';
 import 'package:final_assignment/features/splash/presentation/viewmodel/splash_view_model.dart';
@@ -41,6 +42,20 @@ void main() {
 
     // Assert
     verify(mockSplashViewNavigator.openDashboardView()).called(1);
+  });
+  test('do not verify user', () async {
+    // Arrange
+    when(mockAuthUseCase.verifyUser()).thenAnswer(
+      (_) async => Left(
+        Failure(error: 'Invalid'),
+      ),
+    );
+
+    // Act
+    await container.read(splashViewModelProvider.notifier).openView();
+
+    // Assert
+    verify(mockSplashViewNavigator.openLoginView()).called(1);
   });
 
   tearDown(() {

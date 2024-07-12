@@ -1,3 +1,4 @@
+import 'package:final_assignment/features/home/presentation/viewmodel/home_view_model.dart';
 import 'package:final_assignment/features/profile/presentation/viewmodel/current_user_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -79,7 +80,9 @@ class _ProfileViewState extends ConsumerState<ProfileView> {
                 ProfileMenuItem(
                     icon: Icons.logout,
                     text: 'Logout',
-                    onTap: () {},
+                    onTap: () {
+                      ref.read(homeViewModelProvider.notifier).logout();
+                    },
                     textColor: Colors.red),
               ],
             ),
