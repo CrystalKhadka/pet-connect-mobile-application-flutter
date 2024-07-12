@@ -59,39 +59,49 @@ class CurrentUserViewModel extends StateNotifier<CurrentUserState> {
               message: 'Failed to disable fingerprint', color: Colors.red);
         }, (r) {
           state = state.copyWith(isFingerprintEnabled: false, isLoading: false);
-          showMySnackBar(message: 'Fingerprint disabled', color: Colors.green);
-        });
-      }
-    } else {
-      bool authenticated = false;
-      try {
-        authenticated = await localAuth.authenticate(
-          localizedReason: 'Authenticate to enable fingerprint',
-          options: const AuthenticationOptions(
-            stickyAuth: true,
-            biometricOnly: true,
-            useErrorDialogs: true,
-          ),
-        );
-      } catch (e) {
-        authenticated = false;
-        showMySnackBar(
-            message: 'Fingerprint authentication failed', color: Colors.red);
-      }
-
-      if (authenticated) {
-        final data =
-            await authUseCase.saveFingerPrintId(state.authEntity?.id ?? '');
-        data.fold((l) {
-          state = state.copyWith(isLoading: false, error: l.error);
-          showMySnackBar(
-              message: 'Failed to enable fingerprint', color: Colors.red);
-        }, (r) {
-          showMySnackBar(message: 'Fingerprint enabled', color: Colors.green);
-          state = state.copyWith(isFingerprintEnabled: true, isLoading: false);
+          showMySnackBar(message: 'Fingerprint disabled', color: Colors.red);
         });
       } else {
-        await authUseCase.saveFingerPrintId('');
+        state = state.copyWith(isLoading: false);
+      }
+    } else {
+      bool result = await myYesNoDialog(
+        title: 'Are you sure? Do you want to enable fingerprint login?',
+      );
+      if (result) {
+        bool authenticated = false;
+        try {
+          authenticated = await localAuth.authenticate(
+            localizedReason: 'Authenticate to enable fingerprint',
+            options: const AuthenticationOptions(
+              stickyAuth: true,
+              biometricOnly: true,
+              useErrorDialogs: true,
+            ),
+          );
+        } catch (e) {
+          authenticated = false;
+          showMySnackBar(
+              message: 'Fingerprint authentication failed', color: Colors.red);
+        }
+
+        if (authenticated) {
+          final data =
+              await authUseCase.saveFingerPrintId(state.authEntity?.id ?? '');
+          data.fold((l) {
+            state = state.copyWith(isLoading: false, error: l.error);
+            showMySnackBar(
+                message: 'Failed to enable fingerprint', color: Colors.red);
+          }, (r) {
+            showMySnackBar(message: 'Fingerprint enabled', color: Colors.green);
+            state =
+                state.copyWith(isFingerprintEnabled: true, isLoading: false);
+          });
+        } else {
+          await authUseCase.saveFingerPrintId('');
+          state = state.copyWith(isLoading: false);
+        }
+      } else {
         state = state.copyWith(isLoading: false);
       }
     }
@@ -101,10 +111,10 @@ class CurrentUserViewModel extends StateNotifier<CurrentUserState> {
     state = state.copyWith(isLoading: true);
     final currentUserId = state.authEntity!.id;
     final result = await authUseCase.getFingerPrintId();
-
     result.fold(
       (l) {
         state = state.copyWith(isLoading: false, error: l.error);
+        showMySnackBar(message: l.error, color: Colors.red);
       },
       (r) {
         if (r == currentUserId) {
@@ -112,6 +122,7 @@ class CurrentUserViewModel extends StateNotifier<CurrentUserState> {
         } else {
           state = state.copyWith(
             isLoading: false,
+            isFingerprintEnabled: false,
           );
         }
       },

@@ -35,11 +35,7 @@ class AuthUseCase {
   }
 
   Future<Either<Failure, String>> getFingerPrintId() async {
-    final data = await userSharedPrefs.checkId();
-    return data.fold(
-      (l) => Left(Failure(error: l.error)),
-      (r) => Right(r),
-    );
+    return userSharedPrefs.checkId();
   }
 
   Future<Either<Failure, bool>> saveFingerPrintId(String? id) async {

@@ -32,7 +32,7 @@ void main() {
     ]);
   });
 
-  test('verify user', () async {
+  test('open dashboard view test', () async {
     // Arrange
     when(mockAuthUseCase.verifyUser())
         .thenAnswer((_) async => const Right(true));
@@ -43,7 +43,7 @@ void main() {
     // Assert
     verify(mockSplashViewNavigator.openDashboardView()).called(1);
   });
-  test('do not verify user', () async {
+  test('open login view test', () async {
     // Arrange
     when(mockAuthUseCase.verifyUser()).thenAnswer(
       (_) async => Left(
