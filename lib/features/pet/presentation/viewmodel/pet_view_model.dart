@@ -71,7 +71,7 @@ class PetViewModel extends StateNotifier<PetState> {
     );
   }
 
-  void openSinglePetView() {
-    petViewNavigator.openSinglePetView();
+  void openSinglePetView(String id) {
+    petViewNavigator.openSinglePetView(id);
   }
 }

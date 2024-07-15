@@ -10,7 +10,9 @@ final dashboardNavigatorProvider =
 class DashboardViewNavigator with LoginViewRoute {}
 
 mixin DashboardViewRoute {
-  openDashboardView() {
-    NavigateRoute.popAndPushRoute(const DashboardView());
+  openDashboardView({int? index}) {
+    NavigateRoute.popAndPushRoute(DashboardView(
+      index: index,
+    ));
   }
 }

@@ -24,6 +24,12 @@ class _PetListViewState extends ConsumerState<PetListView> {
   }
 
   @override
+  void dispose() {
+    _searchController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final isTabletDevice = DeviceInfo.isTabletDevice();
     final petState = ref.watch(petViewModelProvider);
@@ -108,7 +114,7 @@ class _PetListViewState extends ConsumerState<PetListView> {
                           onDoubleTap: () {
                             ref
                                 .read(petViewModelProvider.notifier)
-                                .openSinglePetView();
+                                .openSinglePetView(pet.id!);
                           },
                         );
                       }

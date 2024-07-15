@@ -6,14 +6,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class DashboardView extends ConsumerStatefulWidget {
-  const DashboardView({super.key});
+  const DashboardView({super.key, this.index});
+
+  final int? index;
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() => _DashboardViewState();
 }
 
 class _DashboardViewState extends ConsumerState<DashboardView> {
+  // use index from widget if it is not null
   int currentIndex = 0;
+
   final List<Widget> _children = [
     const HomeView(),
     const PetListView(),
@@ -23,6 +27,11 @@ class _DashboardViewState extends ConsumerState<DashboardView> {
 
   @override
   Widget build(BuildContext context) {
+    if (widget.index != null) {
+      setState(() {
+        currentIndex = widget.index!;
+      });
+    }
     return SafeArea(
       child: Scaffold(
         body: _children[currentIndex],
