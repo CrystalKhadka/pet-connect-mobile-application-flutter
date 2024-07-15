@@ -55,6 +55,21 @@ class AppTheme {
         ),
       ),
 
+      // Floating action button theme
+      floatingActionButtonTheme: FloatingActionButtonThemeData(
+        backgroundColor: Colors.black,
+        // Change the size of the floating action button
+        elevation: 0,
+        sizeConstraints: const BoxConstraints(
+          minWidth: double.infinity,
+          minHeight: 60,
+        ),
+        // Change the shape of the floating action button
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(40),
+        ),
+      ),
+
       // Change text field theme
       inputDecorationTheme: const InputDecorationTheme(
         contentPadding: EdgeInsets.all(15),

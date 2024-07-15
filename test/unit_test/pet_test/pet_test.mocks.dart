@@ -13,6 +13,8 @@ import 'package:final_assignment/features/pet/domain/repository/i_pet_repository
     as _i2;
 import 'package:final_assignment/features/pet/domain/usecases/pet_usecase.dart'
     as _i4;
+import 'package:final_assignment/features/pet/presentation/navigator/pet_view_navigator.dart'
+    as _i8;
 import 'package:mockito/mockito.dart' as _i1;
 
 // ignore_for_file: type=lint
@@ -131,3 +133,8 @@ class MockPetUseCase extends _i1.Mock implements _i4.PetUseCase {
         )),
       ) as _i5.Future<_i3.Either<_i6.Failure, List<String>>>);
 }
+
+/// A class which mocks [PetViewNavigator].
+///
+/// See the documentation for Mockito's code generation for more information.
+class MockPetViewNavigator extends _i1.Mock implements _i8.PetViewNavigator {}

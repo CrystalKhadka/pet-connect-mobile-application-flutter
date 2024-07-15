@@ -103,7 +103,14 @@ class _PetListViewState extends ConsumerState<PetListView> {
                       final pet = petState.pets[index];
                       if (_selectedSpecies == null ||
                           pet.petSpecies == _selectedSpecies) {
-                        return MyCard(petEntity: pet);
+                        return GestureDetector(
+                          child: MyCard(petEntity: pet),
+                          onDoubleTap: () {
+                            ref
+                                .read(petViewModelProvider.notifier)
+                                .openSinglePetView();
+                          },
+                        );
                       }
                       return Container(); // Empty container if pet does not match the selected species
                     },

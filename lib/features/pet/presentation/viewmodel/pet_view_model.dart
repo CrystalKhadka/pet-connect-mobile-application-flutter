@@ -1,20 +1,24 @@
 import 'package:final_assignment/features/pet/domain/usecases/pet_usecase.dart';
+import 'package:final_assignment/features/pet/presentation/navigator/pet_view_navigator.dart';
 import 'package:final_assignment/features/pet/presentation/state/pet_state.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 final petViewModelProvider = StateNotifierProvider<PetViewModel, PetState>(
   (ref) => PetViewModel(
     petUseCase: ref.read(petUseCaseProvider),
+    petViewNavigator: ref.read(petNavigatorProvider),
   ),
 );
 
 class PetViewModel extends StateNotifier<PetState> {
-  PetViewModel({required this.petUseCase}) : super(PetState.initial()) {
+  PetViewModel({required this.petUseCase, required this.petViewNavigator})
+      : super(PetState.initial()) {
     fetchPets(state.limit);
     fetchSpecies();
   }
 
   final PetUseCase petUseCase;
+  final PetViewNavigator petViewNavigator;
 
   Future<void> resetState() async {
     state = PetState.initial();
@@ -65,5 +69,9 @@ class PetViewModel extends StateNotifier<PetState> {
       ),
       (data) => state = state.copyWith(species: data),
     );
+  }
+
+  void openSinglePetView() {
+    petViewNavigator.openSinglePetView();
   }
 }
