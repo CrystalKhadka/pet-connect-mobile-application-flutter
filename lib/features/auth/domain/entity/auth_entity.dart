@@ -2,14 +2,14 @@ import 'package:equatable/equatable.dart';
 
 class AuthEntity extends Equatable {
   final String? id;
-  final String firstName;
-  final String lastName;
-  final String email;
-  final String password;
-  final String phone;
-  final String address;
-  final String gender;
-  final String birthDate;
+  final String? firstName;
+  final String? lastName;
+  final String? email;
+  final String? password;
+  final String? phone;
+  final String? address;
+  final String? gender;
+  final String? birthDate;
 
   const AuthEntity({
     this.id,

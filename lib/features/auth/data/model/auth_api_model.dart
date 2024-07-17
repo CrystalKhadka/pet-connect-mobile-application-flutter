@@ -13,14 +13,14 @@ final authApiModelProvider = Provider<AuthApiModel>(
 class AuthApiModel extends Equatable {
   @JsonKey(name: '_id')
   final String? id;
-  final String firstName;
-  final String lastName;
-  final String email;
-  final String password;
-  final String birthDate;
-  final String address;
-  final String gender;
-  final String phone;
+  final String? firstName;
+  final String? lastName;
+  final String? email;
+  final String? password;
+  final String? birthDate;
+  final String? address;
+  final String? gender;
+  final String? phone;
 
   const AuthApiModel({
     this.id,

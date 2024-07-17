@@ -24,4 +24,9 @@ class PetRemoteRepository implements IPetRepository {
   Future<Either<Failure, List<String>>> getAllSpecies() {
     return petRemoteDataSource.getAllSpecies();
   }
+
+  @override
+  Future<Either<Failure, PetEntity>> getPetById(String id) {
+    return petRemoteDataSource.getPetById(id: id);
+  }
 }

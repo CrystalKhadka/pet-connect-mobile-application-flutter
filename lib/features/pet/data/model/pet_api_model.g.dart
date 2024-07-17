@@ -18,6 +18,9 @@ PetApiModel _$PetApiModelFromJson(Map<String, dynamic> json) => PetApiModel(
       petImage: json['petImage'] as String,
       petStatus: json['petStatus'] as String,
       createdAt: json['createdAt'] as String,
+      createdBy: json['createdBy'] == null
+          ? null
+          : AuthApiModel.fromJson(json['createdBy'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$PetApiModelToJson(PetApiModel instance) =>
@@ -33,4 +36,5 @@ Map<String, dynamic> _$PetApiModelToJson(PetApiModel instance) =>
       'petImage': instance.petImage,
       'petStatus': instance.petStatus,
       'createdAt': instance.createdAt,
+      'createdBy': instance.createdBy,
     };

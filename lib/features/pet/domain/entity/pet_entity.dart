@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:final_assignment/features/auth/domain/entity/auth_entity.dart';
 
 class PetEntity extends Equatable {
   final String? id;
@@ -12,7 +13,7 @@ class PetEntity extends Equatable {
   final String petImage;
   final String petStatus;
   final String createdAt;
-  final String createdBy;
+  final AuthEntity? createdBy;
 
   const PetEntity(
       {required this.id,

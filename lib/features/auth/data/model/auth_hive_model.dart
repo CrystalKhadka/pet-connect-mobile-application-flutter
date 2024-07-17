@@ -13,21 +13,21 @@ class AuthHiveModel {
   @HiveField(0)
   final String? userId;
   @HiveField(1)
-  final String fname;
+  final String? fname;
   @HiveField(2)
-  final String lname;
+  final String? lname;
   @HiveField(3)
-  final String email;
+  final String? email;
   @HiveField(4)
-  final String password;
+  final String? password;
   @HiveField(5)
-  final String phone;
+  final String? phone;
   @HiveField(6)
-  final String address;
+  final String? address;
   @HiveField(7)
-  final String date;
+  final String? date;
   @HiveField(8)
-  final String gender;
+  final String? gender;
 
   AuthHiveModel(
       {String? userId,

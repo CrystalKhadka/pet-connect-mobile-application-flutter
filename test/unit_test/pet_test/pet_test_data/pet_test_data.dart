@@ -17,7 +17,7 @@ class PetTestData {
           petImage: '1719641506302-german.jpg',
           petStatus: 'available',
           createdAt: '2024-06-29T05:42:55.826Z',
-          createdBy: '6683b1f7f523f9afbd2d8fe0'),
+          createdBy: null),
       const PetEntity(
         id: "667fa6453dcd1df4d96dd19a",
         petName: "kitty",
@@ -31,7 +31,7 @@ class PetTestData {
         petImage: "1719641669631-himalyan.jpg",
         petStatus: "available",
         createdAt: "2024-06-29T05:42:55.826Z",
-        createdBy: "6683b1f7f523f9afbd2d8fe0",
+        createdBy: null,
       ),
       const PetEntity(
         id: "667fa64d3dcd1df4d96dd19c",
@@ -45,7 +45,7 @@ class PetTestData {
         petImage: "1719641677473-german.jpg",
         petStatus: "available",
         createdAt: "2024-06-29T05:42:55.826Z",
-        createdBy: "6683b1f7f523f9afbd2d8fe0",
+        createdBy: null,
       ),
       const PetEntity(
         id: "6683b1f7f523f9afbd2d8fe0",
@@ -59,7 +59,7 @@ class PetTestData {
         petImage: "1719641732792-golden.jpg",
         petStatus: "available",
         createdAt: "2024-06-29T05:42:55.826Z",
-        createdBy: "6683b1f7f523f9afbd2d8fe0",
+        createdBy: null,
       ),
       const PetEntity(
         id: "667fa6a33dcd1df4d96dd1a3",
@@ -73,7 +73,7 @@ class PetTestData {
         petImage: "1719641763841-pitbull.jpg",
         petStatus: "available",
         createdAt: "2024-06-29T05:42:55.826Z",
-        createdBy: "6683b1f7f523f9afbd2d8fe0",
+        createdBy: null,
       ),
       const PetEntity(
         id: "667fa82f3dcd1df4d96dd1b1",
@@ -88,7 +88,7 @@ class PetTestData {
         petImage: "1719642159945-himalyan.jpg",
         petStatus: "available",
         createdAt: "2024-06-29T05:42:55.826Z",
-        createdBy: "6683b1f7f523f9afbd2d8fe0",
+        createdBy: null,
       )
     ];
 

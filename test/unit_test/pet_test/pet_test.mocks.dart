@@ -132,9 +132,44 @@ class MockPetUseCase extends _i1.Mock implements _i4.PetUseCase {
           ),
         )),
       ) as _i5.Future<_i3.Either<_i6.Failure, List<String>>>);
+
+  @override
+  _i5.Future<_i3.Either<_i6.Failure, _i7.PetEntity>> getPetById(String? id) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #getPetById,
+          [id],
+        ),
+        returnValue: _i5.Future<_i3.Either<_i6.Failure, _i7.PetEntity>>.value(
+            _FakeEither_1<_i6.Failure, _i7.PetEntity>(
+          this,
+          Invocation.method(
+            #getPetById,
+            [id],
+          ),
+        )),
+        returnValueForMissingStub:
+            _i5.Future<_i3.Either<_i6.Failure, _i7.PetEntity>>.value(
+                _FakeEither_1<_i6.Failure, _i7.PetEntity>(
+          this,
+          Invocation.method(
+            #getPetById,
+            [id],
+          ),
+        )),
+      ) as _i5.Future<_i3.Either<_i6.Failure, _i7.PetEntity>>);
 }
 
 /// A class which mocks [PetViewNavigator].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockPetViewNavigator extends _i1.Mock implements _i8.PetViewNavigator {}
+class MockPetViewNavigator extends _i1.Mock implements _i8.PetViewNavigator {
+  @override
+  dynamic openSinglePetView(String? id) => super.noSuchMethod(
+        Invocation.method(
+          #openSinglePetView,
+          [id],
+        ),
+        returnValueForMissingStub: null,
+      );
+}

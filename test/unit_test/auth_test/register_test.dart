@@ -45,17 +45,17 @@ void main() {
         final auth = innovation.positionalArguments[0] as AuthEntity;
 
         return Future.value(
-          auth.firstName.isNotEmpty &&
-                  auth.lastName.isNotEmpty &&
-                  auth.email.isNotEmpty &&
-                  auth.password.isNotEmpty &&
-                  auth.birthDate.isNotEmpty &&
-                  auth.address.isNotEmpty &&
-                  auth.gender.isNotEmpty &&
-                  auth.phone.isNotEmpty &&
-                  auth.email.contains('@') &&
-                  auth.email.contains('.') &&
-                  auth.phone.length == 10
+          auth.firstName!.isNotEmpty &&
+                  auth.lastName!.isNotEmpty &&
+                  auth.email!.isNotEmpty &&
+                  auth.password!.isNotEmpty &&
+                  auth.birthDate!.isNotEmpty &&
+                  auth.address!.isNotEmpty &&
+                  auth.gender!.isNotEmpty &&
+                  auth.phone!.isNotEmpty &&
+                  auth.email!.contains('@') &&
+                  auth.email!.contains('.') &&
+                  auth.phone!.length == 10
               ? const Right(true)
               : Left(
                   Failure(error: 'Invalid'),

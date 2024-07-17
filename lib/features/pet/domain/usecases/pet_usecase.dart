@@ -23,4 +23,8 @@ class PetUseCase {
   Future<Either<Failure, List<String>>> getAllSpecies() {
     return petRepository.getAllSpecies();
   }
+
+  Future<Either<Failure, PetEntity>> getPetById(String id) {
+    return petRepository.getPetById(id);
+  }
 }

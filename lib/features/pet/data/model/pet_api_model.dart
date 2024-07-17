@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:final_assignment/features/auth/data/model/auth_api_model.dart';
 import 'package:final_assignment/features/pet/domain/entity/pet_entity.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:json_annotation/json_annotation.dart';
@@ -23,21 +24,22 @@ class PetApiModel extends Equatable {
   final String petImage;
   final String petStatus;
   final String createdAt;
-
+  final AuthApiModel? createdBy;
 
   // Constructing the PetApiModel class
-  const PetApiModel(
-      {required this.id,
-      required this.petName,
-      required this.petSpecies,
-      required this.petBreed,
-      required this.petAge,
-      required this.petWeight,
-      required this.petColor,
-      required this.petDescription,
-      required this.petImage,
-      required this.petStatus,
-      required this.createdAt,
+  const PetApiModel({
+    required this.id,
+    required this.petName,
+    required this.petSpecies,
+    required this.petBreed,
+    required this.petAge,
+    required this.petWeight,
+    required this.petColor,
+    required this.petDescription,
+    required this.petImage,
+    required this.petStatus,
+    required this.createdAt,
+    this.createdBy,
   });
 
   // Empty constructor
@@ -52,6 +54,7 @@ class PetApiModel extends Equatable {
         petDescription = '',
         petImage = '',
         petStatus = '',
+        createdBy = null,
         createdAt = '';
 
   // JSON deserialization
@@ -75,24 +78,24 @@ class PetApiModel extends Equatable {
         petImage: petImage,
         petStatus: petStatus,
         createdAt: createdAt,
-        createdBy: '');
+        createdBy: createdBy?.toEntity());
   }
 
   // From entity
   factory PetApiModel.fromEntity(PetEntity entity) {
     return PetApiModel(
-        id: entity.id,
-        petName: entity.petName,
-        petSpecies: entity.petSpecies,
-        petBreed: entity.petBreed,
-        petAge: entity.petAge,
-        petWeight: entity.petWeight,
-        petColor: entity.petColor,
-        petDescription: entity.petDescription,
-        petImage: entity.petImage,
-        petStatus: entity.petStatus,
-        createdAt: entity.createdAt,
-        );
+      id: entity.id,
+      petName: entity.petName,
+      petSpecies: entity.petSpecies,
+      petBreed: entity.petBreed,
+      petAge: entity.petAge,
+      petWeight: entity.petWeight,
+      petColor: entity.petColor,
+      petDescription: entity.petDescription,
+      petImage: entity.petImage,
+      petStatus: entity.petStatus,
+      createdAt: entity.createdAt,
+    );
   }
 
   // To list of entity
@@ -118,6 +121,5 @@ class PetApiModel extends Equatable {
         petImage,
         petStatus,
         createdAt,
-       
       ];
 }

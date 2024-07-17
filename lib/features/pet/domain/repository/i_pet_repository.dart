@@ -11,4 +11,6 @@ abstract class IPetRepository {
   Future<Either<Failure, List<PetEntity>>> pagination(int page, int limit);
 
   Future<Either<Failure, List<String>>> getAllSpecies();
+
+  Future<Either<Failure, PetEntity>> getPetById(String id);
 }

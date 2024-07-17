@@ -27,9 +27,10 @@ class AuthLocalDataSource {
       final hiveUser = authHiveModel.fromEntity(user);
 
       // If already email throw error
-      final userByEmail = await hiveService.getUserByEmail(hiveUser.email);
+      final userByEmail =
+          await hiveService.getUserByEmail(hiveUser.email ?? '');
 
-      if (userByEmail.email.isNotEmpty) {
+      if (userByEmail.email?.isNotEmpty ?? false) {
         return Left(Failure(error: 'Email already exists'));
       }
 
@@ -45,7 +46,7 @@ class AuthLocalDataSource {
     try {
       final user = await hiveService.login(email, password);
 
-      if (user!.email.isEmpty) {
+      if (user!.email?.isEmpty ?? true) {
         return Left(Failure(error: 'User Credentials not found'));
       }
       return const Right(true);
