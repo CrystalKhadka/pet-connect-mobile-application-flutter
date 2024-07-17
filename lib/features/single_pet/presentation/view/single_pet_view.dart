@@ -299,13 +299,16 @@ class _SinglePetViewState extends ConsumerState<SinglePetView> {
                   child: CircularProgressIndicator(),
                 ),
             ],
-            // pullableSheet: PullableSheet(
           ),
         ),
         floatingActionButton: Padding(
           padding: const EdgeInsets.all(8.0),
           child: FloatingActionButton(
-              onPressed: () {},
+              onPressed: () {
+                ref
+                    .read(singlePetViewModelProvider.notifier)
+                    .openAdoptionForm();
+              },
               child: const SizedBox(
                 child: Text('Adopt Me'),
               )),

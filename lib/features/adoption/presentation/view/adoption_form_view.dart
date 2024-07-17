@@ -10,22 +10,235 @@ class AdoptionFormView extends ConsumerStatefulWidget {
 }
 
 class _AdoptionFormViewState extends ConsumerState<AdoptionFormView> {
+  late TextEditingController _fullNameController;
+  late TextEditingController _ageController;
+  late TextEditingController _emailController;
+  late TextEditingController _phoneController;
+  late TextEditingController _houseOrApartmentController;
+  late TextEditingController _yardOrOutdoorSpaceController;
+  late TextEditingController _ownedPetsController;
+  late TextEditingController _adoptionReasonController;
+  String gender = 'M';
+  String? _houseDropDownValue;
+  String? _yardDropDownValue;
+
+  @override
+  void initState() {
+    _fullNameController = TextEditingController();
+    _ageController = TextEditingController();
+    _emailController = TextEditingController();
+    _phoneController = TextEditingController();
+    _houseOrApartmentController = TextEditingController();
+    _yardOrOutdoorSpaceController = TextEditingController();
+    _ownedPetsController = TextEditingController();
+    _adoptionReasonController = TextEditingController();
+
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Adoption Form'),
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back, color: Colors.black),
+          onPressed: () => Navigator.of(context).pop(),
+        ),
+        title: const Row(
+          children: [
+            SizedBox(width: 8),
+            Text('Pet Connect', style: TextStyle(color: Colors.black)),
+          ],
+        ),
+        backgroundColor: Colors.white,
+        elevation: 0,
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.notifications_outlined, color: Colors.black),
+            onPressed: () {},
+          ),
+          CircleAvatar(
+            backgroundColor: Colors.grey[300],
+            child: Icon(Icons.person, color: Colors.grey[600]),
+          ),
+          const SizedBox(width: 16),
+        ],
       ),
-      body: const Center(
+      body: SingleChildScrollView(
+        padding: const EdgeInsets.all(16),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
+          children: [
+            _buildTextField(
+              icon: Icons.person,
+              label: 'Full Name',
+              controller: _fullNameController,
+            ),
+            _buildTextField(
+              icon: Icons.calendar_today,
+              label: 'Age',
+              keyboardType: TextInputType.number,
+              controller: _ageController,
+            ),
+            _buildTextField(
+              icon: Icons.email,
+              label: 'Email',
+              keyboardType: TextInputType.emailAddress,
+              controller: _emailController,
+            ),
+            Padding(
+              padding: const EdgeInsets.only(bottom: 16),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: RadioListTile<String>(
+                      title: const Text('Male'),
+                      value: 'M',
+                      groupValue: gender,
+                      onChanged: (value) {
+                        setState(() {
+                          gender = value!;
+                        });
+                      },
+                    ),
+                  ),
+                  Expanded(
+                    child: RadioListTile<String>(
+                        title: const Text('Female'),
+                        value: 'F',
+                        groupValue: gender,
+                        onChanged: (value) {
+                          setState(() {
+                            gender = value!;
+                          });
+                        }),
+                  ),
+                ],
+              ),
+            ),
+            _buildTextField(
+              icon: Icons.phone,
+              label: 'Phone',
+              keyboardType: TextInputType.phone,
+              controller: _phoneController,
+            ),
+            DropdownButtonFormField<String>(
+              items: const [
+                DropdownMenuItem(value: 'House', child: Text('House')),
+                DropdownMenuItem(value: 'Apartment', child: Text('Apartment')),
+                DropdownMenuItem(value: 'Other', child: Text('Other')),
+              ],
+              value: _houseDropDownValue,
+              onChanged: (value) {
+                _houseDropDownValue = value;
+              },
+              decoration: InputDecoration(
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                filled: true,
+                fillColor: Colors.grey[200],
+                labelText: 'Do you live in a house or apartment?',
+              ),
+            ),
+            const SizedBox(height: 16),
+            DropdownButtonFormField<String>(
+              items: const [
+                DropdownMenuItem(value: 'Yes', child: Text('Yes')),
+                DropdownMenuItem(value: 'No', child: Text('No')),
+              ],
+              value: _yardDropDownValue,
+              onChanged: (value) {
+                _yardDropDownValue = value;
+              },
+              decoration: InputDecoration(
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                filled: true,
+                fillColor: Colors.grey[200],
+                labelText: 'Do you have a yard or outdoor space?',
+              ),
+            ),
+            const SizedBox(height: 16),
+            _buildTextField(
+              label:
+                  'Have you owned pets before? If yes, please describe your experience.',
+              controller: _ownedPetsController,
+              maxLines: 3,
+            ),
+            _buildTextField(
+              label: 'Why do you want to adopt this particular pet?',
+              controller: _adoptionReasonController,
+              maxLines: 3,
+            ),
+            const SizedBox(height: 20),
             Text(
-              'Adoption Form',
-              style: TextStyle(fontSize: 24),
+              'You might need to wait for some time for confirmation.',
+              style: TextStyle(
+                  fontStyle: FontStyle.italic, color: Colors.grey[600]),
+            ),
+            const SizedBox(height: 20),
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.teal,
+                minimumSize: const Size(double.infinity, 50),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8),
+                ),
+              ),
+              onPressed: () {
+                print([
+                  _fullNameController.text,
+                  _ageController.text,
+                  _emailController.text,
+                  gender,
+                ]);
+              },
+              child: const Text('Confirm'),
             ),
           ],
         ),
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        currentIndex: 0,
+        items: const [
+          BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
+          BottomNavigationBarItem(icon: Icon(Icons.pets), label: 'Pet List'),
+          BottomNavigationBarItem(icon: Icon(Icons.chat), label: 'Chat'),
+          BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Profile'),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildTextField({
+    IconData? icon,
+    required String label,
+    required TextEditingController controller,
+    TextInputType keyboardType = TextInputType.text,
+    int maxLines = 1,
+  }) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 16),
+      child: TextField(
+        decoration: InputDecoration(
+          prefixIcon: icon != null ? Icon(icon, color: Colors.grey) : null,
+          labelText: label,
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(8),
+          ),
+          filled: true,
+          fillColor: Colors.grey[200],
+        ),
+        controller: controller,
+        keyboardType: keyboardType,
+        maxLines: maxLines,
       ),
     );
   }

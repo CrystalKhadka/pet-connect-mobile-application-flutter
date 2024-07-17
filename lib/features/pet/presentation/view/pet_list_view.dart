@@ -1,8 +1,8 @@
-import 'package:final_assignment/features/pet/presentation/widgets/device_info.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../viewmodel/pet_view_model.dart';
+import '../widgets/device_info.dart';
 import '../widgets/my_card.dart';
 
 class PetListView extends ConsumerStatefulWidget {
@@ -19,13 +19,14 @@ class _PetListViewState extends ConsumerState<PetListView> {
 
   @override
   void initState() {
-    _searchController = TextEditingController();
     super.initState();
+    _searchController = TextEditingController();
   }
 
   @override
   void dispose() {
     _searchController.dispose();
+    _scrollController.dispose();
     super.dispose();
   }
 
@@ -34,101 +35,84 @@ class _PetListViewState extends ConsumerState<PetListView> {
     final isTabletDevice = DeviceInfo.isTabletDevice();
     final petState = ref.watch(petViewModelProvider);
 
-    return NotificationListener(
-      onNotification: (notification) {
-        if (notification is ScrollEndNotification) {
-          if (_scrollController.position.extentAfter == 0) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Adopt a Pet'),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.refresh),
+            onPressed: () =>
+                ref.read(petViewModelProvider.notifier).resetState(),
+          ),
+          IconButton(
+            icon: const Icon(Icons.filter_alt),
+            onPressed: () => showFilterDialog(context, petState.species),
+          ),
+        ],
+      ),
+      body: NotificationListener<ScrollNotification>(
+        onNotification: (notification) {
+          if (notification is ScrollEndNotification &&
+              _scrollController.position.extentAfter == 0) {
             ref.read(petViewModelProvider.notifier).fetchPets(petState.limit);
           }
-        }
-        return true;
-      },
-      child: SizedBox.expand(
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: RefreshIndicator(
-            onRefresh: () {
-              return ref.read(petViewModelProvider.notifier).resetState();
-            },
-            child: Column(
-              children: [
-                const SizedBox(height: 20),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    const Text(
-                      'Adopt Pet',
-                      style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.w100,
-                        color: Colors.grey,
-                      ),
-                    ),
-                    const Spacer(),
-                    TextButton(
-                      onPressed: () {
-                        ref.read(petViewModelProvider.notifier).resetState();
-                      },
-                      child: const Icon(Icons.refresh),
-                    ),
-                    TextButton(
-                      onPressed: () {
-                        showFilterDialog(context, petState.species);
-                      },
-                      child: const Icon(Icons.filter_alt),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 10),
-                TextFormField(
-                  decoration: InputDecoration(
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    hintText: 'Search',
-                    suffixIcon: IconButton(
-                      icon: const Icon(Icons.search),
-                      onPressed: () {},
-                    ),
+          return true;
+        },
+        child: RefreshIndicator(
+          onRefresh: () => ref.read(petViewModelProvider.notifier).resetState(),
+          child: CustomScrollView(
+            controller: _scrollController,
+            slivers: [
+              SliverPadding(
+                padding: const EdgeInsets.all(16.0),
+                sliver: SliverToBoxAdapter(
+                  child: SearchBar(
+                    controller: _searchController,
+                    onSearch: (value) {
+                      // Implement search functionality
+                    },
                   ),
-                  controller: _searchController,
                 ),
-                const SizedBox(height: 10),
-                Expanded(
-                  child: GridView.builder(
-                    physics: const AlwaysScrollableScrollPhysics(),
-                    controller: _scrollController,
-                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: isTabletDevice ? 3 : 2,
-                      mainAxisSpacing: 10,
-                      crossAxisSpacing: 10,
-                      childAspectRatio: isTabletDevice ? 1.5 : 0.6,
-                    ),
-                    itemCount: petState.pets.length,
-                    itemBuilder: (context, index) {
+              ),
+              SliverPadding(
+                padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                sliver: SliverGrid(
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 1,
+                    mainAxisSpacing: 16,
+                    crossAxisSpacing: 16,
+                    childAspectRatio: isTabletDevice ? 2.5 : 1.2,
+                  ),
+                  delegate: SliverChildBuilderDelegate(
+                    (context, index) {
                       final pet = petState.pets[index];
                       if (_selectedSpecies == null ||
                           pet.petSpecies == _selectedSpecies) {
                         return GestureDetector(
-                          child: MyCard(petEntity: pet),
-                          onDoubleTap: () {
-                            ref
-                                .read(petViewModelProvider.notifier)
-                                .openSinglePetView(pet.id!);
-                          },
+                          child: MyCard(
+                              petEntity: pet,
+                              onTap: () {},
+                              onAdopt: () {
+                                ref
+                                    .read(petViewModelProvider.notifier)
+                                    .openAdoptionForm();
+                              }),
+                          onDoubleTap: () => ref
+                              .read(petViewModelProvider.notifier)
+                              .openSinglePetView(pet.id!),
                         );
                       }
-                      return Container(); // Empty container if pet does not match the selected species
+                      return const SizedBox.shrink();
                     },
+                    childCount: petState.pets.length,
                   ),
                 ),
-                if (petState.isLoading)
-                  const CircularProgressIndicator()
-                else ...{
-                  const SizedBox(height: 10),
-                }
-              ],
-            ),
+              ),
+              if (petState.isLoading)
+                const SliverToBoxAdapter(
+                  child: Center(child: CircularProgressIndicator()),
+                ),
+            ],
           ),
         ),
       ),
@@ -141,22 +125,57 @@ class _PetListViewState extends ConsumerState<PetListView> {
       builder: (BuildContext context) {
         return AlertDialog(
           title: const Text('Filter by Species'),
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: species.map((species) {
-              return ListTile(
-                title: Text(species),
-                onTap: () {
-                  setState(() {
-                    _selectedSpecies = species;
-                  });
-                  Navigator.of(context).pop();
-                },
-              );
-            }).toList(),
+          content: SingleChildScrollView(
+            child: ListBody(
+              children: [
+                ListTile(
+                  title: const Text('All Species'),
+                  onTap: () {
+                    setState(() => _selectedSpecies = null);
+                    Navigator.of(context).pop();
+                  },
+                ),
+                ...species.map((species) => ListTile(
+                      title: Text(species),
+                      onTap: () {
+                        setState(() => _selectedSpecies = species);
+                        Navigator.of(context).pop();
+                      },
+                    )),
+              ],
+            ),
           ),
         );
       },
+    );
+  }
+}
+
+class SearchBar extends StatelessWidget {
+  final TextEditingController controller;
+  final Function(String) onSearch;
+
+  const SearchBar({
+    super.key,
+    required this.controller,
+    required this.onSearch,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return TextField(
+      controller: controller,
+      decoration: InputDecoration(
+        hintText: 'Search pets...',
+        prefixIcon: const Icon(Icons.search),
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(30),
+          borderSide: BorderSide.none,
+        ),
+        filled: true,
+        fillColor: Colors.grey[200],
+      ),
+      onSubmitted: onSearch,
     );
   }
 }

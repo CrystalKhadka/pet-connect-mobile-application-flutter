@@ -28,6 +28,10 @@ class SinglePetViewModel extends StateNotifier<SinglePetState> {
     singlePetViewNavigator.openDashboardView(index: 1);
   }
 
+  void openAdoptionForm() {
+    singlePetViewNavigator.openAdoptionFormView();
+  }
+
   Future<void> fetchPetById(String id) async {
     state = state.copyWith(isLoading: true);
     final result = await petUseCase.getPetById(id);
