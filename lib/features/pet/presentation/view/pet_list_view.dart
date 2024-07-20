@@ -95,7 +95,7 @@ class _PetListViewState extends ConsumerState<PetListView> {
                               onAdopt: () {
                                 ref
                                     .read(petViewModelProvider.notifier)
-                                    .openAdoptionForm();
+                                    .openAdoptionForm(pet.id!);
                               }),
                           onDoubleTap: () => ref
                               .read(petViewModelProvider.notifier)

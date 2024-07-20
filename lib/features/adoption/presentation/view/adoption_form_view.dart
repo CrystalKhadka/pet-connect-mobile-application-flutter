@@ -1,8 +1,12 @@
+import 'package:final_assignment/features/adoption/domain/entity/form_entity.dart';
+import 'package:final_assignment/features/adoption/presentation/viewmodel/adoption_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class AdoptionFormView extends ConsumerStatefulWidget {
-  const AdoptionFormView({super.key});
+  const AdoptionFormView(this.petId, {super.key});
+
+  final String petId;
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() =>
@@ -24,16 +28,21 @@ class _AdoptionFormViewState extends ConsumerState<AdoptionFormView> {
 
   @override
   void initState() {
-    _fullNameController = TextEditingController();
-    _ageController = TextEditingController();
-    _emailController = TextEditingController();
-    _phoneController = TextEditingController();
-    _houseOrApartmentController = TextEditingController();
-    _yardOrOutdoorSpaceController = TextEditingController();
-    _ownedPetsController = TextEditingController();
-    _adoptionReasonController = TextEditingController();
+    _fullNameController = TextEditingController(text: 'Crystal Khadka');
+    _ageController = TextEditingController(text: '12');
+    _emailController = TextEditingController(text: 'khadkacrystal23gmail.com');
+    _phoneController = TextEditingController(text: '9843041037');
+    _houseOrApartmentController = TextEditingController(text: 'House');
+    _yardOrOutdoorSpaceController = TextEditingController(text: 'Yes');
+    _ownedPetsController = TextEditingController(text: 'I have some');
+    _adoptionReasonController = TextEditingController(text: 'companion');
 
     super.initState();
+    Future.microtask(
+      () => {
+        ref.read(adoptionViewModelProvider.notifier).setPet(widget.petId),
+      },
+    );
   }
 
   @override
@@ -44,6 +53,7 @@ class _AdoptionFormViewState extends ConsumerState<AdoptionFormView> {
 
   @override
   Widget build(BuildContext context) {
+    final adoptionState = ref.watch(adoptionViewModelProvider);
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
@@ -193,15 +203,23 @@ class _AdoptionFormViewState extends ConsumerState<AdoptionFormView> {
                 ),
               ),
               onPressed: () {
-                print([
-                  _fullNameController.text,
-                  _ageController.text,
-                  _emailController.text,
-                  gender,
-                ]);
+                FormEntity form = FormEntity(
+                  fullName: _fullNameController.text,
+                  email: _emailController.text,
+                  phone: _phoneController.text,
+                  age: double.parse(_ageController.text),
+                  gender: gender,
+                  houseType: _houseDropDownValue!,
+                  reason: _adoptionReasonController.text,
+                  yard: _yardDropDownValue!,
+                  petExperience: _ownedPetsController.text,
+                );
+
+                ref.read(adoptionViewModelProvider.notifier).submitForm(form);
               },
               child: const Text('Confirm'),
             ),
+            if (adoptionState.isLoading) const LinearProgressIndicator(),
           ],
         ),
       ),

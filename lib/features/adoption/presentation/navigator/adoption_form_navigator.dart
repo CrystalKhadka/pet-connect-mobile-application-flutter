@@ -4,7 +4,7 @@ import 'package:final_assignment/features/adoption/presentation/view/adoption_fo
 class AdoptionFormViewNavigator {}
 
 mixin AdoptionFormRoute {
-  openAdoptionFormView() {
-    NavigateRoute.pushRoute(const AdoptionFormView());
+  openAdoptionFormView(String id) {
+    NavigateRoute.pushRoute( AdoptionFormView(id));
   }
 }

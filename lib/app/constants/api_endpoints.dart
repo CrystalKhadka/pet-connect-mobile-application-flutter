@@ -24,4 +24,7 @@ class ApiEndpoints {
 
   static const String petImage = "http://192.168.18.7:5000/pets/";
 // static const String petImage = "http://10.0.2.2:5000/pets/";
+
+// Adoption Routes
+  static const String addAdoption = 'adoption/create';
 }

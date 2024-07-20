@@ -29,7 +29,7 @@ class SinglePetViewModel extends StateNotifier<SinglePetState> {
   }
 
   void openAdoptionForm() {
-    singlePetViewNavigator.openAdoptionFormView();
+    singlePetViewNavigator.openAdoptionFormView(state.petEntity!.id!);
   }
 
   Future<void> fetchPetById(String id) async {
