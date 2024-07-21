@@ -3,20 +3,27 @@ import 'package:final_assignment/features/pet/domain/entity/pet_entity.dart';
 import 'package:flutter/material.dart';
 
 class MyCard extends StatelessWidget {
-  const MyCard({super.key, required this.petEntity, this.onTap, this.onAdopt});
+  const MyCard(
+      {super.key,
+      required this.petEntity,
+      this.isFavorite,
+      this.onAdopt,
+      this.onFavorite});
 
   final PetEntity petEntity;
-  final VoidCallback? onTap;
+
   final VoidCallback? onAdopt;
+  final VoidCallback? onFavorite;
+  final bool? isFavorite;
 
   @override
   Widget build(BuildContext context) {
-    bool favorite = false;
+    bool favorite = isFavorite ?? false;
     return LayoutBuilder(
       builder: (context, constraints) {
         final isSmallScreen = constraints.maxWidth < 600;
+
         return GestureDetector(
-          onTap: onTap,
           child: Card(
             elevation: 4,
             shape:
@@ -89,7 +96,7 @@ class MyCard extends StatelessWidget {
                               favorite ? Icons.favorite : Icons.favorite_border,
                               color: favorite ? Colors.red : Colors.grey,
                             ),
-                            onPressed: () {},
+                            onPressed: onFavorite,
                             style: ElevatedButton.styleFrom(
                               shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(8)),

@@ -172,4 +172,13 @@ class MockPetViewNavigator extends _i1.Mock implements _i8.PetViewNavigator {
         ),
         returnValueForMissingStub: null,
       );
+
+  @override
+  dynamic openAdoptionFormView(String? id) => super.noSuchMethod(
+        Invocation.method(
+          #openAdoptionFormView,
+          [id],
+        ),
+        returnValueForMissingStub: null,
+      );
 }

@@ -4,11 +4,13 @@ class SinglePetState {
   final String error;
   final bool isLoading;
   final PetEntity? petEntity;
+  final bool isFavorite;
 
   SinglePetState({
     required this.error,
     required this.isLoading,
     required this.petEntity,
+    required this.isFavorite,
   });
 
   factory SinglePetState.initial() {
@@ -16,6 +18,7 @@ class SinglePetState {
       error: '',
       isLoading: false,
       petEntity: null,
+      isFavorite: false,
     );
   }
 
@@ -23,11 +26,13 @@ class SinglePetState {
     String? error,
     bool? isLoading,
     PetEntity? petEntity,
+    bool? isFavorite,
   }) {
     return SinglePetState(
       error: error ?? this.error,
       isLoading: isLoading ?? this.isLoading,
       petEntity: petEntity ?? this.petEntity,
+      isFavorite: isFavorite ?? this.isFavorite,
     );
   }
 }

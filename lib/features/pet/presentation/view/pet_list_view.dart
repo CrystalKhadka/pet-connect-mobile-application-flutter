@@ -91,7 +91,15 @@ class _PetListViewState extends ConsumerState<PetListView> {
                         return GestureDetector(
                           child: MyCard(
                               petEntity: pet,
-                              onTap: () {},
+                              isFavorite: ref
+                                  .read(petViewModelProvider.notifier)
+                                  .isFavorite(pet),
+                              onFavorite: () {
+                                print(pet);
+                                ref
+                                    .read(petViewModelProvider.notifier)
+                                    .toggleFavorite(pet);
+                              },
                               onAdopt: () {
                                 ref
                                     .read(petViewModelProvider.notifier)

@@ -30,10 +30,10 @@ AdoptionApiModel _$AdoptionApiModelFromJson(Map<String, dynamic> json) =>
 Map<String, dynamic> _$AdoptionApiModelToJson(AdoptionApiModel instance) =>
     <String, dynamic>{
       '_id': instance.id,
-      'pet': instance.pet?.id,
-      'formSender': instance.formSender?.id,
+      'pet': instance.pet,
+      'formSender': instance.formSender,
       'createdAt': instance.createdAt?.toIso8601String(),
       'status': instance.status,
-      'formReceiver': instance.formReceiver?.id,
-      'form': instance.form!.toJson(),
+      'formReceiver': instance.formReceiver,
+      'form': instance.form,
     };

@@ -1,3 +1,4 @@
+import 'package:final_assignment/features/favorite/domain/entity/favorite_entity.dart';
 import 'package:final_assignment/features/pet/domain/entity/pet_entity.dart';
 
 class PetState {
@@ -8,6 +9,7 @@ class PetState {
   final int page;
   final List<String> species;
   final int limit;
+  final List<String> favorites;
 
   factory PetState.initial() {
     return PetState(
@@ -18,6 +20,7 @@ class PetState {
       hasReachedMax: false,
       species: [],
       limit: 6,
+      favorites: [],
     );
   }
 
@@ -29,6 +32,7 @@ class PetState {
     required this.hasReachedMax,
     required this.species,
     required this.limit,
+    required this.favorites,
   });
 
   PetState copyWith({
@@ -39,6 +43,7 @@ class PetState {
     bool? hasReachedMax,
     List<String>? species,
     int? limit,
+    List<String>? favorites,
   }) {
     return PetState(
       isLoading: isLoading ?? this.isLoading,
@@ -48,6 +53,7 @@ class PetState {
       hasReachedMax: hasReachedMax ?? this.hasReachedMax,
       species: species ?? this.species,
       limit: limit ?? this.limit,
+      favorites: favorites ?? this.favorites,
     );
   }
 }

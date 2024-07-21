@@ -1,5 +1,6 @@
 import 'package:final_assignment/core/common/my_snackbar.dart';
 import 'package:final_assignment/core/common/my_yes_no_dialog.dart';
+import 'package:final_assignment/features/profile/presentation/navigator/profile_navigator.dart';
 import 'package:final_assignment/features/profile/presentation/state/current_user_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -11,13 +12,16 @@ final currentUserViewModelProvider =
     StateNotifierProvider<CurrentUserViewModel, CurrentUserState>(
         (ref) => CurrentUserViewModel(
               authUseCase: ref.read(authUseCaseProvider),
+              profileNavigator: ref.read(profileNavigatorProvider),
             ));
 
 class CurrentUserViewModel extends StateNotifier<CurrentUserState> {
   final AuthUseCase authUseCase;
+  final ProfileViewNavigator profileNavigator;
 
   CurrentUserViewModel({
     required this.authUseCase,
+    required this.profileNavigator,
   }) : super(CurrentUserState.initial()) {
     initialize();
   }
@@ -25,6 +29,10 @@ class CurrentUserViewModel extends StateNotifier<CurrentUserState> {
   Future<void> initialize() async {
     await getCurrentUser();
     await checkFingerprint();
+  }
+
+  openFavoriteView() {
+    profileNavigator.openFavoriteView();
   }
 
   Future<void> getCurrentUser() async {

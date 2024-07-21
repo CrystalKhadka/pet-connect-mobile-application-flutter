@@ -59,7 +59,13 @@ class _ProfileViewState extends ConsumerState<ProfileView> {
                 ProfileMenuItem(
                     icon: Icons.lock, text: 'Password', onTap: () {}),
                 ProfileMenuItem(
-                    icon: Icons.favorite, text: 'Favorite', onTap: () {}),
+                    icon: Icons.favorite,
+                    text: 'Favorite',
+                    onTap: () {
+                      ref
+                          .read(currentUserViewModelProvider.notifier)
+                          .openFavoriteView();
+                    }),
                 ProfileMenuItem(
                     icon: Icons.settings, text: 'Settings', onTap: () {}),
                 ProfileMenuItem(

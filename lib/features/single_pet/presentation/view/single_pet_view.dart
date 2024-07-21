@@ -21,7 +21,7 @@ class _SinglePetViewState extends ConsumerState<SinglePetView> {
   void initState() {
     super.initState();
     Future.microtask(() {
-      ref.read(singlePetViewModelProvider.notifier).fetchPetById(widget.id);
+      ref.read(singlePetViewModelProvider.notifier).init(widget.id);
     });
   }
 
@@ -64,9 +64,33 @@ class _SinglePetViewState extends ConsumerState<SinglePetView> {
                   Positioned(
                     top: 0,
                     right: 0,
-                    child: IconButton(
-                      onPressed: () {},
-                      icon: const Icon(Icons.favorite_border),
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: Colors.white.withOpacity(0.8),
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: SizedBox(
+                        width: 40,
+                        height: 40,
+                        child: IconButton(
+                          onPressed: () {
+                            ref
+                                .read(singlePetViewModelProvider.notifier)
+                                .toggleFavorite(petState.petEntity?.id ?? '');
+                          },
+                          icon: Icon(
+                            petState.isFavorite
+                                ? Icons.favorite
+                                : Icons.favorite_border,
+                            color:
+                                petState.isFavorite ? Colors.red : Colors.grey,
+                          ),
+                          style: ElevatedButton.styleFrom(
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(8)),
+                          ),
+                        ),
+                      ),
                     ),
                   ),
                 ],

@@ -55,6 +55,7 @@ dependencies:
   flutter_secure_storage: ^9.2.2
   all_sensors2: ^1.0.1
   sheet: ^1.0.0
+  flutter_staggered_animations: ^1.1.1
 
 dev_dependencies:
   flutter_test:
