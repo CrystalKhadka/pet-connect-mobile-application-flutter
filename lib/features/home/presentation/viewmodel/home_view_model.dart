@@ -36,6 +36,10 @@ class HomeViewModel extends StateNotifier<PetState> {
     navigator.openLoginView();
   }
 
+  void openChatView() {
+    navigator.openChatView();
+  }
+
   Future resetState() async {
     state = PetState.initial();
     fetchPets();

@@ -1,4 +1,4 @@
-import 'package:final_assignment/features/home/presentation/view/bottom_screen/chat_view.dart';
+import 'package:final_assignment/features/chat/presentation/view/chat_view.dart';
 import 'package:final_assignment/features/home/presentation/view/bottom_screen/home_view.dart';
 import 'package:final_assignment/features/pet/presentation/view/pet_list_view.dart';
 import 'package:final_assignment/features/profile/presentation/view/profile_view.dart';

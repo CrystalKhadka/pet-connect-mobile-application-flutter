@@ -4,6 +4,7 @@ import 'package:final_assignment/app/constants/api_endpoints.dart';
 import 'package:final_assignment/core/failure/failure.dart';
 import 'package:final_assignment/core/networking/remote/http_service.dart';
 import 'package:final_assignment/core/shared_prefs/user_shared_prefs.dart';
+import 'package:final_assignment/features/auth/data/dto/get_all_users_dto.dart';
 import 'package:final_assignment/features/auth/data/model/auth_api_model.dart';
 import 'package:final_assignment/features/auth/domain/entity/auth_entity.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -142,6 +143,60 @@ class AuthRemoteDataSource {
       );
     } on DioException catch (e) {
       return Left(Failure(error: e.error.toString()));
+    }
+  }
+
+  Future<Either<Failure, List<AuthEntity>>> getAllUsers() async {
+    try {
+      String? token;
+      final data = await userSharedPrefs.getUserToken();
+      data.fold(
+        (l) => token = null,
+        (r) => token = r,
+      );
+      Response response = await dio.get(
+        ApiEndpoints.getAllUsers,
+        options: Options(
+          headers: {'Authorization': 'Bearer $token'},
+        ),
+      );
+
+      if (response.statusCode == 200) {
+        final getAllUsersDto = GetAllUsersDto.fromJson(response.data);
+        final users = getAllUsersDto.data.map((e) => e.toEntity()).toList();
+        return Right(users);
+      }
+      return Left(
+        Failure(
+            error: response.data['message'],
+            statusCode: response.statusCode.toString()),
+      );
+    } on DioException catch (e) {
+      return Left(Failure(error: e.error.toString()));
+    } catch (e) {
+      return Left(Failure(error: e.toString()));
+    }
+  }
+
+  Future<Either<Failure, AuthEntity>> getUser(String id) async {
+    try {
+      Response response = await dio.get(
+        ApiEndpoints.getUserById + id,
+      );
+
+      if (response.statusCode == 200) {
+        final user = AuthApiModel.fromJson(response.data['data']).toEntity();
+        return Right(user);
+      }
+      return Left(
+        Failure(
+            error: response.data['message'],
+            statusCode: response.statusCode.toString()),
+      );
+    } on DioException catch (e) {
+      return Left(Failure(error: e.error.toString()));
+    } catch (e) {
+      return Left(Failure(error: e.toString()));
     }
   }
 }

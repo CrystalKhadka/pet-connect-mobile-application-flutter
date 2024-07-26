@@ -283,7 +283,11 @@ class _SinglePetViewState extends ConsumerState<SinglePetView> {
                                   'Owner by\n${petState.petEntity?.createdBy?.firstName ?? ''} ${petState.petEntity?.createdBy?.lastName ?? ''}'),
                               const Spacer(),
                               TextButton(
-                                onPressed: () {},
+                                onPressed: () {
+                                  ref
+                                      .read(singlePetViewModelProvider.notifier)
+                                      .openChatView();
+                                },
                                 child: const Column(
                                   children: [
                                     Icon(Icons.chat_bubble),

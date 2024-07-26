@@ -14,6 +14,8 @@ class ApiEndpoints {
   static const String verifyUser = "user/verify";
   static const String getMe = "user/getMe";
   static const String getToken = "user/getToken";
+  static const String getAllUsers = "user/all";
+  static const String getUserById = "user/get/";
 
   // Pet Routes
   static const String getAllPets = "pet/all";
@@ -32,4 +34,14 @@ class ApiEndpoints {
   static const String addFavorite = 'favorite/add';
   static const String getFavorite = 'favorite/get';
   static const String deleteFavorite = 'favorite/delete/';
+
+  // Chat Routes
+  static const String sendMessage = 'messages/send';
+  static const String getMessages = 'messages/get/';
+  static const String getMessageById = 'messages/get_by_id/';
+  static const String sendFile = 'messages/send/file';
+  static const String messageFileUrl =
+      'http://192.168.18.7:5000/messages/files';
+  static const String messageImageUrl =
+      'http://192.168.18.7:5000/messages/images';
 }

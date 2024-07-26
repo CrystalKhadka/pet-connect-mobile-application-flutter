@@ -61,7 +61,10 @@ class AuthApiModel extends Equatable {
     );
   }
 
-  factory AuthApiModel.fromEntity(AuthEntity entity) {
+  factory AuthApiModel.fromEntity(AuthEntity? entity) {
+    if (entity == null) {
+      return const AuthApiModel.empty();
+    }
     return AuthApiModel(
         id: entity.id,
         firstName: entity.firstName,

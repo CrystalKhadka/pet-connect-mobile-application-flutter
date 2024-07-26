@@ -36,6 +36,10 @@ class SinglePetViewModel extends StateNotifier<SinglePetState> {
     singlePetViewNavigator.openAdoptionFormView(state.petEntity!.id!);
   }
 
+  void openChatView() {
+    singlePetViewNavigator.openChatView(id: state.petEntity?.createdBy?.id);
+  }
+
   void init(String id) {
     fetchPetById(id);
     checkFavorite();

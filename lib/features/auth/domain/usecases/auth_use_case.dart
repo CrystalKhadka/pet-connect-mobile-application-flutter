@@ -56,4 +56,14 @@ class AuthUseCase {
       return Left(Failure(error: 'No fingerprint id found'));
     });
   }
+
+  // get all users
+  Future<Either<Failure, List<AuthEntity>>?> getAllUsers() async {
+    return authRepository.getAllUser();
+  }
+
+  // get user by id
+  Future<Either<Failure, AuthEntity>> getUser(String id) {
+    return authRepository.getUser(id);
+  }
 }
