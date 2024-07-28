@@ -287,6 +287,45 @@ class MockAuthUseCase extends _i1.Mock implements _i5.AuthUseCase {
           ),
         )),
       ) as _i6.Future<_i4.Either<_i7.Failure, bool>>);
+
+  @override
+  _i6.Future<_i4.Either<_i7.Failure, List<_i8.AuthEntity>>?> getAllUsers() =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #getAllUsers,
+          [],
+        ),
+        returnValue:
+            _i6.Future<_i4.Either<_i7.Failure, List<_i8.AuthEntity>>?>.value(),
+        returnValueForMissingStub:
+            _i6.Future<_i4.Either<_i7.Failure, List<_i8.AuthEntity>>?>.value(),
+      ) as _i6.Future<_i4.Either<_i7.Failure, List<_i8.AuthEntity>>?>);
+
+  @override
+  _i6.Future<_i4.Either<_i7.Failure, _i8.AuthEntity>> getUser(String? id) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #getUser,
+          [id],
+        ),
+        returnValue: _i6.Future<_i4.Either<_i7.Failure, _i8.AuthEntity>>.value(
+            _FakeEither_2<_i7.Failure, _i8.AuthEntity>(
+          this,
+          Invocation.method(
+            #getUser,
+            [id],
+          ),
+        )),
+        returnValueForMissingStub:
+            _i6.Future<_i4.Either<_i7.Failure, _i8.AuthEntity>>.value(
+                _FakeEither_2<_i7.Failure, _i8.AuthEntity>(
+          this,
+          Invocation.method(
+            #getUser,
+            [id],
+          ),
+        )),
+      ) as _i6.Future<_i4.Either<_i7.Failure, _i8.AuthEntity>>);
 }
 
 /// A class which mocks [LoginViewNavigator].

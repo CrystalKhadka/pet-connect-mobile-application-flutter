@@ -49,6 +49,7 @@ dependencies:
   image_picker: ^1.1.2
   permission_handler: ^11.3.1
   hive_flutter: ^1.1.0
+  file_picker: ^8.0.6
   json_annotation: ^4.9.0
   connectivity_plus: ^4.0.1
   local_auth: ^2.2.0
@@ -56,6 +57,7 @@ dependencies:
   all_sensors2: ^1.0.1
   sheet: ^1.0.0
   flutter_staggered_animations: ^1.1.1
+  socket_io_client: ^2.0.3+1
 
 dev_dependencies:
   flutter_test:

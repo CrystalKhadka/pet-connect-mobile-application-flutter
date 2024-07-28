@@ -6,7 +6,7 @@ class ApiEndpoints {
 
   // static const String baseUrl = "http://10.0.2.2:5000/api/";
 
-  static const String baseUrl = "http://192.168.18.7:5000/api/";
+  static const String baseUrl = "http://192.168.137.1:5000/api/";
 
   // ====================== Auth Routes ======================
   static const String loginUser = "user/login";
@@ -25,6 +25,7 @@ class ApiEndpoints {
   static const String getAllSpecies = "pet/species";
 
   static const String petImage = "http://192.168.18.7:5000/pets/";
+
 // static const String petImage = "http://10.0.2.2:5000/pets/";
 
   // Adoption Routes
@@ -41,7 +42,7 @@ class ApiEndpoints {
   static const String getMessageById = 'messages/get_by_id/';
   static const String sendFile = 'messages/send/file';
   static const String messageFileUrl =
-      'http://192.168.18.7:5000/messages/files';
+      'http://192.168.18.7:5000/messages/files/';
   static const String messageImageUrl =
-      'http://192.168.18.7:5000/messages/images';
+      'http://192.168.18.7:5000/messages/images/';
 }

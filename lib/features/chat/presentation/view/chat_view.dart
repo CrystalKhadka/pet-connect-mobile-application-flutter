@@ -17,15 +17,14 @@ class ChatView extends ConsumerStatefulWidget {
 
 class _ChatViewState extends ConsumerState<ChatView> {
   bool darkMode = false;
-  List<Message> messages = [];
   User? currentUser;
   User? chatPartner;
   bool isTyping = false;
   TextEditingController messageController = TextEditingController();
+  final _scrollController = ScrollController();
 
   @override
   void initState() {
-    super.initState();
     Future.microtask(() async {
       await ref
           .read(
@@ -35,62 +34,94 @@ class _ChatViewState extends ConsumerState<ChatView> {
             widget.receiverId!,
           );
     });
+    super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     final chatState = ref.watch(chatViewModelProvider);
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Chat'),
-        actions: [
-          Switch(
-            value: darkMode,
-            onChanged: (value) {
-              setState(() {
-                darkMode = value;
-              });
-            },
-          ),
-        ],
-      ),
-      body: chatState.isLoading
-          ? const Center(child: CircularProgressIndicator())
-          : Column(
-              children: [
-                ChatHeader(user: chatState.receiver!),
-                Expanded(
-                  child: ChatMessages(
-                    messages: messages,
-                    isTyping: isTyping,
-                    darkMode: darkMode,
-                    currentUser: chatState.user!,
-                    onEditMessage: (message) {
-                      // Implement edit message logic
-                    },
-                    onDeleteMessage: (messageId) {
-                      // Implement delete message logic
-                    },
-                  ),
-                ),
-                ChatInput(
-                  onSendMessage: (message) {
-                    ref
-                        .read(
-                          chatViewModelProvider.notifier,
-                        )
-                        .sendMessage(message);
-                  },
-                  onTyping: () {
-                    // Implement typing indicator logic
-                  },
-                  onFileUpload: (file) {
-                    // Implement file upload logic
-                  },
-                  darkMode: darkMode,
-                ),
-              ],
+    return NotificationListener<ScrollNotification>(
+      onNotification: (notification) {
+        if (notification is ScrollEndNotification &&
+            _scrollController.position.extentAfter == 0) {
+          ref.read(chatViewModelProvider.notifier).getMessages();
+        }
+        return true;
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          title: const Text('Chat'),
+          actions: [
+            IconButton(
+                onPressed: () {
+                  print(chatState.messages);
+                  ref
+                      .read(
+                        chatViewModelProvider.notifier,
+                      )
+                      .reset();
+                },
+                icon: const Icon(Icons.refresh)),
+            Switch(
+              value: darkMode,
+              onChanged: (value) {
+                setState(() {
+                  darkMode = value;
+                });
+              },
             ),
+          ],
+        ),
+        body: Column(
+          children: [
+            ChatHeader(user: chatState.receiver!),
+            chatState.isLoading
+                ? const CircularProgressIndicator()
+                : const SizedBox(),
+            Expanded(
+              child: ChatMessages(
+                messages: chatState.messages,
+                isTyping: chatState.isTyping,
+                darkMode: darkMode,
+                currentUser: chatState.user!,
+                scrollController: _scrollController,
+                onEditMessage: (message) {
+                  // Implement edit message logic
+                },
+                onDeleteMessage: (messageId) {
+                  // Implement delete message logic
+                },
+                downloadFile: (fileName) async {
+                  ref
+                      .read(
+                        chatViewModelProvider.notifier,
+                      )
+                      .downloadFile(fileName);
+                },
+              ),
+            ),
+            chatState.isTyping
+                ? const LinearProgressIndicator()
+                : const SizedBox(),
+            ChatInput(
+              onSendMessage: (message) {
+                ref
+                    .read(
+                      chatViewModelProvider.notifier,
+                    )
+                    .sendMessage(message);
+              },
+              onTyping: () {
+                ref.read(chatViewModelProvider.notifier).handleTyping();
+              },
+              onFileUpload: (file) {
+                // Implement file upload logic
+              },
+              darkMode: darkMode,
+            ),
+          ],
+        ),
+      ),
     );
   }
 }

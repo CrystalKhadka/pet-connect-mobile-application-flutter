@@ -8,6 +8,8 @@ class ChatState {
   final AuthEntity? user;
   final AuthEntity? receiver;
   final String type;
+  final int page;
+  final bool hasReachedMax;
 
   final String error;
 
@@ -18,6 +20,8 @@ class ChatState {
       required this.user,
       required this.receiver,
       required this.type,
+      required this.page,
+      required this.hasReachedMax,
       required this.error});
 
   factory ChatState.initial() {
@@ -28,6 +32,8 @@ class ChatState {
       user: null,
       receiver: null,
       type: 'text',
+      page: 0,
+      hasReachedMax: false,
       error: '',
     );
   }
@@ -40,6 +46,8 @@ class ChatState {
     AuthEntity? receiver,
     String? type,
     String? error,
+    bool? hasReachedMax,
+    int? page,
   }) {
     return ChatState(
       messages: messages ?? this.messages,
@@ -47,7 +55,9 @@ class ChatState {
       isTyping: isTyping ?? this.isTyping,
       user: user ?? this.user,
       receiver: receiver ?? this.receiver,
+      page: page ?? this.page,
       type: type ?? this.type,
+      hasReachedMax: hasReachedMax ?? this.hasReachedMax,
       error: error ?? this.error,
     );
   }

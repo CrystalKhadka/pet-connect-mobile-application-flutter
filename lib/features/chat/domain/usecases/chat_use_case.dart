@@ -30,4 +30,24 @@ class ChatUseCase {
     );
     return chatRepository.sendMessage(message, token ?? '');
   }
+
+  Future<Either<Failure, List<MessageEntity>>> getMessages(
+      String receiverId, int page) async {
+    String? token;
+    final data = await userSharedPrefs.getUserToken();
+    data.fold(
+      (l) => token = null,
+      (r) => token = r,
+    );
+    return chatRepository.getMessages(receiverId, token ?? '', page);
+  }
+
+  Future<Either<Failure, bool>> downloadFile(String fileName) {
+    return chatRepository.downloadFile(fileName);
+  }
+
+  Future<Either<Failure, MessageEntity>> getMessage(
+      Map<String, dynamic> data) async {
+    return chatRepository.getMessage(data);
+  }
 }

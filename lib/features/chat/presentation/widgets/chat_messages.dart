@@ -1,14 +1,17 @@
+import 'package:final_assignment/app/constants/api_endpoints.dart';
 import 'package:final_assignment/features/auth/domain/entity/auth_entity.dart';
-import 'package:final_assignment/features/chat/presentation/view/user.dart';
+import 'package:final_assignment/features/chat/domain/entity/message_enttiy.dart';
 import 'package:flutter/material.dart';
 
 class ChatMessages extends StatelessWidget {
-  final List<Message> messages;
+  final List<MessageEntity> messages;
   final bool isTyping;
   final bool darkMode;
   final AuthEntity currentUser;
-  final Function(Message) onEditMessage;
-  final Function(String) onDeleteMessage;
+  final Function(MessageEntity) onEditMessage;
+  final Function(MessageEntity) onDeleteMessage;
+  final ScrollController scrollController;
+  final Function(String) downloadFile;
 
   const ChatMessages({
     super.key,
@@ -18,36 +21,51 @@ class ChatMessages extends StatelessWidget {
     required this.currentUser,
     required this.onEditMessage,
     required this.onDeleteMessage,
+    required this.scrollController,
+    required this.downloadFile,
   });
 
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(
-      reverse: true,
-      itemCount: messages.length + (isTyping ? 1 : 0),
-      itemBuilder: (context, index) {
-        if (isTyping && index == 0) {
-          return const TypingIndicator();
-        }
-        final message = messages[isTyping ? index - 1 : index];
-        return MessageBubble(
-          message: message,
-          isOwnMessage: message.sender.id == currentUser.id,
-          darkMode: darkMode,
-          onEdit: () => onEditMessage(message),
-          onDelete: () => onDeleteMessage(message.id),
-        );
-      },
-    );
+    if (messages.isEmpty && !isTyping) {
+      return const Center(
+        child: Text('No messages yet'),
+      );
+    } else {
+      return ListView.builder(
+        reverse: true,
+        controller: scrollController,
+        itemCount: messages.length + (isTyping ? 1 : 0),
+        itemBuilder: (context, index) {
+          final message = messages[index];
+          final isOwnMessage = message.sender!.id == currentUser.id;
+
+          return MessageBubble(
+            message: message,
+            isOwnMessage: isOwnMessage,
+            darkMode: darkMode,
+            onEdit: () => onEditMessage(message),
+            onDelete: () => onDeleteMessage(message),
+            downloadFile: () async {
+              if (message.type == 'file') {
+                await downloadFile(message.message!);
+                // download file
+              }
+            },
+          );
+        },
+      );
+    }
   }
 }
 
 class MessageBubble extends StatelessWidget {
-  final Message message;
+  final MessageEntity message;
   final bool isOwnMessage;
   final bool darkMode;
   final VoidCallback onEdit;
   final VoidCallback onDelete;
+  final VoidCallback downloadFile;
 
   const MessageBubble({
     super.key,
@@ -56,6 +74,7 @@ class MessageBubble extends StatelessWidget {
     required this.darkMode,
     required this.onEdit,
     required this.onDelete,
+    required this.downloadFile,
   });
 
   @override
@@ -77,14 +96,34 @@ class MessageBubble extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              isOwnMessage ? 'You' : message.sender.firstName,
+              isOwnMessage ? 'You' : message.sender!.firstName ?? 'Unknown',
               style: const TextStyle(fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 4),
-            Text(message.content),
+            message.type == 'image'
+                ? GestureDetector(
+                    onDoubleTap: downloadFile,
+                    child: Image.network(
+                        '${ApiEndpoints.messageImageUrl}${message.message}'),
+                  )
+                : message.type == 'file'
+                    ? TextButton(
+                        onPressed: downloadFile,
+                        style: TextButton.styleFrom(
+                          foregroundColor: Colors.red,
+                        ),
+                        child: Text(
+                          message.message ?? 'File',
+                          style: const TextStyle(
+                            color: Colors.red,
+                            decoration: TextDecoration.underline,
+                          ),
+                        ),
+                      )
+                    : Text(message.message ?? ''),
             const SizedBox(height: 4),
             Text(
-              message.timestamp.toString(),
+              message.timeStamp.toString(),
               style: const TextStyle(fontSize: 10, color: Colors.grey),
             ),
             if (isOwnMessage)
