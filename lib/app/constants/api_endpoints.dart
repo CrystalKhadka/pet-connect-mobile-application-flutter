@@ -5,7 +5,7 @@ class ApiEndpoints {
   static const Duration receiveTimeout = Duration(seconds: 1000);
 
   // static const String baseUrl = "http://10.0.2.2:5000/api/";
-
+  //
   static const String baseUrl = "http://192.168.137.1:5000/api/";
 
   // ====================== Auth Routes ======================
@@ -16,6 +16,8 @@ class ApiEndpoints {
   static const String getToken = "user/getToken";
   static const String getAllUsers = "user/all";
   static const String getUserById = "user/get/";
+  static const String googleLogin = "user/google";
+  static const String getUserByGoogleEmail = "user/getGoogleUser";
 
   // Pet Routes
   static const String getAllPets = "pet/all";
@@ -24,9 +26,9 @@ class ApiEndpoints {
   static const String getAllPetsByOwner = "pet/all/";
   static const String getAllSpecies = "pet/species";
 
-  static const String petImage = "http://192.168.18.7:5000/pets/";
+  static const String petImage = "http://192.168.137.1:5000/pets/";
 
-// static const String petImage = "http://10.0.2.2:5000/pets/";
+  // static const String petImage = "http://10.0.2.2:5000/pets/";
 
   // Adoption Routes
   static const String addAdoption = 'adoption/create';
@@ -42,7 +44,7 @@ class ApiEndpoints {
   static const String getMessageById = 'messages/get_by_id/';
   static const String sendFile = 'messages/send/file';
   static const String messageFileUrl =
-      'http://192.168.18.7:5000/messages/files/';
+      'http:// 192.168.137.1:5000/messages/files/';
   static const String messageImageUrl =
-      'http://192.168.18.7:5000/messages/images/';
+      'http:// 192.168.137.1:5000/messages/images/';
 }

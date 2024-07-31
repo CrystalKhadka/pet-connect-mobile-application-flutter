@@ -20,6 +20,8 @@ abstract class IAuthRepository {
 
   Future<Either<Failure, bool>> loginUser(String email, String password);
 
+  Future<Either<Failure, bool>> googleLogin(String token, String? password);
+
   Future<Either<Failure, bool>> verifyUser();
 
   Future<Either<Failure, AuthEntity>> getCurrentUser();
@@ -27,5 +29,8 @@ abstract class IAuthRepository {
   Future<Either<Failure, bool>> fingerPrintLogin(String id);
 
   Future<Either<Failure, AuthEntity>> getUser(String id);
+
+  Future<Either<Failure, AuthEntity>> getUserByGoogle(String token);
+
   Future<Either<Failure, List<AuthEntity>>> getAllUser();
 }

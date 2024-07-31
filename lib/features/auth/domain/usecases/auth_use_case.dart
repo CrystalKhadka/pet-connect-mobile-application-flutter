@@ -26,6 +26,10 @@ class AuthUseCase {
     return authRepository.loginUser(email ?? '', password ?? '');
   }
 
+  Future<Either<Failure, bool>> googleLogin(String? token, String? password) {
+    return authRepository.googleLogin(token ?? '', password);
+  }
+
   Future<Either<Failure, bool>> verifyUser() {
     return authRepository.verifyUser();
   }
@@ -65,5 +69,9 @@ class AuthUseCase {
   // get user by id
   Future<Either<Failure, AuthEntity>> getUser(String id) {
     return authRepository.getUser(id);
+  } // get user by id
+
+  Future<Either<Failure, AuthEntity>> getUserByGoogle(String token) {
+    return authRepository.getUserByGoogle(token);
   }
 }

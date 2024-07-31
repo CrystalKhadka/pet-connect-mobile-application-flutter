@@ -241,7 +241,9 @@ class _LoginViewState extends ConsumerState<LoginView> {
                         ),
                         MyButton(
                           onPressed: () {
-                            //TODO:  Implement Google Sign-in
+                            ref
+                                .read(loginViewModelProvider.notifier)
+                                .getUserByGoogle();
                           },
                           child: Column(
                             children: [

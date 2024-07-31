@@ -42,16 +42,28 @@ class AuthLocalRepository implements IAuthRepository {
     // TODO: implement fingerPrintLogin
     throw UnimplementedError();
   }
-  
+
   @override
   Future<Either<Failure, List<AuthEntity>>> getAllUser() {
     // TODO: implement getAllUser
     throw UnimplementedError();
   }
-  
+
   @override
   Future<Either<Failure, AuthEntity>> getUser(String id) {
     // TODO: implement getUser
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<Either<Failure, AuthEntity>> getUserByGoogle(String token) {
+    // TODO: implement getUserByGoogle
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<Either<Failure, bool>> googleLogin(String token, String? password) {
+    // TODO: implement googleLogin
     throw UnimplementedError();
   }
 }

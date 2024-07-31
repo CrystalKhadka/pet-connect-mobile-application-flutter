@@ -122,7 +122,6 @@ class CurrentUserViewModel extends StateNotifier<CurrentUserState> {
     result.fold(
       (l) {
         state = state.copyWith(isLoading: false, error: l.error);
-        showMySnackBar(message: l.error, color: Colors.red);
       },
       (r) {
         if (r == currentUserId) {

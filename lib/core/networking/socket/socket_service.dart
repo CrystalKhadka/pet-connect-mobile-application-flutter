@@ -24,7 +24,7 @@ class SocketService {
     String? token;
     final data = await userSharedPrefs.getUserToken();
     data.fold(
-      (l) => throw Exception("Error getting user token"),
+      (l) => token=null,
       (r) => token = r,
     );
 

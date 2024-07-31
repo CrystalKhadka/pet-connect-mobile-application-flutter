@@ -199,4 +199,51 @@ class AuthRemoteDataSource {
       return Left(Failure(error: e.toString()));
     }
   }
+
+  Future<Either<Failure, bool>> googleLogin(
+      String token, String? password) async {
+    try {
+      Response response = await dio.post(
+        ApiEndpoints.googleLogin,
+        data: {'token': token, 'password': password, 'role': 'adopter'},
+      );
+      if (response.statusCode == 201) {
+        final token = response.data['token'];
+        await userSharedPrefs.setUserToken(token);
+        return const Right(true);
+      }
+      return Left(
+        Failure(
+            error: response.data['message'],
+            statusCode: response.statusCode.toString()),
+      );
+    } catch (e) {
+      return Left(Failure(error: e.toString()));
+    }
+  }
+
+  Future<Either<Failure, AuthEntity>> getUserByGoogle(String token) async {
+    try {
+      Response response = await dio.post(
+        ApiEndpoints.getUserByGoogleEmail,
+        data: {'token': token},
+      );
+      if (response.statusCode == 200) {
+        final authModel = AuthApiModel.fromJson(response.data['data']);
+
+        return Right(authModel.toEntity());
+      }
+      if (response.statusCode == 201) {
+        const authModel = AuthApiModel.empty();
+        return Right(authModel.toEntity());
+      }
+      return Left(
+        Failure(
+            error: response.data['message'],
+            statusCode: response.statusCode.toString()),
+      );
+    } catch (e) {
+      return Left(Failure(error: e.toString()));
+    }
+  }
 }
