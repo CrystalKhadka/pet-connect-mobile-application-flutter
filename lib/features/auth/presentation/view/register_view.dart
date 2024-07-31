@@ -16,13 +16,14 @@ class RegisterView extends ConsumerStatefulWidget {
 class _RegisterViewState extends ConsumerState<RegisterView> {
   final _formKey = GlobalKey<FormState>();
 
-  final _fnameController = TextEditingController();
-  final _lnameController = TextEditingController();
-  final _emailController = TextEditingController();
-  final _passwordController = TextEditingController();
-  final _confirmPasswordController = TextEditingController();
-  final _addressController = TextEditingController();
-  final _phoneController = TextEditingController();
+  final _fnameController = TextEditingController(text: 'Crystal');
+  final _lnameController = TextEditingController(text: "Khadka");
+  final _emailController =
+      TextEditingController(text: "khadkacrystal23@gmail.com");
+  final _passwordController = TextEditingController(text: "12345678");
+  final _confirmPasswordController = TextEditingController(text: "12345678");
+  final _addressController = TextEditingController(text: 'KTM');
+  final _phoneController = TextEditingController(text: '9843041037');
   final _birthDateController = TextEditingController();
 
   DateTime? _selectedDate;

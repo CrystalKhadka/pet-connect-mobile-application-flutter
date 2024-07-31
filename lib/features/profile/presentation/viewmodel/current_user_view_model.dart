@@ -23,7 +23,8 @@ class CurrentUserViewModel extends StateNotifier<CurrentUserState> {
     required this.authUseCase,
     required this.profileNavigator,
   }) : super(CurrentUserState.initial()) {
-    initialize();
+    getCurrentUser();
+    checkFingerprint();
   }
 
   Future<void> initialize() async {
@@ -33,6 +34,10 @@ class CurrentUserViewModel extends StateNotifier<CurrentUserState> {
 
   openFavoriteView() {
     profileNavigator.openFavoriteView();
+  }
+
+  openEditProfile() {
+    profileNavigator.openEditProfileView();
   }
 
   Future<void> getCurrentUser() async {

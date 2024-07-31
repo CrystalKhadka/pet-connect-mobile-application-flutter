@@ -19,6 +19,11 @@ class ApiEndpoints {
   static const String googleLogin = "user/google";
   static const String getUserByGoogleEmail = "user/getGoogleUser";
 
+  static const String userImageUrl = "http://192.168.137.1:5000/profile/";
+
+  static const String uploadImage = "user/upload";
+  static const String updateUser = "user/update";
+
   // Pet Routes
   static const String getAllPets = "pet/all";
   static const String getPetById = "pet/get/";
@@ -44,7 +49,7 @@ class ApiEndpoints {
   static const String getMessageById = 'messages/get_by_id/';
   static const String sendFile = 'messages/send/file';
   static const String messageFileUrl =
-      'http:// 192.168.137.1:5000/messages/files/';
+      'http://192.168.137.1:5000/messages/files/';
   static const String messageImageUrl =
-      'http:// 192.168.137.1:5000/messages/images/';
+      'http://192.168.137.1:5000/messages/images/';
 }

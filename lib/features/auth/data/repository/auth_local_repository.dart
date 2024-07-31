@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:dartz/dartz.dart';
 import 'package:final_assignment/core/failure/failure.dart';
 import 'package:final_assignment/features/auth/data/data_source/local/auth_local_data_source.dart';
@@ -64,6 +66,18 @@ class AuthLocalRepository implements IAuthRepository {
   @override
   Future<Either<Failure, bool>> googleLogin(String token, String? password) {
     // TODO: implement googleLogin
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<Either<Failure, String>> uploadImage(File file) {
+    // TODO: implement uploadImage
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<Either<Failure, bool>> updateUser(AuthEntity user) {
+    // TODO: implement updateUser
     throw UnimplementedError();
   }
 }

@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:dartz/dartz.dart';
 import 'package:final_assignment/core/common/provider/internet_connectivity.dart';
 import 'package:final_assignment/core/failure/failure.dart';
@@ -33,4 +35,8 @@ abstract class IAuthRepository {
   Future<Either<Failure, AuthEntity>> getUserByGoogle(String token);
 
   Future<Either<Failure, List<AuthEntity>>> getAllUser();
+
+  Future<Either<Failure, String>> uploadImage(File file);
+
+  Future<Either<Failure, bool>> updateUser(AuthEntity user);
 }

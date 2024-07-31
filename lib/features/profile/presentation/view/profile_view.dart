@@ -3,6 +3,7 @@ import 'package:final_assignment/features/profile/presentation/viewmodel/current
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../../app/constants/api_endpoints.dart';
 import '../widgets/profile_menu_item.dart';
 
 class ProfileView extends ConsumerStatefulWidget {
@@ -25,76 +26,91 @@ class _ProfileViewState extends ConsumerState<ProfileView> {
   Widget build(BuildContext context) {
     final currentUserState = ref.watch(currentUserViewModelProvider);
     return SizedBox.expand(
-      child: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: RefreshIndicator(
-          onRefresh: () async {
-            await ref.read(currentUserViewModelProvider.notifier).initialize();
-          },
-          child: SingleChildScrollView(
-            child: Column(
-              children: [
-                const SizedBox(height: 20),
-                Center(
-                    child:
-                        Image.asset('assets/images/default.jpg', height: 100)),
-                // Profile image
-                const SizedBox(height: 10),
-                currentUserState.isLoading
-                    ? const CircularProgressIndicator()
-                    : Text(
-                        '${currentUserState.authEntity?.firstName} ${currentUserState.authEntity?.lastName}',
-                        style: const TextStyle(
-                            fontSize: 20, fontWeight: FontWeight.bold),
+      child: currentUserState.authEntity != null
+          ? Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: RefreshIndicator(
+                onRefresh: () async {
+                  await ref
+                      .read(currentUserViewModelProvider.notifier)
+                      .initialize();
+                },
+                child: SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      const SizedBox(height: 20),
+                      Center(
+                        child: currentUserState.authEntity != null
+                            ? Image.network(
+                                '${ApiEndpoints.userImageUrl}${currentUserState.authEntity?.image ?? 'default.jpg'}',
+                                height: 100)
+                            : Image.asset(
+                                'assets/images/default.jpg',
+                                height: 100,
+                              ),
                       ),
-                const SizedBox(height: 20),
-                ProfileMenuItem(
-                    icon: Icons.brightness_6,
-                    text: 'Select Mode',
-                    onTap: () {}),
-                ProfileMenuItem(
-                    icon: Icons.info,
-                    text: 'Account Information',
-                    onTap: () {}),
-                ProfileMenuItem(
-                    icon: Icons.lock, text: 'Password', onTap: () {}),
-                ProfileMenuItem(
-                    icon: Icons.favorite,
-                    text: 'Favorite',
-                    onTap: () {
-                      ref
-                          .read(currentUserViewModelProvider.notifier)
-                          .openFavoriteView();
-                    }),
-                ProfileMenuItem(
-                    icon: Icons.settings, text: 'Settings', onTap: () {}),
-                ProfileMenuItem(
-                    icon: Icons.fingerprint,
-                    text: 'Enable Fingerprint',
-                    onTap: () {
-                      ref
-                          .read(currentUserViewModelProvider.notifier)
-                          .enableFingerprint();
-                    }),
+                      // Profile image
+                      const SizedBox(height: 10),
+                      currentUserState.isLoading
+                          ? const CircularProgressIndicator()
+                          : Text(
+                              '${currentUserState.authEntity?.firstName} ${currentUserState.authEntity?.lastName}',
+                              style: const TextStyle(
+                                  fontSize: 20, fontWeight: FontWeight.bold),
+                            ),
+                      const SizedBox(height: 20),
+                      ProfileMenuItem(
+                          icon: Icons.brightness_6,
+                          text: 'Select Mode',
+                          onTap: () {}),
+                      ProfileMenuItem(
+                          icon: Icons.info,
+                          text: 'Account Information',
+                          onTap: () {
+                            ref
+                                .read(currentUserViewModelProvider.notifier)
+                                .openEditProfile();
+                          }),
+                      ProfileMenuItem(
+                          icon: Icons.lock, text: 'Password', onTap: () {}),
+                      ProfileMenuItem(
+                          icon: Icons.favorite,
+                          text: 'Favorite',
+                          onTap: () {
+                            ref
+                                .read(currentUserViewModelProvider.notifier)
+                                .openFavoriteView();
+                          }),
+                      ProfileMenuItem(
+                          icon: Icons.settings, text: 'Settings', onTap: () {}),
+                      ProfileMenuItem(
+                          icon: Icons.fingerprint,
+                          text: 'Enable Fingerprint',
+                          onTap: () {
+                            ref
+                                .read(currentUserViewModelProvider.notifier)
+                                .enableFingerprint();
+                          }),
 
-                const Divider(),
-                ProfileMenuItem(
-                    icon: Icons.delete,
-                    text: 'Delete Account',
-                    onTap: () {},
-                    textColor: Colors.red),
-                ProfileMenuItem(
-                    icon: Icons.logout,
-                    text: 'Logout',
-                    onTap: () {
-                      ref.read(homeViewModelProvider.notifier).logout();
-                    },
-                    textColor: Colors.red),
-              ],
-            ),
-          ),
-        ),
-      ),
+                      const Divider(),
+                      ProfileMenuItem(
+                          icon: Icons.delete,
+                          text: 'Delete Account',
+                          onTap: () {},
+                          textColor: Colors.red),
+                      ProfileMenuItem(
+                          icon: Icons.logout,
+                          text: 'Logout',
+                          onTap: () {
+                            ref.read(homeViewModelProvider.notifier).logout();
+                          },
+                          textColor: Colors.red),
+                    ],
+                  ),
+                ),
+              ),
+            )
+          : const CircularProgressIndicator(),
     );
   }
 }

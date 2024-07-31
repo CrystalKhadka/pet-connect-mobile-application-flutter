@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:dartz/dartz.dart';
 import 'package:final_assignment/core/failure/failure.dart';
 import 'package:final_assignment/features/auth/data/data_source/remote/auth_remote_data_source.dart';
@@ -59,5 +61,15 @@ class AuthRemoteRepository implements IAuthRepository {
   @override
   Future<Either<Failure, bool>> googleLogin(String token, String? password) {
     return authRemoteDataSource.googleLogin(token, password);
+  }
+
+  @override
+  Future<Either<Failure, String>> uploadImage(File file) {
+    return authRemoteDataSource.uploadImage(file);
+  }
+
+  @override
+  Future<Either<Failure, bool>> updateUser(AuthEntity user) {
+    return authRemoteDataSource.updateProfile(user);
   }
 }

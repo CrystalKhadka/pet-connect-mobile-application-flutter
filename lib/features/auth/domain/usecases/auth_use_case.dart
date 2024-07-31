@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:dartz/dartz.dart';
 import 'package:final_assignment/core/failure/failure.dart';
 import 'package:final_assignment/features/auth/domain/entity/auth_entity.dart';
@@ -73,5 +75,13 @@ class AuthUseCase {
 
   Future<Either<Failure, AuthEntity>> getUserByGoogle(String token) {
     return authRepository.getUserByGoogle(token);
+  }
+
+  Future<Either<Failure, String>> uploadImage(File file) {
+    return authRepository.uploadImage(file);
+  }
+
+  Future<Either<Failure, bool>> updateUser(AuthEntity user) {
+    return authRepository.updateUser(user);
   }
 }

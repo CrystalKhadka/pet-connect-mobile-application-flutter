@@ -21,6 +21,7 @@ class AuthApiModel extends Equatable {
   final String? address;
   final String? gender;
   final String? phone;
+  final String? image;
 
   const AuthApiModel({
     this.id,
@@ -32,20 +33,21 @@ class AuthApiModel extends Equatable {
     required this.address,
     required this.gender,
     required this.phone,
+    this.image,
   });
 
   const AuthApiModel.empty()
       : this(
-          id: '',
-          firstName: '',
-          lastName: '',
-          email: '',
-          password: '',
-          phone: '',
-          address: '',
-          birthDate: '',
-          gender: '',
-        );
+            id: '',
+            firstName: '',
+            lastName: '',
+            email: '',
+            password: '',
+            phone: '',
+            address: '',
+            birthDate: '',
+            gender: '',
+            image: '');
 
   AuthEntity toEntity() {
     return AuthEntity(
@@ -58,6 +60,7 @@ class AuthApiModel extends Equatable {
       address: address,
       gender: gender,
       birthDate: birthDate,
+      image: image,
     );
   }
 
@@ -66,15 +69,17 @@ class AuthApiModel extends Equatable {
       return const AuthApiModel.empty();
     }
     return AuthApiModel(
-        id: entity.id,
-        firstName: entity.firstName,
-        lastName: entity.lastName,
-        email: entity.email,
-        password: entity.password,
-        birthDate: entity.birthDate,
-        address: entity.address,
-        gender: entity.gender,
-        phone: entity.phone);
+      id: entity.id,
+      firstName: entity.firstName,
+      lastName: entity.lastName,
+      email: entity.email,
+      password: entity.password,
+      birthDate: entity.birthDate,
+      address: entity.address,
+      gender: entity.gender,
+      phone: entity.phone,
+      image: entity.image,
+    );
   }
 
   factory AuthApiModel.fromJson(Map<String, dynamic> json) =>
@@ -93,5 +98,6 @@ class AuthApiModel extends Equatable {
         address,
         gender,
         phone,
+        image,
       ];
 }

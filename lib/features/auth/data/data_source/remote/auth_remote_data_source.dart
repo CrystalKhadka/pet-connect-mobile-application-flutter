@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
 import 'package:final_assignment/app/constants/api_endpoints.dart';
@@ -244,6 +246,66 @@ class AuthRemoteDataSource {
       );
     } catch (e) {
       return Left(Failure(error: e.toString()));
+    }
+  }
+
+  Future<Either<Failure, String>> uploadImage(File image) async {
+    try {
+      String? token;
+      final data = await userSharedPrefs.getUserToken();
+      data.fold(
+        (l) => token = null,
+        (r) => token = r,
+      );
+      FormData formData = FormData.fromMap({
+        "image": await MultipartFile.fromFile(image.path),
+      });
+      Response response = await dio.post(
+        ApiEndpoints.uploadImage,
+        data: formData,
+        options: Options(
+          headers: {'Authorization': 'Bearer $token'},
+        ),
+      );
+      if (response.statusCode == 200) {
+        return Right(response.data['image']);
+      }
+      return Left(
+        Failure(
+            error: response.data['message'],
+            statusCode: response.statusCode.toString()),
+      );
+    } on DioException catch (e) {
+      return Left(Failure(error: e.error.toString()));
+    }
+  }
+
+//   update profie
+  Future<Either<Failure, bool>> updateProfile(AuthEntity authEntity) async {
+    try {
+      String? token;
+      final data = await userSharedPrefs.getUserToken();
+      data.fold(
+        (l) => token = null,
+        (r) => token = r,
+      );
+      Response response = await dio.put(
+        ApiEndpoints.updateUser,
+        data: AuthApiModel.fromEntity(authEntity).toJson(),
+        options: Options(
+          headers: {'Authorization': 'Bearer $token'},
+        ),
+      );
+      if (response.statusCode == 200) {
+        return const Right(true);
+      }
+      return Left(
+        Failure(
+            error: response.data['message'],
+            statusCode: response.statusCode.toString()),
+      );
+    } on DioException catch (e) {
+      return Left(Failure(error: e.error.toString()));
     }
   }
 }

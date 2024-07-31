@@ -10,6 +10,7 @@ class AuthEntity extends Equatable {
   final String? address;
   final String? gender;
   final String? birthDate;
+  final String? image;
 
   const AuthEntity({
     this.id,
@@ -21,6 +22,7 @@ class AuthEntity extends Equatable {
     required this.address,
     required this.gender,
     required this.birthDate,
+    this.image,
   });
 
   const AuthEntity.empty()
@@ -47,5 +49,6 @@ class AuthEntity extends Equatable {
         address,
         gender,
         birthDate,
+        image,
       ];
 }
