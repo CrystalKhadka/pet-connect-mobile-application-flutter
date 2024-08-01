@@ -155,7 +155,9 @@ class _LoginViewState extends ConsumerState<LoginView> {
                     children: [
                       MyButton(
                         onPressed: () {
-                          // TODO: Implement Forgot Password functionality
+                          ref
+                              .read(loginViewModelProvider.notifier)
+                              .openForgotPasswordView();
                         },
                         child: const Text(
                           'Forgot your password?',

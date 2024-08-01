@@ -84,4 +84,20 @@ class AuthUseCase {
   Future<Either<Failure, bool>> updateUser(AuthEntity user) {
     return authRepository.updateUser(user);
   }
+
+  Future<Either<Failure, bool>> sendEmail(String email) {
+    return authRepository.sendEmail(email);
+  }
+
+  Future<Either<Failure, bool>> sendOtp(String phone) {
+    return authRepository.sendOtp(phone);
+  }
+
+  Future<Either<Failure, bool>> resetPass({
+    required String phone,
+    required String password,
+    required String otp,
+  }) {
+    return authRepository.resetPass(phone: phone, password: password, otp: otp);
+  }
 }

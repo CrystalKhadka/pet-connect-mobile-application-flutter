@@ -308,4 +308,71 @@ class AuthRemoteDataSource {
       return Left(Failure(error: e.error.toString()));
     }
   }
+
+//   send email
+  Future<Either<Failure, bool>> sendEmail(String email) async {
+    try {
+      Response response = await dio.post(
+        ApiEndpoints.sendEmail,
+        data: {'email': email},
+      );
+      if (response.statusCode == 200) {
+        return const Right(true);
+      }
+      return Left(
+        Failure(
+            error: response.data['message'],
+            statusCode: response.statusCode.toString()),
+      );
+    } on DioException catch (e) {
+      return Left(Failure(error: e.error.toString()));
+    }
+  }
+
+//   send otp
+  Future<Either<Failure, bool>> sendOtp(String phone) async {
+    try {
+      Response response = await dio.post(
+        ApiEndpoints.sendOtp,
+        data: {'phone': phone},
+      );
+      if (response.statusCode == 200) {
+        return const Right(true);
+      }
+      return Left(
+        Failure(
+            error: response.data['message'],
+            statusCode: response.statusCode.toString()),
+      );
+    } on DioException catch (e) {
+      return Left(Failure(error: e.error.toString()));
+    }
+  }
+
+//   reset pass from otp
+  Future<Either<Failure, bool>> resetPassFromOtp(
+      {required String otp,
+      required String password,
+      required String phone}) async {
+    try {
+      Response response = await dio.post(
+        ApiEndpoints.resetPass,
+        data: {
+          'otp': otp,
+          'password': password,
+          'phone': phone,
+        },
+      );
+      if (response.statusCode == 200) {
+        return const Right(true);
+      }
+      return Left(
+        Failure(
+            error: response.data['message'],
+            statusCode: response.statusCode.toString()),
+      );
+    } on DioException catch (e) {
+      return Left(Failure(error: e.error.toString()));
+    }
+  }
 }

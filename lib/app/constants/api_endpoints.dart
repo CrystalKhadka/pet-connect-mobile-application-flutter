@@ -24,6 +24,16 @@ class ApiEndpoints {
   static const String uploadImage = "user/upload";
   static const String updateUser = "user/update";
 
+  // Forgot password by email api
+
+  static const String sendEmail = "user/forgot/email";
+
+  // Forgot password by phone api
+  static const String sendOtp = "user/forgot/phone";
+
+  // Reset password api
+  static const String resetPass = "user/reset/phone";
+
   // Pet Routes
   static const String getAllPets = "pet/all";
   static const String getPetById = "pet/get/";

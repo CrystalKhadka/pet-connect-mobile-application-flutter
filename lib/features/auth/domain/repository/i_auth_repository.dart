@@ -39,4 +39,14 @@ abstract class IAuthRepository {
   Future<Either<Failure, String>> uploadImage(File file);
 
   Future<Either<Failure, bool>> updateUser(AuthEntity user);
+
+  Future<Either<Failure, bool>> sendEmail(String email);
+
+  Future<Either<Failure, bool>> sendOtp(String phone);
+
+  Future<Either<Failure, bool>> resetPass({
+    required String phone,
+    required String password,
+    required String otp,
+  });
 }

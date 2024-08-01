@@ -72,4 +72,21 @@ class AuthRemoteRepository implements IAuthRepository {
   Future<Either<Failure, bool>> updateUser(AuthEntity user) {
     return authRemoteDataSource.updateProfile(user);
   }
+
+  @override
+  Future<Either<Failure, bool>> sendEmail(String email) {
+    return authRemoteDataSource.sendEmail(email);
+  }
+
+  @override
+  Future<Either<Failure, bool>> sendOtp(String phone) {
+    return authRemoteDataSource.sendOtp(phone);
+  }
+
+  @override
+  Future<Either<Failure, bool>> resetPass(
+      {required String phone, required String password, required String otp}) {
+    return authRemoteDataSource.resetPassFromOtp(
+        phone: phone, password: password, otp: otp);
+  }
 }
