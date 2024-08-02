@@ -72,6 +72,8 @@ class MockPetUseCase extends _i1.Mock implements _i4.PetUseCase {
   _i5.Future<_i3.Either<_i6.Failure, List<_i7.PetEntity>>> pagination(
     int? page,
     int? limit,
+    String? search,
+    String? breed,
   ) =>
       (super.noSuchMethod(
         Invocation.method(
@@ -79,6 +81,8 @@ class MockPetUseCase extends _i1.Mock implements _i4.PetUseCase {
           [
             page,
             limit,
+            search,
+            breed,
           ],
         ),
         returnValue:
@@ -90,6 +94,8 @@ class MockPetUseCase extends _i1.Mock implements _i4.PetUseCase {
             [
               page,
               limit,
+              search,
+              breed,
             ],
           ),
         )),
@@ -102,6 +108,8 @@ class MockPetUseCase extends _i1.Mock implements _i4.PetUseCase {
             [
               page,
               limit,
+              search,
+              breed,
             ],
           ),
         )),

@@ -8,7 +8,8 @@ final petRepositoryProvider =
     Provider<IPetRepository>((ref) => ref.read(petRemoteRepository));
 
 abstract class IPetRepository {
-  Future<Either<Failure, List<PetEntity>>> pagination(int page, int limit);
+  Future<Either<Failure, List<PetEntity>>> pagination(
+      int page, int limit, String search, String breed);
 
   Future<Either<Failure, List<String>>> getAllSpecies();
 

@@ -40,6 +40,10 @@ class CurrentUserViewModel extends StateNotifier<CurrentUserState> {
     profileNavigator.openEditProfileView();
   }
 
+  openMyPetsView() {
+    profileNavigator.openMyPetsView();
+  }
+
   Future<void> getCurrentUser() async {
     try {
       state = state.copyWith(isLoading: true);

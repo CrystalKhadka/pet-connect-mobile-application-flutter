@@ -4,6 +4,7 @@
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'dart:async' as _i6;
+import 'dart:io' as _i9;
 
 import 'package:dartz/dartz.dart' as _i4;
 import 'package:final_assignment/core/failure/failure.dart' as _i7;
@@ -16,7 +17,7 @@ import 'package:final_assignment/features/auth/domain/repository/i_auth_reposito
 import 'package:final_assignment/features/auth/domain/usecases/auth_use_case.dart'
     as _i5;
 import 'package:final_assignment/features/auth/presentation/navigator/login_navigator.dart'
-    as _i9;
+    as _i10;
 import 'package:mockito/mockito.dart' as _i1;
 
 // ignore_for_file: type=lint
@@ -391,10 +392,168 @@ class MockAuthUseCase extends _i1.Mock implements _i5.AuthUseCase {
           ),
         )),
       ) as _i6.Future<_i4.Either<_i7.Failure, _i8.AuthEntity>>);
+
+  @override
+  _i6.Future<_i4.Either<_i7.Failure, String>> uploadImage(_i9.File? file) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #uploadImage,
+          [file],
+        ),
+        returnValue: _i6.Future<_i4.Either<_i7.Failure, String>>.value(
+            _FakeEither_2<_i7.Failure, String>(
+          this,
+          Invocation.method(
+            #uploadImage,
+            [file],
+          ),
+        )),
+        returnValueForMissingStub:
+            _i6.Future<_i4.Either<_i7.Failure, String>>.value(
+                _FakeEither_2<_i7.Failure, String>(
+          this,
+          Invocation.method(
+            #uploadImage,
+            [file],
+          ),
+        )),
+      ) as _i6.Future<_i4.Either<_i7.Failure, String>>);
+
+  @override
+  _i6.Future<_i4.Either<_i7.Failure, bool>> updateUser(_i8.AuthEntity? user) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #updateUser,
+          [user],
+        ),
+        returnValue: _i6.Future<_i4.Either<_i7.Failure, bool>>.value(
+            _FakeEither_2<_i7.Failure, bool>(
+          this,
+          Invocation.method(
+            #updateUser,
+            [user],
+          ),
+        )),
+        returnValueForMissingStub:
+            _i6.Future<_i4.Either<_i7.Failure, bool>>.value(
+                _FakeEither_2<_i7.Failure, bool>(
+          this,
+          Invocation.method(
+            #updateUser,
+            [user],
+          ),
+        )),
+      ) as _i6.Future<_i4.Either<_i7.Failure, bool>>);
+
+  @override
+  _i6.Future<_i4.Either<_i7.Failure, bool>> sendEmail(String? email) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #sendEmail,
+          [email],
+        ),
+        returnValue: _i6.Future<_i4.Either<_i7.Failure, bool>>.value(
+            _FakeEither_2<_i7.Failure, bool>(
+          this,
+          Invocation.method(
+            #sendEmail,
+            [email],
+          ),
+        )),
+        returnValueForMissingStub:
+            _i6.Future<_i4.Either<_i7.Failure, bool>>.value(
+                _FakeEither_2<_i7.Failure, bool>(
+          this,
+          Invocation.method(
+            #sendEmail,
+            [email],
+          ),
+        )),
+      ) as _i6.Future<_i4.Either<_i7.Failure, bool>>);
+
+  @override
+  _i6.Future<_i4.Either<_i7.Failure, bool>> sendOtp(String? phone) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #sendOtp,
+          [phone],
+        ),
+        returnValue: _i6.Future<_i4.Either<_i7.Failure, bool>>.value(
+            _FakeEither_2<_i7.Failure, bool>(
+          this,
+          Invocation.method(
+            #sendOtp,
+            [phone],
+          ),
+        )),
+        returnValueForMissingStub:
+            _i6.Future<_i4.Either<_i7.Failure, bool>>.value(
+                _FakeEither_2<_i7.Failure, bool>(
+          this,
+          Invocation.method(
+            #sendOtp,
+            [phone],
+          ),
+        )),
+      ) as _i6.Future<_i4.Either<_i7.Failure, bool>>);
+
+  @override
+  _i6.Future<_i4.Either<_i7.Failure, bool>> resetPass({
+    required String? phone,
+    required String? password,
+    required String? otp,
+  }) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #resetPass,
+          [],
+          {
+            #phone: phone,
+            #password: password,
+            #otp: otp,
+          },
+        ),
+        returnValue: _i6.Future<_i4.Either<_i7.Failure, bool>>.value(
+            _FakeEither_2<_i7.Failure, bool>(
+          this,
+          Invocation.method(
+            #resetPass,
+            [],
+            {
+              #phone: phone,
+              #password: password,
+              #otp: otp,
+            },
+          ),
+        )),
+        returnValueForMissingStub:
+            _i6.Future<_i4.Either<_i7.Failure, bool>>.value(
+                _FakeEither_2<_i7.Failure, bool>(
+          this,
+          Invocation.method(
+            #resetPass,
+            [],
+            {
+              #phone: phone,
+              #password: password,
+              #otp: otp,
+            },
+          ),
+        )),
+      ) as _i6.Future<_i4.Either<_i7.Failure, bool>>);
 }
 
 /// A class which mocks [LoginViewNavigator].
 ///
 /// See the documentation for Mockito's code generation for more information.
 class MockLoginViewNavigator extends _i1.Mock
-    implements _i9.LoginViewNavigator {}
+    implements _i10.LoginViewNavigator {
+  @override
+  void openForgotPasswordView() => super.noSuchMethod(
+        Invocation.method(
+          #openForgotPasswordView,
+          [],
+        ),
+        returnValueForMissingStub: null,
+      );
+}

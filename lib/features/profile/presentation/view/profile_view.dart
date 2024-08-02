@@ -82,7 +82,13 @@ class _ProfileViewState extends ConsumerState<ProfileView> {
                                 .openFavoriteView();
                           }),
                       ProfileMenuItem(
-                          icon: Icons.settings, text: 'Settings', onTap: () {}),
+                          icon: Icons.pets,
+                          text: 'My pets',
+                          onTap: () {
+                            ref
+                                .read(currentUserViewModelProvider.notifier)
+                                .openMyPetsView();
+                          }),
                       ProfileMenuItem(
                           icon: Icons.fingerprint,
                           text: 'Enable Fingerprint',

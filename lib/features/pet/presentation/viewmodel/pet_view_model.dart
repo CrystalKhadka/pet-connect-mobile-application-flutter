@@ -16,60 +16,58 @@ final petViewModelProvider = StateNotifierProvider<PetViewModel, PetState>(
 );
 
 class PetViewModel extends StateNotifier<PetState> {
-  PetViewModel(
-      {required this.petUseCase,
-      required this.petViewNavigator,
-      required this.favoriteUsecase})
-      : super(PetState.initial()) {
-    fetchPets(state.limit);
-    fetchSpecies();
-
-    fetchFavoritePets();
+  PetViewModel({
+    required this.petUseCase,
+    required this.petViewNavigator,
+    required this.favoriteUsecase,
+  }) : super(PetState.initial()) {
+    _initializeData();
   }
 
   final PetUseCase petUseCase;
   final PetViewNavigator petViewNavigator;
   final FavoriteUsecase favoriteUsecase;
 
-  Future<void> resetState() async {
-    state = PetState.initial();
-    fetchFavoritePets();
-    fetchPets(state.limit);
-    fetchSpecies();
+  Future<void> _initializeData() async {
+    await Future.wait([
+      fetchPets(),
+      fetchSpecies(),
+      fetchFavoritePets(),
+    ]);
   }
 
-  Future<void> fetchPets(int limit) async {
-    state = state.copyWith(isLoading: true);
-    final currentState = state;
-    final page = currentState.page + 1;
-    final pets = currentState.pets;
-    final hasReachedMax = currentState.hasReachedMax;
-    if (!hasReachedMax) {
-      // get data from data source
+  Future<void> resetState() async {
+    state = PetState.initial();
+    await _initializeData();
+  }
 
-      final result = await petUseCase.pagination(page, limit);
-      result.fold(
-        (failure) => state = state.copyWith(
-          hasReachedMax: true,
+  Future<void> fetchPets() async {
+    if (state.hasReachedMax) return;
+
+    state = state.copyWith(isLoading: true);
+    final result = await petUseCase.pagination(
+      state.page + 1,
+      state.limit,
+      state.searchQuery,
+      state.selectedSpecies,
+    );
+
+    result.fold(
+      (failure) => state = state.copyWith(
+        hasReachedMax: true,
+        isLoading: false,
+        error: failure.error,
+      ),
+      (data) {
+        final newPets = [...state.pets, ...data];
+        state = state.copyWith(
+          pets: newPets,
+          page: state.page + 1,
           isLoading: false,
-          error: failure.error,
-        ),
-        (data) {
-          if (data.isEmpty) {
-            state = state.copyWith(hasReachedMax: true);
-          } else {
-            state = state.copyWith(
-              pets: [...pets, ...data],
-              page: page,
-              isLoading: false,
-            );
-          }
-        },
-      );
-    } else {
-      state = state.copyWith(isLoading: false);
-      // showMySnackBar(message: 'No more data to load.', color: Colors.red);
-    }
+          hasReachedMax: data.isEmpty,
+        );
+      },
+    );
   }
 
   Future<void> fetchSpecies() async {
@@ -83,71 +81,69 @@ class PetViewModel extends StateNotifier<PetState> {
     );
   }
 
-  Future<void> toggleFavorite(PetEntity entity) async {
-    state = state.copyWith(isLoading: true);
-    if (isFavorite(entity)) {
-      final result = await favoriteUsecase.removeFavorite(entity.id ?? '');
-      result.fold(
-        (failure) => state = state.copyWith(
-          isLoading: false,
-          error: failure.error,
-        ),
-        (data) {
-          state = state.copyWith(
-            isLoading: false,
-          );
-        },
-      );
-    } else {
-      final result = await favoriteUsecase.addFavorite(entity.id ?? '');
-      result.fold((failure) {
-        state = state.copyWith(
-          isLoading: false,
-          error: failure.error,
-        );
-        showMySnackBar(message: failure.error, color: Colors.red);
-      }, (data) {
-        state = state.copyWith(
-          isLoading: false,
-        );
-
-        showMySnackBar(message: 'Added to favorite', color: Colors.green);
-      });
-    }
-    fetchFavoritePets();
+  Future<void> searchPets(String query) async {
+    state = state.copyWith(
+      searchQuery: query,
+      page: 0,
+      pets: [],
+      hasReachedMax: false,
+    );
+    await fetchPets();
   }
 
-  fetchFavoritePets() async {
-    final result = await favoriteUsecase.getFavoritePets();
+  Future<void> filterPets(String species) async {
+    state = state.copyWith(
+      selectedSpecies: species,
+      page: 0,
+      pets: [],
+      hasReachedMax: false,
+    );
+    await fetchPets();
+  }
+
+  Future<void> toggleFavorite(PetEntity entity) async {
+    state = state.copyWith(isLoading: true);
+    final isFavorite = state.favorites.contains(entity.id);
+    final result = isFavorite
+        ? await favoriteUsecase.removeFavorite(entity.id ?? '')
+        : await favoriteUsecase.addFavorite(entity.id ?? '');
+
     result.fold(
       (failure) {
-        state = state.copyWith(
-          isLoading: false,
-          error: failure.error,
-        );
+        state = state.copyWith(isLoading: false, error: failure.error);
         showMySnackBar(message: failure.error, color: Colors.red);
       },
-      (data) => state = state.copyWith(
-          favorites: data
-              .map(
-                (e) => e.pet.id!,
-              )
-              .toList()),
+      (_) {
+        final updatedFavorites = isFavorite
+            ? state.favorites.where((id) => id != entity.id).toList()
+            : [...state.favorites, entity.id!];
+        state = state.copyWith(
+          isLoading: false,
+          favorites: updatedFavorites,
+        );
+        if (!isFavorite) {
+          showMySnackBar(message: 'Added to favorite', color: Colors.green);
+        }
+      },
     );
   }
 
-  // compare favorite pets with all pets
-  bool isFavorite(PetEntity entity) {
-    print(state.favorites);
-    print(entity.id);
-    return state.favorites.contains(entity.id);
+  Future<void> fetchFavoritePets() async {
+    final result = await favoriteUsecase.getFavoritePets();
+    result.fold(
+      (failure) {
+        state = state.copyWith(error: failure.error);
+        showMySnackBar(message: failure.error, color: Colors.red);
+      },
+      (data) => state = state.copyWith(
+        favorites: data.map((e) => e.pet.id!).toList(),
+      ),
+    );
   }
 
-  void openSinglePetView(String id) {
-    petViewNavigator.openSinglePetView(id);
-  }
+  bool isFavorite(PetEntity entity) => state.favorites.contains(entity.id);
 
-  void openAdoptionForm(String id) {
-    petViewNavigator.openAdoptionFormView(id);
-  }
+  void openSinglePetView(String id) => petViewNavigator.openSinglePetView(id);
+
+  void openAdoptionForm(String id) => petViewNavigator.openAdoptionFormView(id);
 }

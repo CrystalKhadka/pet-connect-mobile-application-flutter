@@ -34,7 +34,10 @@ class PetRemoteDataSource {
   });
 
   Future<Either<Failure, List<PetEntity>>> pagination(
-      {required int page, required int limit}) async {
+      {required int page,
+      required int limit,
+      required String search,
+      required String breed}) async {
     try {
       final token = await userSharedPrefs.getUserToken();
       token.fold((l) => throw Failure(error: l.error), (r) => r);
@@ -43,6 +46,8 @@ class PetRemoteDataSource {
         queryParameters: {
           'page': page,
           'limit': limit,
+          'search': search,
+          'species': breed,
         },
         options: Options(
           headers: {

@@ -37,7 +37,7 @@ class ApiEndpoints {
   // Pet Routes
   static const String getAllPets = "pet/all";
   static const String getPetById = "pet/get/";
-  static const String pagination = "pet/pagination";
+  static const String pagination = "pet/filter/species";
   static const String getAllPetsByOwner = "pet/all/";
   static const String getAllSpecies = "pet/species";
 
@@ -47,6 +47,7 @@ class ApiEndpoints {
 
   // Adoption Routes
   static const String addAdoption = 'adoption/create';
+  static const String viewAdoption = 'adoption/form_sender';
 
   // favorite Routes
   static const String addFavorite = 'favorite/add';

@@ -16,8 +16,9 @@ class PetUseCase {
     required this.petRepository,
   });
 
-  Future<Either<Failure, List<PetEntity>>> pagination(int page, int limit) {
-    return petRepository.pagination(page, limit);
+  Future<Either<Failure, List<PetEntity>>> pagination(
+      int page, int limit, String search, String breed) {
+    return petRepository.pagination(page, limit, search, breed);
   }
 
   Future<Either<Failure, List<String>>> getAllSpecies() {

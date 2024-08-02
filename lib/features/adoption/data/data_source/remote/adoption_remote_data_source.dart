@@ -64,4 +64,41 @@ class AdoptionRemoteDataSource {
       );
     }
   }
+
+  Future<Either<Failure, List<AdoptionEntity>>> getAdoptions() async {
+    try {
+      String? token;
+      final data = await userSharedPrefs.getUserToken();
+      data.fold(
+        (l) {
+          throw l;
+        },
+        (r) {
+          token = r;
+        },
+      );
+      final response = await dio.get(ApiEndpoints.viewAdoption,
+          options: Options(
+            headers: {
+              'Authorization': 'Bearer $token',
+            },
+          ));
+      if (response.statusCode == 200) {
+        return Right([]);
+      }
+      return Left(
+        Failure(
+            error: response.data['message'],
+            statusCode: response.statusCode.toString()),
+      );
+    } on DioException catch (e) {
+      return Left(
+        Failure(error: e.error.toString()),
+      );
+    } catch (e) {
+      return Left(
+        Failure(error: e.toString()),
+      );
+    }
+  }
 }

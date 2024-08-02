@@ -54,7 +54,7 @@ class _PetListViewState extends ConsumerState<PetListView> {
         onNotification: (notification) {
           if (notification is ScrollEndNotification &&
               _scrollController.position.extentAfter == 0) {
-            ref.read(petViewModelProvider.notifier).fetchPets(petState.limit);
+            ref.read(petViewModelProvider.notifier).fetchPets();
           }
           return true;
         },
@@ -66,10 +66,10 @@ class _PetListViewState extends ConsumerState<PetListView> {
               SliverPadding(
                 padding: const EdgeInsets.all(16.0),
                 sliver: SliverToBoxAdapter(
-                  child: SearchBar(
+                  child: TextField(
                     controller: _searchController,
-                    onSearch: (value) {
-                      // Implement search functionality
+                    onChanged: (value) {
+                      ref.read(petViewModelProvider.notifier).searchPets(value);
                     },
                   ),
                 ),
@@ -81,7 +81,7 @@ class _PetListViewState extends ConsumerState<PetListView> {
                     crossAxisCount: 1,
                     mainAxisSpacing: 16,
                     crossAxisSpacing: 16,
-                    childAspectRatio: isTabletDevice ? 2.5 : 1.2,
+                    childAspectRatio: isTabletDevice ? 2.5 : 1,
                   ),
                   delegate: SliverChildBuilderDelegate(
                     (context, index) {
@@ -139,15 +139,15 @@ class _PetListViewState extends ConsumerState<PetListView> {
                 ListTile(
                   title: const Text('All Species'),
                   onTap: () {
-                    setState(() => _selectedSpecies = null);
-                    Navigator.of(context).pop();
+                    ref.read(petViewModelProvider.notifier).filterPets('all');
                   },
                 ),
                 ...species.map((species) => ListTile(
                       title: Text(species),
                       onTap: () {
-                        setState(() => _selectedSpecies = species);
-                        Navigator.of(context).pop();
+                        ref
+                            .read(petViewModelProvider.notifier)
+                            .filterPets(species);
                       },
                     )),
               ],

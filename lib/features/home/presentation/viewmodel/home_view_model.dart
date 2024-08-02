@@ -101,7 +101,7 @@ class HomeViewModel extends StateNotifier<PetState> {
     if (!hasReachedMax) {
       // get data from data source
       final limit = DeviceInfo.isTabletDevice() ? 6 : 3;
-      final result = await petUseCase.pagination(page, limit);
+      final result = await petUseCase.pagination(page, limit, '', 'all');
       result.fold(
         (failure) {
           state = state.copyWith(
