@@ -18,4 +18,8 @@ class AdoptionUsecase {
   Future<Either<Failure, bool>> addAdoptionForm(AdoptionEntity entity) async {
     return await adoptionRepository.addAdoptionForm(entity);
   }
+
+  Future<Either<Failure, List<AdoptionEntity>>> getAdoptionsByUser() async {
+    return await adoptionRepository.getAdoptionsByUser();
+  }
 }

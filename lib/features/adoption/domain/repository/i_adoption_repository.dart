@@ -10,4 +10,6 @@ final adoptionRepositoryProvider = Provider<IAdoptionRepository>(
 
 abstract class IAdoptionRepository {
   Future<Either<Failure, bool>> addAdoptionForm(AdoptionEntity adoptionEntity);
+
+  Future<Either<Failure, List<AdoptionEntity>>> getAdoptionsByUser();
 }

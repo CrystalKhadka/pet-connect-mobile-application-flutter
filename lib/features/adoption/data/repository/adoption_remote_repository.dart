@@ -17,8 +17,14 @@ class AdoptionRemoteRepository implements IAdoptionRepository {
   AdoptionRemoteRepository(
     this.adoptionRemoteDataSource,
   );
+
   @override
   Future<Either<Failure, bool>> addAdoptionForm(AdoptionEntity adoptionEntity) {
     return adoptionRemoteDataSource.addAdoptions(adoptionEntity);
+  }
+
+  @override
+  Future<Either<Failure, List<AdoptionEntity>>> getAdoptionsByUser() {
+    return adoptionRemoteDataSource.getAdoptions();
   }
 }

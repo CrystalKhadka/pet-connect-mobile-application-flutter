@@ -9,7 +9,11 @@ final singlePetViewNavigatorProvider =
     Provider((ref) => SinglePetViewNavigator());
 
 class SinglePetViewNavigator
-    with DashboardViewRoute, AdoptionFormRoute, ChatViewRoute {}
+    with DashboardViewRoute, AdoptionFormRoute, ChatViewRoute {
+  pop() {
+    NavigateRoute.pop();
+  }
+}
 
 mixin SinglePetViewRoute {
   openSinglePetView(String id) {

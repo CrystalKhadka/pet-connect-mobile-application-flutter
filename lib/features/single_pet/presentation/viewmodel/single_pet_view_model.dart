@@ -117,4 +117,8 @@ class SinglePetViewModel extends StateNotifier<SinglePetState> {
       },
     );
   }
+
+  pop() {
+    singlePetViewNavigator.pop();
+  }
 }

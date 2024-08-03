@@ -69,7 +69,7 @@ class HomeViewModel extends StateNotifier<PetState> {
   }
 
   receiveNotification(dynamic data) async {
-    showMySnackBar(message: data.toString());
+    showMySnackBar(message: data['message']);
   }
 
   newUser() async {

@@ -8,6 +8,8 @@ import 'package:final_assignment/features/adoption/data/model/adoption_api_model
 import 'package:final_assignment/features/adoption/domain/entity/adoption_entity.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../dto/get_adoptions_by_user_dto.dart';
+
 final adoptionRemoteDataSourceProvider = Provider<AdoptionRemoteDataSource>(
   (ref) => AdoptionRemoteDataSource(
     dio: ref.watch(httpServiceProvider),
@@ -84,7 +86,13 @@ class AdoptionRemoteDataSource {
             },
           ));
       if (response.statusCode == 200) {
-        return Right([]);
+        final getAdoptionByUserDto =
+            GetAdoptionsByUserDto.fromJson(response.data);
+        final adoptions = getAdoptionByUserDto.adoption.map((e) {
+          return e.toEntity();
+        }).toList();
+
+        return Right(adoptions);
       }
       return Left(
         Failure(

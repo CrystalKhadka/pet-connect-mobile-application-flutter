@@ -26,6 +26,9 @@ class ChatViewModel extends StateNotifier<ChatState> {
   final socket = SocketService.socket;
 
   Future<void> init(String receiverId) async {
+    if (state.receiver?.id == receiverId) {
+      offSocket();
+    }
     await initSocket();
     await setReceiverUser(receiverId);
     await setCurrentUser();
@@ -35,6 +38,12 @@ class ChatViewModel extends StateNotifier<ChatState> {
   initSocket() async {
     socket.on("message", handleNewMessage);
     socket.on("typingNow", handleTypingIndicator);
+  }
+
+  // off socket method
+  offSocket() {
+    socket.off("message");
+    socket.off("typingNow");
   }
 
   handleNewMessage(data) {
@@ -82,17 +91,17 @@ class ChatViewModel extends StateNotifier<ChatState> {
   }
 
   setCurrentUser() async {
-    final data = await authUseCase.getCurrentUser();
-    data.fold(
-      (failure) {
-        state = state.copyWith(
-          isLoading: false,
-          error: failure.error,
-        );
-        showMySnackBar(message: failure.error);
-      },
-      (currentUser) {
-        state = state.copyWith(
+          final data = await authUseCase.getCurrentUser();
+          data.fold(
+                (failure) {
+              state = state.copyWith(
+                isLoading: false,
+                error: failure.error,
+              );
+              showMySnackBar(message: failure.error);
+            },
+                (currentUser) {
+              state = state.copyWith(
           isLoading: false,
           user: currentUser,
         );
@@ -189,5 +198,11 @@ class ChatViewModel extends StateNotifier<ChatState> {
       hasReachedMax: false,
     );
     getMessages();
+  }
+
+  @override
+  void dispose() {
+    offSocket();
+    super.dispose();
   }
 }

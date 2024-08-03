@@ -53,9 +53,7 @@ class _SinglePetViewState extends ConsumerState<SinglePetView> {
                     left: 0,
                     child: IconButton(
                       onPressed: () {
-                        ref
-                            .read(singlePetViewModelProvider.notifier)
-                            .openPetView();
+                        ref.read(singlePetViewModelProvider.notifier).pop();
                       },
                       icon: const Icon(Icons.arrow_back),
                     ),

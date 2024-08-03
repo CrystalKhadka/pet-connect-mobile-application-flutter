@@ -18,6 +18,7 @@ class _DashboardViewState extends ConsumerState<DashboardView> {
   // use index from widget if it is not null
   int currentIndex = 0;
 
+  // list of views
   final List<Widget> _children = [
     const HomeView(),
     const PetListView(),
@@ -56,6 +57,7 @@ class _DashboardViewState extends ConsumerState<DashboardView> {
           ],
           currentIndex: currentIndex,
           onTap: (index) {
+            // if index changed dispose the current view model
             setState(() {
               currentIndex = index;
             });

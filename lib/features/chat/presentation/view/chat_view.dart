@@ -1,3 +1,4 @@
+import 'package:final_assignment/core/common/my_snackbar.dart';
 import 'package:final_assignment/features/chat/presentation/view/user.dart';
 import 'package:final_assignment/features/chat/presentation/viewmodel/chat_view_model.dart';
 import 'package:final_assignment/features/chat/presentation/widgets/chat_header.dart';
@@ -35,6 +36,14 @@ class _ChatViewState extends ConsumerState<ChatView> {
           );
     });
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    // dispose while changing bottom navigation
+    showMySnackBar(message: 'Chat Disposed');
+    ref.read(chatViewModelProvider.notifier).offSocket();
+    super.dispose();
   }
 
   @override
