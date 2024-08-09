@@ -15,6 +15,13 @@ class App extends StatelessWidget {
       title: 'Pet Adoption App',
       theme: AppTheme.getApplicationTheme(false),
       home: const SplashView(),
+      supportedLocales: const [
+        Locale('en', 'US'),
+        Locale('ne', 'NP'),
+      ],
+      localizationsDelegates: const [
+        DefaultMaterialLocalizations.delegate,
+      ],
     );
   }
 }

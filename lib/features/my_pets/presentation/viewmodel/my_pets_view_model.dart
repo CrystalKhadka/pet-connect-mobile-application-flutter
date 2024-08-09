@@ -33,4 +33,8 @@ class MyPetsViewModel extends StateNotifier<MyPetsState> {
   openSinglePetView(String id) {
     navigator.openSinglePetView(id);
   }
+
+  openPaymentView(String id) {
+    navigator.openPaymentView(id);
+  }
 }

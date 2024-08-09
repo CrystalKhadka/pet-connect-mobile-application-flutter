@@ -36,6 +36,20 @@
 
                 <data android:scheme="com.googleusercontent.apps.130561327826-5psq6tkah4cnf84cqunckq7pfph3lrtu.apps.googleusercontent.com" />
             </intent-filter>
+
+            <meta-data
+                android:name="flutter_deeplinking_enabled"
+                android:value="true" />
+            <intent-filter android:autoVerify="true">
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:host="{com.crystal_raj_khadka.final_assignment.final_assignment}"
+                    android:scheme="kpg" />
+            </intent-filter>
         </activity>
 
         <!-- Metadata for Google Sign-In -->
