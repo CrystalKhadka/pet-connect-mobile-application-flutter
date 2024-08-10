@@ -1,4 +1,4 @@
-import 'package:final_assignment/core/common/my_snackbar.dart';
+import 'package:final_assignment/core/common/widgets/my_snackbar.dart';
 import 'package:final_assignment/features/favorite/domain/usecases/favorite_usecase.dart';
 import 'package:final_assignment/features/pet/domain/usecases/pet_usecase.dart';
 import 'package:final_assignment/features/single_pet/presentation/navigator/single_pet_navigator.dart';

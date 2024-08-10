@@ -34,8 +34,10 @@
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
 
-                <data android:scheme="com.googleusercontent.apps.130561327826-5psq6tkah4cnf84cqunckq7pfph3lrtu.apps.googleusercontent.com" />
+                <data
+                    android:scheme="com.googleusercontent.apps.130561327826-5psq6tkah4cnf84cqunckq7pfph3lrtu.apps.googleusercontent.com" />
             </intent-filter>
+
 
             <meta-data
                 android:name="flutter_deeplinking_enabled"
@@ -46,6 +48,9 @@
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
 
+                <data android:scheme="https"
+                    android:host="http://192.168.137.1:3000"
+                    android:pathPrefix="/payment-success" />
                 <data
                     android:host="{com.crystal_raj_khadka.final_assignment.final_assignment}"
                     android:scheme="kpg" />

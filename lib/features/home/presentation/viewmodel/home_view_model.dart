@@ -1,5 +1,5 @@
-import 'package:final_assignment/core/common/my_snackbar.dart';
-import 'package:final_assignment/core/common/my_yes_no_dialog.dart';
+import 'package:final_assignment/core/common/widgets/my_snackbar.dart';
+import 'package:final_assignment/core/common/widgets/my_yes_no_dialog.dart';
 import 'package:final_assignment/core/networking/socket/socket_service.dart';
 import 'package:final_assignment/core/shared_prefs/user_shared_prefs.dart';
 import 'package:final_assignment/features/auth/domain/usecases/auth_use_case.dart';
@@ -9,6 +9,7 @@ import 'package:final_assignment/features/pet/presentation/widgets/device_info.d
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../../core/networking/google/google_service.dart';
 import '../../../pet/presentation/state/pet_state.dart';
 
 // Provider
@@ -18,6 +19,7 @@ final homeViewModelProvider = StateNotifierProvider<HomeViewModel, PetState>(
     petUseCase: ref.watch(petUseCaseProvider),
     userSharedPrefs: ref.watch(userSharedPrefsProvider),
     authUseCase: ref.watch(authUseCaseProvider),
+    googleSignInService: ref.watch(googleSignInServiceProvider),
   ),
 );
 
@@ -27,6 +29,7 @@ class HomeViewModel extends StateNotifier<PetState> {
     required this.petUseCase,
     required this.userSharedPrefs,
     required this.authUseCase,
+    required this.googleSignInService,
   }) : super(PetState.initial()) {
     // Show snackbar on successful connection
 
@@ -44,6 +47,8 @@ class HomeViewModel extends StateNotifier<PetState> {
   final PetUseCase petUseCase;
   final UserSharedPrefs userSharedPrefs;
   final AuthUseCase authUseCase;
+  final GoogleSignInService googleSignInService;
+
   final socket = SocketService.socket;
 
   void openLoginView() {
@@ -144,14 +149,18 @@ class HomeViewModel extends StateNotifier<PetState> {
         await myYesNoDialog(title: 'Are you sure you want to logout?');
 
     if (accept) {
+      state = state.copyWith(isLoading: true);
+      googleSignInService.signOutGoogle();
       final result = await userSharedPrefs.removeUserToken();
+
       result.fold(
-        (failure) => state = state.copyWith(
-          isLoading: false,
-          error: failure.error,
-        ),
-        (data) => openLoginView(),
-      );
+          (failure) => state = state.copyWith(
+                isLoading: false,
+                error: failure.error,
+              ), (data) {
+        state = state.copyWith(isLoading: false);
+        navigator.openLoginView();
+      });
     }
   }
 }

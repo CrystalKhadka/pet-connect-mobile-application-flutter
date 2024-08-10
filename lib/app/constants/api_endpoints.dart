@@ -23,6 +23,7 @@ class ApiEndpoints {
 
   static const String uploadImage = "user/upload";
   static const String updateUser = "user/update";
+  static const String deleteUser = "user/delete";
 
   // Forgot password by email api
 
@@ -63,4 +64,10 @@ class ApiEndpoints {
       'http://192.168.137.1:5000/messages/files/';
   static const String messageImageUrl =
       'http://192.168.137.1:5000/messages/images/';
+
+  // Payment Routes
+  static const String addPayment = 'payment/add';
+
+  // Khalti Routes
+  static const String initiateKhaltiPayment = 'khalti/initiate-payment';
 }

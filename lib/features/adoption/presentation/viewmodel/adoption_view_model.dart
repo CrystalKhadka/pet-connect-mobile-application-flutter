@@ -1,4 +1,4 @@
-import 'package:final_assignment/core/common/my_snackbar.dart';
+import 'package:final_assignment/core/common/widgets/my_snackbar.dart';
 import 'package:final_assignment/features/adoption/domain/entity/adoption_entity.dart';
 import 'package:final_assignment/features/adoption/domain/entity/form_entity.dart';
 import 'package:final_assignment/features/adoption/domain/usecases/adoption_usecase.dart';
@@ -38,7 +38,6 @@ class AdoptionViewModel extends StateNotifier<AdoptionState> {
   void submitForm(FormEntity form) {
     state = state.copyWith(isLoading: true);
     final pet = state.petEntity;
-
 
     final adoption = AdoptionEntity(
       form: form,

@@ -1,4 +1,4 @@
-import 'package:final_assignment/core/common/my_snackbar.dart';
+import 'package:final_assignment/core/common/widgets/my_snackbar.dart';
 import 'package:final_assignment/features/auth/domain/usecases/auth_use_case.dart';
 import 'package:final_assignment/features/chat/domain/entity/message_enttiy.dart';
 import 'package:final_assignment/features/chat/domain/usecases/chat_use_case.dart';
@@ -91,17 +91,17 @@ class ChatViewModel extends StateNotifier<ChatState> {
   }
 
   setCurrentUser() async {
-          final data = await authUseCase.getCurrentUser();
-          data.fold(
-                (failure) {
-              state = state.copyWith(
-                isLoading: false,
-                error: failure.error,
-              );
-              showMySnackBar(message: failure.error);
-            },
-                (currentUser) {
-              state = state.copyWith(
+    final data = await authUseCase.getCurrentUser();
+    data.fold(
+      (failure) {
+        state = state.copyWith(
+          isLoading: false,
+          error: failure.error,
+        );
+        showMySnackBar(message: failure.error);
+      },
+      (currentUser) {
+        state = state.copyWith(
           isLoading: false,
           user: currentUser,
         );

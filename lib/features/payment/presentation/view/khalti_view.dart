@@ -1,25 +1,32 @@
+import 'dart:async';
 import 'dart:developer';
 
+import 'package:app_links/app_links.dart';
+import 'package:final_assignment/features/payment/presentation/view/payment_success.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:khalti_checkout_flutter/khalti_checkout_flutter.dart';
 
-class KhaltiSDKDemo extends StatefulWidget {
-  const KhaltiSDKDemo({super.key});
+class KhaltiView extends ConsumerStatefulWidget {
+  const KhaltiView({super.key, required this.pidx});
+
+  final String pidx;
 
   @override
-  State<KhaltiSDKDemo> createState() => _KhaltiSDKDemoState();
+  ConsumerState<ConsumerStatefulWidget> createState() => _KhaltiViewState();
 }
 
-class _KhaltiSDKDemoState extends State<KhaltiSDKDemo> {
+class _KhaltiViewState extends ConsumerState<KhaltiView> {
   late final Future<Khalti> khalti;
-  final pidx = 'kPsyocLPdczTPNWptmzfmb';
+  late AppLinks _appLinks;
 
   @override
   void initState() {
     super.initState();
+
     final payConfig = KhaltiPayConfig(
-      publicKey: '66aa33728e7d4eeab705f9b8922defc6', // Merchant's public key
-      pidx: pidx, // This should be generated via a server side POST request.
+      publicKey: '66aa33728e7d4eeab705f9b8922defc6',
+      pidx: widget.pidx,
       environment: Environment.test,
     );
 
@@ -27,7 +34,11 @@ class _KhaltiSDKDemoState extends State<KhaltiSDKDemo> {
       enableDebugging: true,
       payConfig: payConfig,
       onPaymentResult: (paymentResult, khalti) {
-        log(paymentResult.toString());
+        if (paymentResult.payload?.status == 'Completed') {
+          log('Payment Success');
+        } else {
+          log('Payment Failed');
+        }
       },
       onMessage: (
         khalti, {
@@ -40,8 +51,42 @@ class _KhaltiSDKDemoState extends State<KhaltiSDKDemo> {
           'Description: $description, Status Code: $statusCode, Event: $event, NeedsPaymentConfirmation: $needsPaymentConfirmation',
         );
       },
-      onReturn: () => log('Successfully redirected to return_url.'),
+      onReturn: () {
+        log('Returned');
+      },
     );
+
+    _initializeAppLinks();
+  }
+
+  void _initializeAppLinks() async {
+    _appLinks = AppLinks();
+
+    // Handle initial link
+    final initialLink = await _appLinks.getInitialLink();
+    if (initialLink != null) {
+      _handleIncomingLink(initialLink);
+    }
+
+    // Listen for incoming links
+    _appLinks.uriLinkStream.listen((Uri? uri) {
+      if (uri != null) {
+        log('Received incoming link: $uri');
+        _handleIncomingLink(uri);
+      }
+    });
+  }
+
+  void _handleIncomingLink(Uri uri) {
+    if (uri.path.contains('payment-success')) {
+      log('Payment Success');
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => const PaymentSuccess()),
+      );
+    } else {
+      log('Received unknown link: $uri');
+    }
   }
 
   @override

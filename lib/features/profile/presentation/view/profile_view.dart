@@ -1,3 +1,5 @@
+import 'package:final_assignment/core/common/provider/dark_theme_provider.dart';
+import 'package:final_assignment/core/common/widgets/my_awesome_yes_no_dialog.dart';
 import 'package:final_assignment/features/home/presentation/viewmodel/home_view_model.dart';
 import 'package:final_assignment/features/profile/presentation/viewmodel/current_user_view_model.dart';
 import 'package:flutter/material.dart';
@@ -60,9 +62,19 @@ class _ProfileViewState extends ConsumerState<ProfileView> {
                             ),
                       const SizedBox(height: 20),
                       ProfileMenuItem(
-                          icon: Icons.brightness_6,
-                          text: 'Select Mode',
-                          onTap: () {}),
+                        icon: Icons.brightness_6,
+                        text: 'Select Mode',
+                        onTap: () async {
+                          final result = await myAwesomeYesNoDialog(
+                            title: 'Are you sure?',
+                            context: 'Do you want'
+                                ' to change your theme?',
+                          );
+                          if (result) {
+                            ref.read(darkThemeProvider.notifier).toggleTheme();
+                          }
+                        },
+                      ),
                       ProfileMenuItem(
                           icon: Icons.info,
                           text: 'Account Information',

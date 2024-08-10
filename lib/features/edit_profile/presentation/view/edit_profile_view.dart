@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:final_assignment/core/common/my_snackbar.dart';
+import 'package:final_assignment/core/common/widgets/my_snackbar.dart';
 import 'package:final_assignment/features/auth/domain/entity/auth_entity.dart';
 import 'package:final_assignment/features/edit_profile/presentation/state/edit_profile_state.dart';
 import 'package:final_assignment/features/edit_profile/presentation/viewmodel/edit_profile_view_model.dart';

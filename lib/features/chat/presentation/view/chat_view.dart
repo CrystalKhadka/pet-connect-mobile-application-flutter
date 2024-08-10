@@ -1,4 +1,4 @@
-import 'package:final_assignment/core/common/my_snackbar.dart';
+import 'package:final_assignment/core/common/widgets/my_snackbar.dart';
 import 'package:final_assignment/features/chat/presentation/view/user.dart';
 import 'package:final_assignment/features/chat/presentation/viewmodel/chat_view_model.dart';
 import 'package:final_assignment/features/chat/presentation/widgets/chat_header.dart';

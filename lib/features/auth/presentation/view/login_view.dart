@@ -1,8 +1,8 @@
 import 'dart:async';
 
 import 'package:all_sensors2/all_sensors2.dart';
-import 'package:final_assignment/core/common/my_snackbar.dart';
-import 'package:final_assignment/core/common/my_yes_no_dialog.dart';
+import 'package:final_assignment/core/common/widgets/my_snackbar.dart';
+import 'package:final_assignment/core/common/widgets/my_yes_no_dialog.dart';
 import 'package:final_assignment/features/auth/presentation/viewmodel/login_view_model.dart';
 import 'package:final_assignment/features/auth/presentation/widgets/my_button.dart';
 import 'package:final_assignment/features/auth/presentation/widgets/my_text_field.dart';

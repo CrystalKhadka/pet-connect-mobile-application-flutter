@@ -1,4 +1,4 @@
-import 'package:final_assignment/core/common/my_snackbar.dart';
+import 'package:final_assignment/core/common/widgets/my_snackbar.dart';
 import 'package:final_assignment/features/auth/domain/usecases/auth_use_case.dart';
 import 'package:final_assignment/features/forgot_password/presentation/state/forgot_password_state.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';

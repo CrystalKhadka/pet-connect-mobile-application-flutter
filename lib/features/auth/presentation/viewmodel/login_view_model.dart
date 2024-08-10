@@ -1,4 +1,4 @@
-import 'package:final_assignment/core/common/my_snackbar.dart';
+import 'package:final_assignment/core/common/widgets/my_snackbar.dart';
 import 'package:final_assignment/core/networking/google/google_service.dart';
 import 'package:final_assignment/features/auth/domain/usecases/auth_use_case.dart';
 import 'package:final_assignment/features/auth/presentation/navigator/login_navigator.dart';
