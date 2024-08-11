@@ -1,8 +1,6 @@
 import 'dart:async';
 import 'dart:developer';
 
-import 'package:app_links/app_links.dart';
-import 'package:final_assignment/features/payment/presentation/view/payment_success.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:khalti_checkout_flutter/khalti_checkout_flutter.dart';
@@ -18,7 +16,6 @@ class KhaltiView extends ConsumerStatefulWidget {
 
 class _KhaltiViewState extends ConsumerState<KhaltiView> {
   late final Future<Khalti> khalti;
-  late AppLinks _appLinks;
 
   @override
   void initState() {
@@ -34,11 +31,12 @@ class _KhaltiViewState extends ConsumerState<KhaltiView> {
       enableDebugging: true,
       payConfig: payConfig,
       onPaymentResult: (paymentResult, khalti) {
-        if (paymentResult.payload?.status == 'Completed') {
-          log('Payment Success');
-        } else {
-          log('Payment Failed');
-        }
+        log(paymentResult.toString());
+        // Handle the payment result here
+        _handlePaymentResult(paymentResult.payload!);
+
+        // Close the Khalti checkout dialog
+        khalti.close(context);
       },
       onMessage: (
         khalti, {
@@ -47,46 +45,35 @@ class _KhaltiViewState extends ConsumerState<KhaltiView> {
         event,
         needsPaymentConfirmation,
       }) async {
-        log(
-          'Description: $description, Status Code: $statusCode, Event: $event, NeedsPaymentConfirmation: $needsPaymentConfirmation',
-        );
+        // Handle messages if necessary
+        log('Message: $description');
+        khalti.close(context);
       },
       onReturn: () {
-        log('Returned');
+        log('User returned to app without completing payment.');
+        Navigator.of(context).pop();
       },
     );
-
-    _initializeAppLinks();
   }
 
-  void _initializeAppLinks() async {
-    _appLinks = AppLinks();
-
-    // Handle initial link
-    final initialLink = await _appLinks.getInitialLink();
-    if (initialLink != null) {
-      _handleIncomingLink(initialLink);
-    }
-
-    // Listen for incoming links
-    _appLinks.uriLinkStream.listen((Uri? uri) {
-      if (uri != null) {
-        log('Received incoming link: $uri');
-        _handleIncomingLink(uri);
-      }
-    });
-  }
-
-  void _handleIncomingLink(Uri uri) {
-    if (uri.path.contains('payment-success')) {
-      log('Payment Success');
-      Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => const PaymentSuccess()),
-      );
-    } else {
-      log('Received unknown link: $uri');
-    }
+  void _handlePaymentResult(PaymentPayload paymentResult) {
+    // Implement your logic to handle the payment result
+    // For example, show a dialog or navigate to a result page
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text(paymentResult.status == 'Completed'
+            ? 'Payment Successful'
+            : 'Payment Failed'),
+        content: Text(paymentResult.toString()),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(),
+            child: Text('OK'),
+          ),
+        ],
+      ),
+    );
   }
 
   @override
@@ -101,7 +88,7 @@ class _KhaltiViewState extends ConsumerState<KhaltiView> {
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.done) {
               return ElevatedButton(
-                onPressed: () async {
+                onPressed: () {
                   final khalti = snapshot.data!;
                   khalti.open(context);
                 },
