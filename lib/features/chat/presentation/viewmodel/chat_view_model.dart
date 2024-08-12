@@ -26,53 +26,54 @@ class ChatViewModel extends StateNotifier<ChatState> {
   final socket = SocketService.socket;
 
   Future<void> init(String receiverId) async {
-    if (state.receiver?.id == receiverId) {
+    if (state.receiver?.id != receiverId) {
       offSocket();
+      await setReceiverUser(receiverId);
+      await setCurrentUser();
+      getMessages();
+      await initSocket();
     }
-    await initSocket();
-    await setReceiverUser(receiverId);
-    await setCurrentUser();
-    await getMessages();
   }
 
-  initSocket() async {
+  Future<void> initSocket() async {
     socket.on("message", handleNewMessage);
     socket.on("typingNow", handleTypingIndicator);
   }
 
-  // off socket method
-  offSocket() {
+  void offSocket() {
     socket.off("message");
     socket.off("typingNow");
   }
 
-  handleNewMessage(data) {
-    state = state.copyWith(isLoading: true);
+  void handleNewMessage(data) {
     final model = MessageApiModel.fromJson(data);
     final message = model.toEntity();
-    showMySnackBar(message: message.sender?.firstName ?? "");
-    state = state
-        .copyWith(messages: [message, ...state.messages], isLoading: false);
+    state = state.copyWith(
+      messages: [message, ...state.messages],
+    );
+    showMySnackBar(
+        message: "${message.sender?.firstName ?? ""} sent a message");
   }
 
-  handleTyping() {
-    state = state.copyWith(isLoading: true);
-
+  void handleTyping() {
     socket.emit(
-        "typing", {'receiver': state.receiver?.id!, 'sender': state.user?.id});
-    state = state.copyWith(isLoading: false);
+      "typing",
+      {'receiver': state.receiver?.id, 'sender': state.user?.id},
+    );
   }
 
-  handleTypingIndicator(data) {
-    state = state.copyWith(isLoading: true, isTyping: true);
-    showMySnackBar(message: 'Typing');
-    state = state.copyWith(isLoading: false, isTyping: false);
+  void handleTypingIndicator(data) {
+    state = state.copyWith(isTyping: true);
+    //   set delay
+    Future.delayed(Duration(seconds: 2), () {
+      state = state.copyWith(isTyping: false);
+    });
   }
 
-  setReceiverUser(String receiverId) async {
+  Future<void> setReceiverUser(String receiverId) async {
     state = state.copyWith(isLoading: true);
-    final data = await authUseCase.getUser(receiverId);
-    data.fold(
+    final result = await authUseCase.getUser(receiverId);
+    result.fold(
       (failure) {
         state = state.copyWith(
           isLoading: false,
@@ -80,19 +81,18 @@ class ChatViewModel extends StateNotifier<ChatState> {
         );
         showMySnackBar(message: failure.error);
       },
-      (receiverId) {
-        print(receiverId);
+      (receiver) {
         state = state.copyWith(
           isLoading: false,
-          receiver: receiverId,
+          receiver: receiver,
         );
       },
     );
   }
 
-  setCurrentUser() async {
-    final data = await authUseCase.getCurrentUser();
-    data.fold(
+  Future<void> setCurrentUser() async {
+    final result = await authUseCase.getCurrentUser();
+    result.fold(
       (failure) {
         state = state.copyWith(
           isLoading: false,
@@ -109,15 +109,15 @@ class ChatViewModel extends StateNotifier<ChatState> {
     );
   }
 
-  sendMessage(String message) async {
+  Future<void> sendMessage(String message) async {
     state = state.copyWith(isLoading: true);
     final messageEntity = MessageEntity(
       message: message,
       receiver: state.receiver!,
       type: state.type,
     );
-    final data = await chatUseCase.sendMessage(messageEntity);
-    data.fold(
+    final result = await chatUseCase.sendMessage(messageEntity);
+    result.fold(
       (failure) {
         state = state.copyWith(
           isLoading: false,
@@ -126,55 +126,47 @@ class ChatViewModel extends StateNotifier<ChatState> {
         showMySnackBar(message: failure.error);
       },
       (success) {
-        print(success);
-        state = state.copyWith(
-          isLoading: false,
-        );
+        state = state.copyWith(isLoading: false);
       },
     );
   }
 
-  getMessages() async {
-    state = state.copyWith(isLoading: true);
-    final currentStatus = state;
-    final page = currentStatus.page + 1;
-    final messages = currentStatus.messages;
-    final hasReachedMax = currentStatus.hasReachedMax;
-
-    if (hasReachedMax) {
-      state = state.copyWith(isLoading: false);
+  Future<void> getMessages() async {
+    if (state.hasReachedMax) {
       showMySnackBar(message: 'No more messages');
       return;
-    } else {
-      final data = await chatUseCase.getMessages(state.receiver!.id!, page);
-      data.fold(
-        (failure) {
-          state = state.copyWith(
-            isLoading: false,
-            error: failure.error,
-          );
-          showMySnackBar(message: failure.error);
-        },
-        (data) {
-          print(data);
-          if (data.isEmpty) {
-            state = state.copyWith(hasReachedMax: true);
-            showMySnackBar(message: 'No more messages');
-          } else {
-            state = state.copyWith(
-              messages: [...messages, ...data],
-              page: page,
-              isLoading: false,
-            );
-          }
-        },
-      );
     }
+
+    state = state.copyWith(isLoading: true);
+    final page = state.page + 1;
+
+    final result = await chatUseCase.getMessages(state.receiver!.id!, page);
+    result.fold(
+      (failure) {
+        state = state.copyWith(
+          isLoading: false,
+          error: failure.error,
+        );
+        showMySnackBar(message: failure.error);
+      },
+      (messages) {
+        if (messages.isEmpty) {
+          state = state.copyWith(hasReachedMax: true);
+          showMySnackBar(message: 'No more messages');
+        } else {
+          state = state.copyWith(
+            messages: [...state.messages, ...messages],
+            page: page,
+            isLoading: false,
+          );
+        }
+      },
+    );
   }
 
-  downloadFile(String fileName) async {
-    final data = await chatUseCase.downloadFile(fileName);
-    data.fold(
+  Future<void> downloadFile(String fileName) async {
+    final result = await chatUseCase.downloadFile(fileName);
+    result.fold(
       (failure) {
         state = state.copyWith(
           isLoading: false,
@@ -183,15 +175,13 @@ class ChatViewModel extends StateNotifier<ChatState> {
         showMySnackBar(message: failure.error);
       },
       (success) {
-        print(success);
-        state = state.copyWith(
-          isLoading: false,
-        );
+        state = state.copyWith(isLoading: false);
+        showMySnackBar(message: 'File downloaded successfully');
       },
     );
   }
 
-  reset() {
+  void reset() {
     state = state.copyWith(
       messages: [],
       page: 0,

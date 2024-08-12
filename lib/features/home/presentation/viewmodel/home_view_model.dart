@@ -3,34 +3,38 @@ import 'package:final_assignment/core/common/widgets/my_yes_no_dialog.dart';
 import 'package:final_assignment/core/networking/socket/socket_service.dart';
 import 'package:final_assignment/core/shared_prefs/user_shared_prefs.dart';
 import 'package:final_assignment/features/auth/domain/usecases/auth_use_case.dart';
+import 'package:final_assignment/features/home/home_state.dart';
 import 'package:final_assignment/features/home/presentation/navigator/dashboard_navigator.dart';
+import 'package:final_assignment/features/notification/domain/usecases/notification_usecase.dart';
 import 'package:final_assignment/features/pet/domain/usecases/pet_usecase.dart';
 import 'package:final_assignment/features/pet/presentation/widgets/device_info.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../core/networking/google/google_service.dart';
-import '../../../pet/presentation/state/pet_state.dart';
+import '../../../../core/networking/local_notification/notification_service.dart';
 
 // Provider
-final homeViewModelProvider = StateNotifierProvider<HomeViewModel, PetState>(
+final homeViewModelProvider = StateNotifierProvider<HomeViewModel, HomeState>(
   (ref) => HomeViewModel(
     navigator: ref.watch(dashboardNavigatorProvider),
     petUseCase: ref.watch(petUseCaseProvider),
     userSharedPrefs: ref.watch(userSharedPrefsProvider),
     authUseCase: ref.watch(authUseCaseProvider),
     googleSignInService: ref.watch(googleSignInServiceProvider),
+    notificationUsecase: ref.watch(notificationUsecaseProvider),
   ),
 );
 
-class HomeViewModel extends StateNotifier<PetState> {
+class HomeViewModel extends StateNotifier<HomeState> {
   HomeViewModel({
     required this.navigator,
     required this.petUseCase,
     required this.userSharedPrefs,
+    required this.notificationUsecase,
     required this.authUseCase,
     required this.googleSignInService,
-  }) : super(PetState.initial()) {
+  }) : super(HomeState.initial()) {
     // Show snackbar on successful connection
 
     // socket.emit('test', 'Connected to server');
@@ -48,6 +52,7 @@ class HomeViewModel extends StateNotifier<PetState> {
   final UserSharedPrefs userSharedPrefs;
   final AuthUseCase authUseCase;
   final GoogleSignInService googleSignInService;
+  final NotificationUsecase notificationUsecase;
 
   final socket = SocketService.socket;
 
@@ -74,7 +79,8 @@ class HomeViewModel extends StateNotifier<PetState> {
   }
 
   receiveNotification(dynamic data) async {
-    showMySnackBar(message: data['message']);
+    NotificationService().showNotification(data);
+    await fetchNotificationCount();
   }
 
   newUser() async {
@@ -91,7 +97,7 @@ class HomeViewModel extends StateNotifier<PetState> {
   }
 
   Future resetState() async {
-    state = PetState.initial();
+    state = HomeState.initial();
     initSocket();
     fetchPets();
     fetchSpecies();
@@ -162,5 +168,16 @@ class HomeViewModel extends StateNotifier<PetState> {
         navigator.openLoginView();
       });
     }
+  }
+
+  fetchNotificationCount() async {
+    final result = await notificationUsecase.getNotificationsCount();
+    result.fold(
+      (failure) => state = state.copyWith(
+        isLoading: false,
+        error: failure.error,
+      ),
+      (data) => state = state.copyWith(notificationCount: data),
+    );
   }
 }

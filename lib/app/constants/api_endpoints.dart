@@ -70,4 +70,9 @@ class ApiEndpoints {
 
   // Khalti Routes
   static const String initiateKhaltiPayment = 'khalti/initiate-payment';
+
+//   Notification routes
+  static const String getNotifications = 'notifications/get';
+  static const String markAsRead = 'notifications/markAsRead';
+  static const String sendNotification = 'notifications/send';
 }

@@ -5,6 +5,9 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
+    <uses-permission android:name="android.permission.USE_EXACT_ALARM" />
 
     <application
         android:name="${applicationName}"
@@ -34,8 +37,7 @@
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
 
-                <data
-                    android:scheme="com.googleusercontent.apps.130561327826-5psq6tkah4cnf84cqunckq7pfph3lrtu.apps.googleusercontent.com" />
+                <data android:scheme="com.googleusercontent.apps.130561327826-5psq6tkah4cnf84cqunckq7pfph3lrtu.apps.googleusercontent.com" />
             </intent-filter>
 
 
@@ -48,9 +50,10 @@
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
 
-                <data android:scheme="https"
+                <data
                     android:host="http://192.168.137.1:3000"
-                    android:pathPrefix="/payment-success" />
+                    android:pathPrefix="/payment-success"
+                    android:scheme="https" />
                 <data
                     android:host="{com.crystal_raj_khadka.final_assignment.final_assignment}"
                     android:scheme="kpg" />
@@ -61,6 +64,20 @@
         <meta-data
             android:name="com.google.android.gms.auth.api.fallback_service"
             android:value="@string/default_web_client_id" />
+
+        <receiver
+            android:name="com.dexterous.flutterlocalnotifications.ScheduledNotificationReceiver"
+            android:exported="false" />
+        <receiver
+            android:name="com.dexterous.flutterlocalnotifications.ScheduledNotificationBootReceiver"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <action android:name="android.intent.action.MY_PACKAGE_REPLACED" />
+                <action android:name="android.intent.action.QUICKBOOT_POWERON" />
+                <action android:name="com.htc.intent.action.QUICKBOOT_POWERON" />
+            </intent-filter>
+        </receiver>
 
         <!-- Don't delete the meta-data below.
              This is used by the Flutter tool to generate GeneratedPluginRegistrant.java -->

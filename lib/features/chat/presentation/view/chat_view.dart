@@ -109,9 +109,6 @@ class _ChatViewState extends ConsumerState<ChatView> {
                 },
               ),
             ),
-            chatState.isTyping
-                ? const LinearProgressIndicator()
-                : const SizedBox(),
             ChatInput(
               onSendMessage: (message) {
                 ref

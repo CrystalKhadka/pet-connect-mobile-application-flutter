@@ -1,3 +1,4 @@
+import 'package:badges/badges.dart' as badge;
 import 'package:final_assignment/features/home/presentation/viewmodel/home_view_model.dart';
 import 'package:final_assignment/features/home/presentation/widgets/my_card.dart';
 import 'package:flutter/material.dart';
@@ -17,6 +18,9 @@ class _HomeViewState extends ConsumerState<HomeView> {
   @override
   void initState() {
     _searchController = TextEditingController();
+    Future.microtask(() {
+      ref.read(homeViewModelProvider.notifier).fetchNotificationCount();
+    });
     super.initState();
   }
 
@@ -28,17 +32,20 @@ class _HomeViewState extends ConsumerState<HomeView> {
 
   @override
   Widget build(BuildContext context) {
-    final petState = ref.watch(homeViewModelProvider);
+    final homeState = ref.watch(homeViewModelProvider);
     return Scaffold(
       appBar: AppBar(
         title: Row(
           children: [
             const Text('Pet Connect'),
             const Spacer(),
-            IconButton(
-              // Total notifications 2
-              icon: const Icon(Icons.notifications),
-              onPressed: () {},
+            badge.Badge(
+              badgeContent: Text(homeState.notificationCount.toString()),
+              child: IconButton(
+                // Total notifications 2
+                icon: const Icon(Icons.notifications),
+                onPressed: () {},
+              ),
             ),
             IconButton(
               onPressed: () {},
@@ -117,7 +124,7 @@ class _HomeViewState extends ConsumerState<HomeView> {
                   height: 100,
                   child: ListView.builder(
                     scrollDirection: Axis.horizontal,
-                    itemCount: petState.species.length,
+                    itemCount: homeState.species.length,
                     itemBuilder: (context, index) {
                       return Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 8.0),
@@ -129,7 +136,7 @@ class _HomeViewState extends ConsumerState<HomeView> {
                           child: Center(
                             child: Padding(
                               padding: const EdgeInsets.all(16.0),
-                              child: Text(petState.species[index]),
+                              child: Text(homeState.species[index]),
                             ),
                           ),
                         ),
@@ -185,12 +192,12 @@ class _HomeViewState extends ConsumerState<HomeView> {
                           mainAxisSpacing: 10,
                           crossAxisSpacing: 10,
                         ),
-                        itemCount: petState.pets.length,
+                        itemCount: homeState.pets.length,
                         itemBuilder: (context, index) {
-                          return MyCard(petEntity: petState.pets[index]);
+                          return MyCard(petEntity: homeState.pets[index]);
                         },
                       ),
-                      if (petState.isLoading)
+                      if (homeState.isLoading)
                         const Center(
                           child: CircularProgressIndicator(color: Colors.red),
                         ),

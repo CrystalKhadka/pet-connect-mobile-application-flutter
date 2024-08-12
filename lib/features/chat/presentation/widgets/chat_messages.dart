@@ -1,7 +1,8 @@
 import 'package:final_assignment/app/constants/api_endpoints.dart';
 import 'package:final_assignment/features/auth/domain/entity/auth_entity.dart';
-import 'package:final_assignment/features/chat/domain/entity/message_enttiy.dart';
 import 'package:flutter/material.dart';
+
+import '../../domain/entity/message_enttiy.dart';
 
 class ChatMessages extends StatelessWidget {
   final List<MessageEntity> messages;
@@ -37,8 +38,12 @@ class ChatMessages extends StatelessWidget {
         controller: scrollController,
         itemCount: messages.length + (isTyping ? 1 : 0),
         itemBuilder: (context, index) {
-          final message = messages[index];
-          final isOwnMessage = message.sender!.id == currentUser.id;
+          if (isTyping && index == 0) {
+            return const TypingIndicator();
+          }
+
+          final message = isTyping ? messages[index - 1] : messages[index];
+          final isOwnMessage = message.sender?.id == currentUser.id;
 
           return MessageBubble(
             message: message,
@@ -49,7 +54,6 @@ class ChatMessages extends StatelessWidget {
             downloadFile: () async {
               if (message.type == 'file') {
                 await downloadFile(message.message!);
-                // download file
               }
             },
           );
@@ -96,31 +100,33 @@ class MessageBubble extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              isOwnMessage ? 'You' : message.sender!.firstName ?? 'Unknown',
+              isOwnMessage ? 'You' : message.sender?.firstName ?? 'Unknown',
               style: const TextStyle(fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 4),
-            message.type == 'image'
-                ? GestureDetector(
-                    onDoubleTap: downloadFile,
-                    child: Image.network(
-                        '${ApiEndpoints.messageImageUrl}${message.message}'),
-                  )
-                : message.type == 'file'
-                    ? TextButton(
-                        onPressed: downloadFile,
-                        style: TextButton.styleFrom(
-                          foregroundColor: Colors.red,
-                        ),
-                        child: Text(
-                          message.message ?? 'File',
-                          style: const TextStyle(
-                            color: Colors.red,
-                            decoration: TextDecoration.underline,
-                          ),
-                        ),
-                      )
-                    : Text(message.message ?? ''),
+            if (message.type == 'image')
+              GestureDetector(
+                onDoubleTap: downloadFile,
+                child: Image.network(
+                  '${ApiEndpoints.messageImageUrl}${message.message}',
+                ),
+              )
+            else if (message.type == 'file')
+              TextButton(
+                onPressed: downloadFile,
+                style: TextButton.styleFrom(
+                  foregroundColor: Colors.red,
+                ),
+                child: Text(
+                  message.message ?? 'File',
+                  style: const TextStyle(
+                    color: Colors.red,
+                    decoration: TextDecoration.underline,
+                  ),
+                ),
+              )
+            else
+              Text(message.message ?? ''),
             const SizedBox(height: 4),
             Text(
               message.timeStamp.toString(),
@@ -154,8 +160,10 @@ class TypingIndicator extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.all(8),
-      child: const Text('Typing...',
-          style: TextStyle(fontStyle: FontStyle.italic)),
+      child: const Text(
+        'Typing...',
+        style: TextStyle(fontStyle: FontStyle.italic),
+      ),
     );
   }
 }
