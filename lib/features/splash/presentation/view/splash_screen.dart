@@ -1,6 +1,7 @@
-import 'package:final_assignment/features/splash/presentation/viewmodel/splash_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+import '../viewmodel/splash_view_model.dart';
 
 class SplashView extends ConsumerStatefulWidget {
   const SplashView({super.key});
