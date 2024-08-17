@@ -16,12 +16,19 @@ class PetRemoteRepository implements IPetRepository {
   PetRemoteRepository({required this.petRemoteDataSource});
 
   @override
-  Future<Either<Failure, List<PetEntity>>> pagination(int page, int limit) {
-    return petRemoteDataSource.pagination(page: page, limit: limit);
+  Future<Either<Failure, List<PetEntity>>> pagination(
+      int page, int limit, String search, String breed) {
+    return petRemoteDataSource.pagination(
+        page: page, limit: limit, search: search, breed: breed);
   }
 
   @override
   Future<Either<Failure, List<String>>> getAllSpecies() {
     return petRemoteDataSource.getAllSpecies();
+  }
+
+  @override
+  Future<Either<Failure, PetEntity>> getPetById(String id) {
+    return petRemoteDataSource.getPetById(id: id);
   }
 }

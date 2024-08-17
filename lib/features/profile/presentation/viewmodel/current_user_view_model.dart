@@ -1,5 +1,6 @@
-import 'package:final_assignment/core/common/my_snackbar.dart';
-import 'package:final_assignment/core/common/my_yes_no_dialog.dart';
+import 'package:final_assignment/core/common/widgets/my_snackbar.dart';
+import 'package:final_assignment/core/common/widgets/my_yes_no_dialog.dart';
+import 'package:final_assignment/features/profile/presentation/navigator/profile_navigator.dart';
 import 'package:final_assignment/features/profile/presentation/state/current_user_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -11,20 +12,36 @@ final currentUserViewModelProvider =
     StateNotifierProvider<CurrentUserViewModel, CurrentUserState>(
         (ref) => CurrentUserViewModel(
               authUseCase: ref.read(authUseCaseProvider),
+              profileNavigator: ref.read(profileNavigatorProvider),
             ));
 
 class CurrentUserViewModel extends StateNotifier<CurrentUserState> {
   final AuthUseCase authUseCase;
+  final ProfileViewNavigator profileNavigator;
 
   CurrentUserViewModel({
     required this.authUseCase,
+    required this.profileNavigator,
   }) : super(CurrentUserState.initial()) {
-    initialize();
+    getCurrentUser();
+    checkFingerprint();
   }
 
   Future<void> initialize() async {
     await getCurrentUser();
     await checkFingerprint();
+  }
+
+  openFavoriteView() {
+    profileNavigator.openFavoriteView();
+  }
+
+  openEditProfile() {
+    profileNavigator.openEditProfileView();
+  }
+
+  openMyPetsView() {
+    profileNavigator.openMyPetsView();
   }
 
   Future<void> getCurrentUser() async {
@@ -109,12 +126,16 @@ class CurrentUserViewModel extends StateNotifier<CurrentUserState> {
 
   Future<void> checkFingerprint() async {
     state = state.copyWith(isLoading: true);
+    if (state.authEntity == null) {
+      state = state.copyWith(isLoading: false);
+      return;
+    }
+
     final currentUserId = state.authEntity!.id;
     final result = await authUseCase.getFingerPrintId();
     result.fold(
       (l) {
         state = state.copyWith(isLoading: false, error: l.error);
-        showMySnackBar(message: l.error, color: Colors.red);
       },
       (r) {
         if (r == currentUserId) {
@@ -125,6 +146,22 @@ class CurrentUserViewModel extends StateNotifier<CurrentUserState> {
             isFingerprintEnabled: false,
           );
         }
+      },
+    );
+  }
+
+  Future<void> changePassword(String oldPassword, String newPassword) async {
+    state = state.copyWith(isLoading: true);
+    final data = await authUseCase.changePassword(
+        oldPassword: oldPassword, newPassword: newPassword);
+    data.fold(
+      (l) {
+        state = state.copyWith(isLoading: false, error: l.error);
+        showMySnackBar(message: l.error, color: Colors.red);
+      },
+      (r) {
+        state = state.copyWith(isLoading: false);
+        showMySnackBar(message: 'Password changed', color: Colors.green);
       },
     );
   }

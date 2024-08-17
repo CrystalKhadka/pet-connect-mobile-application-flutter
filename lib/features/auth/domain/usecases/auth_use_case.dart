@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:dartz/dartz.dart';
 import 'package:final_assignment/core/failure/failure.dart';
 import 'package:final_assignment/features/auth/domain/entity/auth_entity.dart';
@@ -24,6 +26,10 @@ class AuthUseCase {
 
   Future<Either<Failure, bool>> loginUser(String? email, String? password) {
     return authRepository.loginUser(email ?? '', password ?? '');
+  }
+
+  Future<Either<Failure, bool>> googleLogin(String? token, String? password) {
+    return authRepository.googleLogin(token ?? '', password);
   }
 
   Future<Either<Failure, bool>> verifyUser() {
@@ -55,5 +61,49 @@ class AuthUseCase {
       }
       return Left(Failure(error: 'No fingerprint id found'));
     });
+  }
+
+  // get all users
+  Future<Either<Failure, List<AuthEntity>>?> getAllUsers() async {
+    return authRepository.getAllUser();
+  }
+
+  // get user by id
+  Future<Either<Failure, AuthEntity>> getUser(String id) {
+    return authRepository.getUser(id);
+  } // get user by id
+
+  Future<Either<Failure, AuthEntity>> getUserByGoogle(String token) {
+    return authRepository.getUserByGoogle(token);
+  }
+
+  Future<Either<Failure, String>> uploadImage(File file) {
+    return authRepository.uploadImage(file);
+  }
+
+  Future<Either<Failure, bool>> updateUser(AuthEntity user) {
+    return authRepository.updateUser(user);
+  }
+
+  Future<Either<Failure, bool>> sendEmail(String email) {
+    return authRepository.sendEmail(email);
+  }
+
+  Future<Either<Failure, bool>> sendOtp(String phone) {
+    return authRepository.sendOtp(phone);
+  }
+
+  Future<Either<Failure, bool>> resetPass({
+    required String phone,
+    required String password,
+    required String otp,
+  }) {
+    return authRepository.resetPass(phone: phone, password: password, otp: otp);
+  }
+
+  Future<Either<Failure, bool>> changePassword(
+      {required String oldPassword, required String newPassword}) {
+    return authRepository.changePassword(
+        oldPassword: oldPassword, newPassword: newPassword);
   }
 }

@@ -2,7 +2,10 @@ import 'package:final_assignment/features/auth/domain/entity/auth_entity.dart';
 import 'package:final_assignment/features/auth/domain/usecases/auth_use_case.dart';
 import 'package:final_assignment/features/auth/presentation/navigator/register_navigator.dart';
 import 'package:final_assignment/features/auth/presentation/state/auth_state.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+import '../../../../core/common/widgets/my_snackbar.dart';
 
 final registerViewModelProvider =
     StateNotifierProvider<RegisterViewModel, AuthState>((ref) {

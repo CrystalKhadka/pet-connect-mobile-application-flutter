@@ -2,9 +2,12 @@ import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
 import 'package:final_assignment/app/constants/api_endpoints.dart';
 import 'package:final_assignment/core/failure/failure.dart';
+import 'package:final_assignment/core/networking/local/hive_service.dart';
 import 'package:final_assignment/core/networking/remote/http_service.dart';
+import 'package:final_assignment/features/pet/data/dto/get_single_pet_dto.dart';
 import 'package:final_assignment/features/pet/data/dto/pagination_dto.dart';
 import 'package:final_assignment/features/pet/data/model/pet_api_model.dart';
+import 'package:final_assignment/features/pet/data/model/pet_hive_model.dart';
 import 'package:final_assignment/features/pet/domain/entity/pet_entity.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -33,7 +36,10 @@ class PetRemoteDataSource {
   });
 
   Future<Either<Failure, List<PetEntity>>> pagination(
-      {required int page, required int limit}) async {
+      {required int page,
+      required int limit,
+      required String search,
+      required String breed}) async {
     try {
       final token = await userSharedPrefs.getUserToken();
       token.fold((l) => throw Failure(error: l.error), (r) => r);
@@ -42,6 +48,8 @@ class PetRemoteDataSource {
         queryParameters: {
           'page': page,
           'limit': limit,
+          'search': search,
+          'species': breed,
         },
         options: Options(
           headers: {
@@ -51,7 +59,10 @@ class PetRemoteDataSource {
       );
       if (response.statusCode == 200) {
         final paginationDto = PaginationDto.fromJson(response.data);
-        return Right(petApiModel.toEntities(paginationDto.pets));
+        final entities = paginationDto.pets.map((e) => e.toEntity()).toList();
+
+        HiveService.saveAllPets(PetHiveModel.fromEntities(entities));
+        return Right(entities);
       }
       return Left(Failure(
           error: response.data['message'],
@@ -77,6 +88,33 @@ class PetRemoteDataSource {
         final List<String> species =
             List<String>.from(response.data['species']);
         return Right(species);
+      }
+      return Left(Failure(
+          error: response.data['message'],
+          statusCode: response.statusCode.toString()));
+    } on DioException catch (e) {
+      return Left(Failure(error: e.error.toString()));
+    }
+  }
+
+  // Get by id
+  Future<Either<Failure, PetEntity>> getPetById({required String id}) async {
+    try {
+      String? token;
+      final data = await userSharedPrefs.getUserToken();
+      data.fold((l) => throw Failure(error: l.error), (r) => token = r);
+      final response = await dio.get(
+        ApiEndpoints.getPetById + id,
+        options: Options(
+          headers: {
+            'authorization': 'Bearer $token',
+          },
+        ),
+      );
+      if (response.statusCode == 200) {
+        final data = GetSinglePetDto.fromJson(response.data).data;
+        final pet = data.toEntity();
+        return Right(pet);
       }
       return Left(Failure(
           error: response.data['message'],

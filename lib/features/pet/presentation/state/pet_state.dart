@@ -8,6 +8,9 @@ class PetState {
   final int page;
   final List<String> species;
   final int limit;
+  final List<String> favorites;
+  final String searchQuery;
+  final String selectedSpecies;
 
   factory PetState.initial() {
     return PetState(
@@ -18,6 +21,9 @@ class PetState {
       hasReachedMax: false,
       species: [],
       limit: 6,
+      favorites: [],
+      searchQuery: '',
+      selectedSpecies: 'all',
     );
   }
 
@@ -29,17 +35,22 @@ class PetState {
     required this.hasReachedMax,
     required this.species,
     required this.limit,
+    required this.favorites,
+    required this.searchQuery,
+    required this.selectedSpecies,
   });
 
-  PetState copyWith({
-    bool? isLoading,
-    String? error,
-    List<PetEntity>? pets,
-    int? page,
-    bool? hasReachedMax,
-    List<String>? species,
-    int? limit,
-  }) {
+  PetState copyWith(
+      {bool? isLoading,
+      String? error,
+      List<PetEntity>? pets,
+      int? page,
+      bool? hasReachedMax,
+      List<String>? species,
+      int? limit,
+      List<String>? favorites,
+      String? searchQuery,
+      String? selectedSpecies}) {
     return PetState(
       isLoading: isLoading ?? this.isLoading,
       error: error ?? this.error,
@@ -48,6 +59,9 @@ class PetState {
       hasReachedMax: hasReachedMax ?? this.hasReachedMax,
       species: species ?? this.species,
       limit: limit ?? this.limit,
+      favorites: favorites ?? this.favorites,
+      searchQuery: searchQuery ?? this.searchQuery,
+      selectedSpecies: selectedSpecies ?? this.selectedSpecies,
     );
   }
 }

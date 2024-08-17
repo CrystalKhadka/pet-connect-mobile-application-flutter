@@ -1,4 +1,4 @@
-import 'package:final_assignment/features/home/presentation/view/bottom_screen/chat_view.dart';
+import 'package:final_assignment/features/all_chat/presentation/view/all_chat_view.dart';
 import 'package:final_assignment/features/home/presentation/view/bottom_screen/home_view.dart';
 import 'package:final_assignment/features/pet/presentation/view/pet_list_view.dart';
 import 'package:final_assignment/features/profile/presentation/view/profile_view.dart';
@@ -6,23 +6,33 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class DashboardView extends ConsumerStatefulWidget {
-  const DashboardView({super.key});
+  const DashboardView({super.key, this.index});
+
+  final int? index;
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() => _DashboardViewState();
 }
 
 class _DashboardViewState extends ConsumerState<DashboardView> {
+  // use index from widget if it is not null
   int currentIndex = 0;
+
+  // list of views
   final List<Widget> _children = [
     const HomeView(),
     const PetListView(),
-    const ChatView(),
+    const AllChatView(),
     const ProfileView(),
   ];
 
   @override
   Widget build(BuildContext context) {
+    if (widget.index != null) {
+      setState(() {
+        currentIndex = widget.index!;
+      });
+    }
     return SafeArea(
       child: Scaffold(
         body: _children[currentIndex],
@@ -47,6 +57,7 @@ class _DashboardViewState extends ConsumerState<DashboardView> {
           ],
           currentIndex: currentIndex,
           onTap: (index) {
+            // if index changed dispose the current view model
             setState(() {
               currentIndex = index;
             });

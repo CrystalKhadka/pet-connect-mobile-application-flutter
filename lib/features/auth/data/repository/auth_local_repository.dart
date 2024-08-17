@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:dartz/dartz.dart';
 import 'package:final_assignment/core/failure/failure.dart';
 import 'package:final_assignment/features/auth/data/data_source/local/auth_local_data_source.dart';
@@ -40,6 +42,68 @@ class AuthLocalRepository implements IAuthRepository {
   @override
   Future<Either<Failure, bool>> fingerPrintLogin(String id) {
     // TODO: implement fingerPrintLogin
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<Either<Failure, List<AuthEntity>>> getAllUser() {
+    // TODO: implement getAllUser
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<Either<Failure, AuthEntity>> getUser(String id) {
+    // TODO: implement getUser
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<Either<Failure, AuthEntity>> getUserByGoogle(String token) {
+    // TODO: implement getUserByGoogle
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<Either<Failure, bool>> googleLogin(String token, String? password) {
+    // TODO: implement googleLogin
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<Either<Failure, String>> uploadImage(File file) {
+    // TODO: implement uploadImage
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<Either<Failure, bool>> updateUser(AuthEntity user) {
+    // TODO: implement updateUser
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<Either<Failure, bool>> sendEmail(String email) {
+    // TODO: implement sendEmail
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<Either<Failure, bool>> sendOtp(String phone) {
+    // TODO: implement sendOtp
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<Either<Failure, bool>> resetPass(
+      {required String phone, required String password, required String otp}) {
+    // TODO: implement resetPass
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<Either<Failure, bool>> changePassword(
+      {required String oldPassword, required String newPassword}) {
+    // TODO: implement changePassword
     throw UnimplementedError();
   }
 }

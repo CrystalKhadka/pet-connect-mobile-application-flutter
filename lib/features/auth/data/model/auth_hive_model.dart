@@ -13,21 +13,21 @@ class AuthHiveModel {
   @HiveField(0)
   final String? userId;
   @HiveField(1)
-  final String fname;
+  final String? fname;
   @HiveField(2)
-  final String lname;
+  final String? lname;
   @HiveField(3)
-  final String email;
+  final String? email;
   @HiveField(4)
-  final String password;
+  final String? password;
   @HiveField(5)
-  final String phone;
+  final String? phone;
   @HiveField(6)
-  final String address;
+  final String? address;
   @HiveField(7)
-  final String date;
+  final String? date;
   @HiveField(8)
-  final String gender;
+  final String? gender;
 
   AuthHiveModel(
       {String? userId,
@@ -64,23 +64,25 @@ class AuthHiveModel {
       gender: gender,
       birthDate: date);
 
-  AuthHiveModel fromEntity(AuthEntity entity) => AuthHiveModel(
-        userId: const Uuid().v4(),
-        fname: entity.firstName,
-        lname: entity.lastName,
-        email: entity.email,
-        password: entity.password,
-        phone: entity.phone,
-        address: entity.address,
-        date: entity.birthDate,
-        gender: entity.gender,
-      );
+  factory AuthHiveModel.fromEntity(AuthEntity entity) {
+    return AuthHiveModel(
+      userId: const Uuid().v4(),
+      fname: entity.firstName,
+      lname: entity.lastName,
+      email: entity.email,
+      password: entity.password,
+      phone: entity.phone,
+      address: entity.address,
+      date: entity.birthDate,
+      gender: entity.gender,
+    );
+  }
 
   List<AuthEntity> toEntities(List<AuthHiveModel> models) =>
       models.map((model) => model.toEntity()).toList();
 
   List<AuthHiveModel> fromEntities(List<AuthEntity> entities) =>
-      entities.map((entity) => fromEntity(entity)).toList();
+      entities.map((entity) => AuthHiveModel.fromEntity(entity)).toList();
 
   @override
   String toString() {
