@@ -375,4 +375,34 @@ class AuthRemoteDataSource {
       return Left(Failure(error: e.error.toString()));
     }
   }
+
+//   change password
+  Future<Either<Failure, bool>> changePassword(
+      {required String oldPassword, required String newPassword}) async {
+    try {
+      String? token;
+      final data = await userSharedPrefs.getUserToken();
+      data.fold(
+        (l) => token = null,
+        (r) => token = r,
+      );
+      Response response = await dio.put(
+        ApiEndpoints.changePassword,
+        data: {'oldPassword': oldPassword, 'newPassword': newPassword},
+        options: Options(
+          headers: {'Authorization': 'Bearer $token'},
+        ),
+      );
+      if (response.statusCode == 200) {
+        return const Right(true);
+      }
+      return Left(
+        Failure(
+            error: response.data['message'],
+            statusCode: response.statusCode.toString()),
+      );
+    } on DioException catch (e) {
+      return Left(Failure(error: e.error.toString()));
+    }
+  }
 }

@@ -1,4 +1,4 @@
-import 'package:final_assignment/features/chat/presentation/view/chat_view.dart';
+import 'package:final_assignment/features/all_chat/presentation/view/all_chat_view.dart';
 import 'package:final_assignment/features/home/presentation/view/bottom_screen/home_view.dart';
 import 'package:final_assignment/features/pet/presentation/view/pet_list_view.dart';
 import 'package:final_assignment/features/profile/presentation/view/profile_view.dart';
@@ -22,7 +22,7 @@ class _DashboardViewState extends ConsumerState<DashboardView> {
   final List<Widget> _children = [
     const HomeView(),
     const PetListView(),
-    const ChatView(),
+    const AllChatView(),
     const ProfileView(),
   ];
 

@@ -1,6 +1,8 @@
+import 'package:final_assignment/core/common/provider/internet_connectivity.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../../core/common/widgets/my_snackbar.dart';
 import '../viewmodel/pet_view_model.dart';
 import '../widgets/device_info.dart';
 import '../widgets/my_card.dart';
@@ -34,6 +36,7 @@ class _PetListViewState extends ConsumerState<PetListView> {
   Widget build(BuildContext context) {
     final isTabletDevice = DeviceInfo.isTabletDevice();
     final petState = ref.watch(petViewModelProvider);
+    final connection = ref.watch(connectivityStatusProvider);
 
     return Scaffold(
       appBar: AppBar(
@@ -54,7 +57,11 @@ class _PetListViewState extends ConsumerState<PetListView> {
         onNotification: (notification) {
           if (notification is ScrollEndNotification &&
               _scrollController.position.extentAfter == 0) {
-            ref.read(petViewModelProvider.notifier).fetchPets();
+            if (connection == ConnectivityStatus.isConnected) {
+              ref.read(petViewModelProvider.notifier).fetchPets();
+            } else {
+              showMySnackBar(message: "No connection", color: Colors.red);
+            }
           }
           return true;
         },

@@ -126,6 +126,11 @@ class CurrentUserViewModel extends StateNotifier<CurrentUserState> {
 
   Future<void> checkFingerprint() async {
     state = state.copyWith(isLoading: true);
+    if (state.authEntity == null) {
+      state = state.copyWith(isLoading: false);
+      return;
+    }
+
     final currentUserId = state.authEntity!.id;
     final result = await authUseCase.getFingerPrintId();
     result.fold(
@@ -141,6 +146,22 @@ class CurrentUserViewModel extends StateNotifier<CurrentUserState> {
             isFingerprintEnabled: false,
           );
         }
+      },
+    );
+  }
+
+  Future<void> changePassword(String oldPassword, String newPassword) async {
+    state = state.copyWith(isLoading: true);
+    final data = await authUseCase.changePassword(
+        oldPassword: oldPassword, newPassword: newPassword);
+    data.fold(
+      (l) {
+        state = state.copyWith(isLoading: false, error: l.error);
+        showMySnackBar(message: l.error, color: Colors.red);
+      },
+      (r) {
+        state = state.copyWith(isLoading: false);
+        showMySnackBar(message: 'Password changed', color: Colors.green);
       },
     );
   }

@@ -64,23 +64,25 @@ class AuthHiveModel {
       gender: gender,
       birthDate: date);
 
-  AuthHiveModel fromEntity(AuthEntity entity) => AuthHiveModel(
-        userId: const Uuid().v4(),
-        fname: entity.firstName,
-        lname: entity.lastName,
-        email: entity.email,
-        password: entity.password,
-        phone: entity.phone,
-        address: entity.address,
-        date: entity.birthDate,
-        gender: entity.gender,
-      );
+  factory AuthHiveModel.fromEntity(AuthEntity entity) {
+    return AuthHiveModel(
+      userId: const Uuid().v4(),
+      fname: entity.firstName,
+      lname: entity.lastName,
+      email: entity.email,
+      password: entity.password,
+      phone: entity.phone,
+      address: entity.address,
+      date: entity.birthDate,
+      gender: entity.gender,
+    );
+  }
 
   List<AuthEntity> toEntities(List<AuthHiveModel> models) =>
       models.map((model) => model.toEntity()).toList();
 
   List<AuthHiveModel> fromEntities(List<AuthEntity> entities) =>
-      entities.map((entity) => fromEntity(entity)).toList();
+      entities.map((entity) => AuthHiveModel.fromEntity(entity)).toList();
 
   @override
   String toString() {

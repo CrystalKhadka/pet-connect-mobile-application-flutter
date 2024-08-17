@@ -1,9 +1,9 @@
+import 'package:final_assignment/core/common/provider/theme_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../app/constants/api_endpoints.dart';
-import '../../../../core/common/provider/dark_theme_provider.dart';
-import '../../../../core/common/widgets/my_awesome_yes_no_dialog.dart';
+import '../../../../core/common/widgets/my_awesome_yes_no_options.dart';
 import '../../../home/presentation/viewmodel/home_view_model.dart';
 import '../state/current_user_state.dart';
 import '../viewmodel/current_user_view_model.dart';
@@ -22,6 +22,83 @@ class _ProfileViewState extends ConsumerState<ProfileView> {
     super.initState();
     Future.microtask(
         () => ref.read(currentUserViewModelProvider.notifier).initialize());
+  }
+
+  void openChangePasswordDialog() {
+    TextEditingController oldPasswordController = TextEditingController();
+    TextEditingController newPasswordController = TextEditingController();
+    TextEditingController confirmPasswordController = TextEditingController();
+    final formKey = GlobalKey<FormState>();
+    // Open a dialog to change password
+    showDialog(
+      context: context,
+      builder: (context) => Consumer(
+        builder: (context, ref, child) {
+          return AlertDialog(
+            title: const Text('Change Password'),
+            content: Form(
+              key: formKey,
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  TextFormField(
+                    controller: oldPasswordController,
+                    decoration:
+                        const InputDecoration(labelText: 'Old Password'),
+                  ),
+                  TextFormField(
+                    controller: newPasswordController,
+                    decoration:
+                        const InputDecoration(labelText: 'New Password'),
+                    validator: (value) {
+                      if (value!.isEmpty) {
+                        return 'Please enter a password';
+                      }
+                      if (value.length < 6) {
+                        return 'Password must be at least 8 characters';
+                      }
+                      return null;
+                    },
+                  ),
+                  TextFormField(
+                    controller: confirmPasswordController,
+                    decoration:
+                        const InputDecoration(labelText: 'Confirm Password'),
+                    validator: (value) {
+                      if (value!.isEmpty) {
+                        return 'Please enter a password';
+                      }
+                      if (value != newPasswordController.text) {
+                        return 'Passwords do not match';
+                      }
+                      return null;
+                    },
+                  ),
+                ],
+              ),
+            ),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.pop(context),
+                child: const Text('Cancel'),
+              ),
+              TextButton(
+                onPressed: () {
+                  ref
+                      .read(currentUserViewModelProvider.notifier)
+                      .changePassword(
+                        oldPasswordController.text,
+                        newPasswordController.text,
+                      );
+                  Navigator.pop(context);
+                },
+                child: const Text('Change'),
+              ),
+            ],
+          );
+        },
+      ),
+    );
   }
 
   @override
@@ -109,12 +186,16 @@ class _ProfileViewState extends ConsumerState<ProfileView> {
               icon: Icons.brightness_6,
               text: 'Select Mode',
               onTap: () async {
-                final result = await myAwesomeYesNoDialog(
-                  title: 'Are you sure?',
-                  context: 'Do you want to change your theme?',
+                //   get a dropdown for auto, light, dark
+                final theme = await myAwesomeYesNoOptions(
+                  title: 'Select Mode',
+                  options: ['Auto', 'Light', 'Dark'],
                 );
-                if (result) {
-                  ref.read(darkThemeProvider.notifier).toggleTheme();
+                print(theme);
+                if (theme.isNotEmpty) {
+                  ref
+                      .read(themeViewModelProvider.notifier)
+                      .toggleTheme(theme.toLowerCase());
                 }
               },
             ),
@@ -128,7 +209,7 @@ class _ProfileViewState extends ConsumerState<ProfileView> {
             _buildMenuItem(
               icon: Icons.lock,
               text: 'Password',
-              onTap: () {},
+              onTap: openChangePasswordDialog,
             ),
             _buildMenuItem(
               icon: Icons.favorite,
@@ -177,15 +258,14 @@ class _ProfileViewState extends ConsumerState<ProfileView> {
     Color? textColor,
   }) {
     return ListTile(
-      leading: Icon(icon, color: Theme.of(context).primaryColor),
+      leading: Icon(icon),
       title: Text(
         text,
         style: TextStyle(
-          color: textColor ?? Theme.of(context).textTheme.bodyLarge?.color,
+          color: textColor,
         ),
       ),
-      trailing:
-          Icon(Icons.chevron_right, color: Theme.of(context).primaryColor),
+      trailing: const Icon(Icons.chevron_right),
       onTap: onTap,
     );
   }

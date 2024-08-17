@@ -151,8 +151,7 @@ class ChatViewModel extends StateNotifier<ChatState> {
       },
       (messages) {
         if (messages.isEmpty) {
-          state = state.copyWith(hasReachedMax: true);
-          showMySnackBar(message: 'No more messages');
+          state = state.copyWith(hasReachedMax: true, isLoading: false);
         } else {
           state = state.copyWith(
             messages: [...state.messages, ...messages],

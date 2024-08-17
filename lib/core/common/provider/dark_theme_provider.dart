@@ -10,4 +10,7 @@ class DarkThemeProvider extends StateNotifier<bool> {
   void toggleTheme() {
     state = !state;
   }
-}
+
+  void setDarkTheme(bool isDarkMode) {
+    state = isDarkMode;
+  }}

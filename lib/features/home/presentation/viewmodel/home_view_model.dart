@@ -101,6 +101,7 @@ class HomeViewModel extends StateNotifier<HomeState> {
     initSocket();
     fetchPets();
     fetchSpecies();
+    fetchNotificationCount();
   }
 
   Future fetchPets() async {

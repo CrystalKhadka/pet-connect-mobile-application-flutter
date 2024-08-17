@@ -49,4 +49,7 @@ abstract class IAuthRepository {
     required String password,
     required String otp,
   });
+
+  Future<Either<Failure, bool>> changePassword(
+      {required String oldPassword, required String newPassword});
 }

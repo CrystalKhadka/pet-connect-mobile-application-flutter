@@ -10,7 +10,7 @@ class PetEntity extends Equatable {
   final double petWeight;
   final String petColor;
   final String petDescription;
-  final String petImage;
+  final String? petImage;
   final String petStatus;
   final String createdAt;
   final AuthEntity? createdBy;
@@ -24,7 +24,7 @@ class PetEntity extends Equatable {
       required this.petWeight,
       required this.petColor,
       required this.petDescription,
-      required this.petImage,
+       this.petImage,
       required this.petStatus,
       required this.createdAt,
       required this.createdBy});

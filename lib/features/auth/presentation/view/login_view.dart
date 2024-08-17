@@ -17,8 +17,9 @@ class LoginView extends ConsumerStatefulWidget {
 }
 
 class _LoginViewState extends ConsumerState<LoginView> {
-  final emailController = TextEditingController();
-  final passwordController = TextEditingController();
+  final emailController =
+      TextEditingController(text: "khadkacrystal23@gmail.com");
+  final passwordController = TextEditingController(text: "12345678");
   bool rememberMe = false;
   bool obscurePassword = true;
   bool showYesNoDialog = true;
@@ -177,14 +178,35 @@ class _LoginViewState extends ConsumerState<LoginView> {
                       ),
                     ),
                     const SizedBox(height: 16),
-                    OutlinedButton.icon(
-                      onPressed: () {
-                        ref
-                            .read(loginViewModelProvider.notifier)
-                            .getUserByGoogle();
-                      },
-                      icon: Image.asset('assets/icons/google.png', height: 24),
-                      label: const Text('Continue with Google'),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        OutlinedButton.icon(
+                          onPressed: () {
+                            ref
+                                .read(loginViewModelProvider.notifier)
+                                .getUserByGoogle();
+                          },
+                          icon: Image.asset('assets/icons/google.png',
+                              height: 24),
+                          label: const Text('Continue with Google'),
+                        ),
+                        IconButton(
+                          onPressed: () {
+                            ref
+                                .read(loginViewModelProvider.notifier)
+                                .fingerPrintLogin();
+                          },
+                          icon: const Icon(Icons.fingerprint),
+                          style: IconButton.styleFrom(
+                            padding: const EdgeInsets.all(16),
+                            backgroundColor: Colors.grey[200],
+                            shape: const CircleBorder(
+                              side: BorderSide(color: Colors.grey),
+                            ),
+                          ),
+                        )
+                      ],
                     ),
                     const SizedBox(height: 24),
                     TextButton(

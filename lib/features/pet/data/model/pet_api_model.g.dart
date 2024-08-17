@@ -15,7 +15,7 @@ PetApiModel _$PetApiModelFromJson(Map<String, dynamic> json) => PetApiModel(
       petWeight: (json['petWeight'] as num).toDouble(),
       petColor: json['petColor'] as String,
       petDescription: json['petDescription'] as String,
-      petImage: json['petImage'] as String,
+      petImage: json['petImage'] as String?,
       petStatus: json['petStatus'] as String,
       createdAt: json['createdAt'] as String,
       createdBy: json['createdBy'] == null

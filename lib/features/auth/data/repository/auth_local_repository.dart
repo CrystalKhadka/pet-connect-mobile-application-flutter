@@ -99,4 +99,11 @@ class AuthLocalRepository implements IAuthRepository {
     // TODO: implement resetPass
     throw UnimplementedError();
   }
+
+  @override
+  Future<Either<Failure, bool>> changePassword(
+      {required String oldPassword, required String newPassword}) {
+    // TODO: implement changePassword
+    throw UnimplementedError();
+  }
 }

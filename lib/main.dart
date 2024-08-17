@@ -11,7 +11,6 @@ void main() async {
   await HiveService().init();
   final notificationService = NotificationService();
   await notificationService.init();
-  notificationService.scheduleTwoNotifications();
 
   await SocketService.initSocket();
   runApp(const ProviderScope(child: App()));

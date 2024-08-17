@@ -99,7 +99,7 @@ class _FavoriteViewState extends ConsumerState<FavoriteView> {
         padding: const EdgeInsets.all(16),
         gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 1,
-          childAspectRatio: 1.25,
+          childAspectRatio: 1.1,
           crossAxisSpacing: 16,
           mainAxisSpacing: 16,
         ),

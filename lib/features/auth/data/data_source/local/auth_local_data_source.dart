@@ -24,7 +24,7 @@ class AuthLocalDataSource {
   Future<Either<Failure, bool>> registerUser(AuthEntity user) async {
     try {
       // Convert entity to model
-      final hiveUser = authHiveModel.fromEntity(user);
+      final hiveUser = AuthHiveModel.fromEntity(user);
 
       // If already email throw error
       final userByEmail =

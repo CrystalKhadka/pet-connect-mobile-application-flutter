@@ -89,4 +89,11 @@ class AuthRemoteRepository implements IAuthRepository {
     return authRemoteDataSource.resetPassFromOtp(
         phone: phone, password: password, otp: otp);
   }
+
+  @override
+  Future<Either<Failure, bool>> changePassword(
+      {required String oldPassword, required String newPassword}) {
+    return authRemoteDataSource.changePassword(
+        oldPassword: oldPassword, newPassword: newPassword);
+  }
 }

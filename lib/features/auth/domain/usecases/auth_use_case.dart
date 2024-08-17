@@ -100,4 +100,10 @@ class AuthUseCase {
   }) {
     return authRepository.resetPass(phone: phone, password: password, otp: otp);
   }
+
+  Future<Either<Failure, bool>> changePassword(
+      {required String oldPassword, required String newPassword}) {
+    return authRepository.changePassword(
+        oldPassword: oldPassword, newPassword: newPassword);
+  }
 }

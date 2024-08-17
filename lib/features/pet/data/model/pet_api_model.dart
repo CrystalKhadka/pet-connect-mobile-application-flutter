@@ -21,7 +21,7 @@ class PetApiModel extends Equatable {
   final double petWeight;
   final String petColor;
   final String petDescription;
-  final String petImage;
+  final String? petImage;
   final String petStatus;
   final String createdAt;
   final AuthApiModel? createdBy;

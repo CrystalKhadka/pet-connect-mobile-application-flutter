@@ -1,5 +1,3 @@
-import 'package:final_assignment/core/common/widgets/my_snackbar.dart';
-import 'package:final_assignment/features/chat/presentation/view/user.dart';
 import 'package:final_assignment/features/chat/presentation/viewmodel/chat_view_model.dart';
 import 'package:final_assignment/features/chat/presentation/widgets/chat_header.dart';
 import 'package:final_assignment/features/chat/presentation/widgets/chat_input.dart';
@@ -18,8 +16,7 @@ class ChatView extends ConsumerStatefulWidget {
 
 class _ChatViewState extends ConsumerState<ChatView> {
   bool darkMode = false;
-  User? currentUser;
-  User? chatPartner;
+
   bool isTyping = false;
   TextEditingController messageController = TextEditingController();
   final _scrollController = ScrollController();
@@ -40,8 +37,6 @@ class _ChatViewState extends ConsumerState<ChatView> {
 
   @override
   void dispose() {
-    // dispose while changing bottom navigation
-    showMySnackBar(message: 'Chat Disposed');
     ref.read(chatViewModelProvider.notifier).offSocket();
     super.dispose();
   }
@@ -63,7 +58,6 @@ class _ChatViewState extends ConsumerState<ChatView> {
           actions: [
             IconButton(
                 onPressed: () {
-                  print(chatState.messages);
                   ref
                       .read(
                         chatViewModelProvider.notifier,
@@ -83,32 +77,34 @@ class _ChatViewState extends ConsumerState<ChatView> {
         ),
         body: Column(
           children: [
-            ChatHeader(user: chatState.receiver!),
+            ChatHeader(user: chatState.receiver),
             chatState.isLoading
                 ? const CircularProgressIndicator()
                 : const SizedBox(),
-            Expanded(
-              child: ChatMessages(
-                messages: chatState.messages,
-                isTyping: chatState.isTyping,
-                darkMode: darkMode,
-                currentUser: chatState.user!,
-                scrollController: _scrollController,
-                onEditMessage: (message) {
-                  // Implement edit message logic
-                },
-                onDeleteMessage: (messageId) {
-                  // Implement delete message logic
-                },
-                downloadFile: (fileName) async {
-                  ref
-                      .read(
-                        chatViewModelProvider.notifier,
-                      )
-                      .downloadFile(fileName);
-                },
-              ),
-            ),
+            chatState.receiver == null || chatState.user == null
+                ? const Center(child: Text('No user found'))
+                : Expanded(
+                    child: ChatMessages(
+                      messages: chatState.messages,
+                      isTyping: chatState.isTyping,
+                      darkMode: darkMode,
+                      currentUser: chatState.user!,
+                      scrollController: _scrollController,
+                      onEditMessage: (message) {
+                        // Implement edit message logic
+                      },
+                      onDeleteMessage: (messageId) {
+                        // Implement delete message logic
+                      },
+                      downloadFile: (fileName) async {
+                        ref
+                            .read(
+                              chatViewModelProvider.notifier,
+                            )
+                            .downloadFile(fileName);
+                      },
+                    ),
+                  ),
             ChatInput(
               onSendMessage: (message) {
                 ref

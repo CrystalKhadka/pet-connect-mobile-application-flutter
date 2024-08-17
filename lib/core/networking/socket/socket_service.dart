@@ -24,7 +24,7 @@ class SocketService {
     String? token;
     final data = await userSharedPrefs.getUserToken();
     data.fold(
-      (l) => token=null,
+      (l) => token = null,
       (r) => token = r,
     );
 
@@ -34,7 +34,10 @@ class SocketService {
     _socket = IO.io(
       url,
       IO.OptionBuilder()
-          .setTransports(['websocket']).setQuery({'id': token ?? ''}).build(),
+          .setTransports(['websocket'])
+          .setQuery({'id': token ?? ''})
+          .setTimeout(10) // Set the timeout duration here
+          .build(),
     );
 
     _socket!.connect();

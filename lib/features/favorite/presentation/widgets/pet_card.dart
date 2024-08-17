@@ -6,11 +6,10 @@ class PetCard extends StatelessWidget {
   final PetEntity pet;
   final VoidCallback favorite;
 
-  const PetCard({super.key, required this.pet,required this.favorite});
+  const PetCard({super.key, required this.pet, required this.favorite});
 
   @override
   Widget build(BuildContext context) {
-    
     return Card(
       elevation: 4,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
@@ -20,15 +19,16 @@ class PetCard extends StatelessWidget {
           Stack(
             children: [
               ClipRRect(
-                borderRadius:
-                    const BorderRadius.vertical(top: Radius.circular(16)),
-                child: Image.network(
-                  ApiEndpoints.petImage + pet.petImage,
-                  height: 120,
-                  width: double.infinity,
-                  fit: BoxFit.cover,
-                ),
-              ),
+                  borderRadius:
+                      const BorderRadius.vertical(top: Radius.circular(16)),
+                  child: pet.petImage != null
+                      ? Image.network(
+                          ApiEndpoints.petImage + pet.petImage!,
+                          height: 120,
+                          width: double.infinity,
+                          fit: BoxFit.cover,
+                        )
+                      : null),
               Positioned(
                 top: 8,
                 right: 8,

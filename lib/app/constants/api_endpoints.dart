@@ -18,6 +18,7 @@ class ApiEndpoints {
   static const String getUserById = "user/get/";
   static const String googleLogin = "user/google";
   static const String getUserByGoogleEmail = "user/getGoogleUser";
+  static const String changePassword = "user/change_password";
 
   static const String userImageUrl = "http://192.168.137.1:5000/profile/";
 

@@ -62,9 +62,10 @@ dependencies:
   khalti_checkout_flutter: ^1.0.0-dev.5
   app_links: ^6.2.0
   awesome_dialog: ^3.2.1
-  webview_flutter: ^4.8.0
+
   badges: ^3.1.2
   flutter_local_notifications: ^17.2.2
+  light_sensor: ^3.0.0
 
 dev_dependencies:
   flutter_test:
